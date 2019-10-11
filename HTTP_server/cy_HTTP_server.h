@@ -58,24 +58,75 @@ extern "C" {
 #define EXPAND_AS_ENUMERATION(a,b)   a,
 #define EXPAND_AS_MIME_TABLE(a,b)    b,
 
-/*
+/**
+ * @addtogroup http_server_defines
+ *
+ * HTTP server preprocessor directives such as results and error codes
+ *
+ * Cypress middleware APIs return results of type cy_rslt_t and comprise of three parts:
+ * - module base
+ * - type
+ * - error code
+ *
+ * \par Result Format
+ *
+   \verbatim
+              Module base         Type    Library specific error code
+      +---------------------------+------+------------------------------+
+      |CY_RSLT_MODULE_HTTP_SERVER | 0x2  |           Error Code         |
+      +---------------------------+------+------------------------------+
+                14-bits            2-bits            16-bits
+
+   Refer to the macro section of this document for library specific error codes.
+   \endverbatim
+ *
+ * The data structure cy_rslt_t is part of cy_result.h in MBED OS PSoC6 target platform, located in <mbed-os/targets/TARGET_Cypress/TARGET_PSOC6/psoc6csp/core_lib/include>
+ *
+ * Module base: This base is derived from CY_RSLT_MODULE_MIDDLEWARE_BASE (defined in cy_result.h) and is an offset of the CY_RSLT_MODULE_MIDDLEWARE_BASE
+ *              The details of the offset and the middleware base are defined in cy_result_mw.h, that is part of [Github connectivity-utilities] (https://github.com/cypresssemiconductorco/connectivity-utilities)
+ *              For instance, HTTP server uses CY_RSLT_MODULE_HTTP_SERVER as the module base
+ *
+ * Type: This type is defined in cy_result.h and can be one of CY_RSLT_TYPE_FATAL, CY_RSLT_TYPE_ERROR, CY_RSLT_TYPE_WARNING or CY_RSLT_TYPE_INFO. AWS library error codes are of type CY_RSLT_TYPE_ERROR
+ *
+ * Library specific error code: These error codes are library specific and defined in macro section
+ *
+ * Helper macros used for creating the library specific result are provided as part of cy_result.h
+ *
+ *  @{
+ */
+/**
  * Results returned by HTTP server library
  */
 #define CY_RSLT_MODULE_HTTP_SERVER_ERR_CODE_START       (0)
 
+/** HTTP server error code base */        
 #define CY_RSLT_HTTP_SERVER_ERR_BASE                    CY_RSLT_CREATE(CY_RSLT_TYPE_ERROR, CY_RSLT_MODULE_HTTP_SERVER, CY_RSLT_MODULE_HTTP_SERVER_ERR_CODE_START)
 
+/** Out of memory */
 #define CY_RSLT_HTTP_SERVER_ERROR_NO_MEMORY             ((cy_rslt_t)(CY_RSLT_HTTP_SERVER_ERR_BASE + 1))
+/** Error initializing thread */
 #define CY_RSLT_HTTP_SERVER_ERROR_THREAD_INIT           ((cy_rslt_t)(CY_RSLT_HTTP_SERVER_ERR_BASE + 2))
+/** Error initializing queue */
 #define CY_RSLT_HTTP_SERVER_ERROR_QUEUE_INIT            ((cy_rslt_t)(CY_RSLT_HTTP_SERVER_ERR_BASE + 3))
+/** Error initializing mutex */
 #define CY_RSLT_HTTP_SERVER_ERROR_MUTEX_INIT            ((cy_rslt_t)(CY_RSLT_HTTP_SERVER_ERR_BASE + 4))
+/** Failed to start TCP server */
 #define CY_RSLT_HTTP_SERVER_ERROR_TCP_SERVER_START      ((cy_rslt_t)(CY_RSLT_HTTP_SERVER_ERR_BASE + 5))
+/** Feature not supported */        
 #define CY_RSLT_HTTP_SERVER_ERROR_UNSUPPORTED           ((cy_rslt_t)(CY_RSLT_HTTP_SERVER_ERR_BASE + 6))
+/** Bad argument/parameter */        
 #define CY_RSLT_HTTP_SERVER_ERROR_BADARG                ((cy_rslt_t)(CY_RSLT_HTTP_SERVER_ERR_BASE + 7))
+/** Resource not found */        
 #define CY_RSLT_HTTP_SERVER_ERROR_NOT_FOUND             ((cy_rslt_t)(CY_RSLT_HTTP_SERVER_ERR_BASE + 8))
+/** Partially processed. Returned by application's receive callback */        
 #define CY_RSLT_HTTP_SERVER_ERROR_PARTIAL_RESULTS       ((cy_rslt_t)(CY_RSLT_HTTP_SERVER_ERR_BASE + 9))
+/** Exceeded maximum number of resources */
 #define CY_RSLT_HTTP_SERVER_PAGE_DATABASE_FULL          ((cy_rslt_t)(CY_RSLT_HTTP_SERVER_ERR_BASE + 10))
+/** HTTP server generic error */        
 #define CY_RSLT_ERROR                                   ((cy_rslt_t)(CY_RSLT_HTTP_SERVER_ERR_BASE + 11))
+/**
+ * @}
+ */
 
 /******************************************************
  *                    Constants
@@ -156,10 +207,10 @@ extern "C" {
  */
 typedef enum
 {
-    CY_HTTP_GET_REQUEST,
-    CY_HTTP_POST_REQUEST,
-    CY_HTTP_PUT_REQUEST,
-    CY_HTTP_REQUEST_UNDEFINED
+    CY_HTTP_GET_REQUEST,       /**< HTTP server GET request type */
+    CY_HTTP_POST_REQUEST,      /**< HTTP server POST request type */
+    CY_HTTP_PUT_REQUEST,       /**< HTTP server PUT request type*/
+    CY_HTTP_REQUEST_UNDEFINED  /**< HTTP server undefined request type */
 } cy_http_request_type_t;
 
 /**
@@ -176,8 +227,8 @@ typedef enum
  */
 typedef enum
 {
-    MIME_TABLE( EXPAND_AS_ENUMERATION )
-    MIME_UNSUPPORTED
+    MIME_TABLE( EXPAND_AS_ENUMERATION )  /**< HTTP MIME type */
+    MIME_UNSUPPORTED                     /**< HTTP unsupported MIME type */
 } cy_packet_mime_type_t;
 
 /**
@@ -203,15 +254,29 @@ typedef enum
     CY_HTTP_504_TYPE
 } cy_http_status_codes_t;
 
+/**
+ * HTTP server resource type
+ */
 typedef enum
 {
-    CY_STATIC_URL_CONTENT,                 /** Page is constant data in memory addressable area */
-    CY_DYNAMIC_URL_CONTENT,                /** Page is dynamically generated by a @ref url_processor_t type function */
-    CY_RESOURCE_URL_CONTENT,               /** Page data is proivded by a cypress Resource which may reside off-chip */
-    CY_RAW_STATIC_URL_CONTENT,             /** Same as @ref CY_STATIC_URL_CONTENT but HTTP header must be supplied as part of the content */
-    CY_RAW_DYNAMIC_URL_CONTENT,            /** Same as @ref CY_DYNAMIC_URL_CONTENT but HTTP header must be supplied as part of the content */
-    CY_RAW_RESOURCE_URL_CONTENT            /** Same as @ref CY_RESOURCE_URL_CONTENT but HTTP header must be supplied as part of the content */
+    CY_STATIC_URL_CONTENT,                 /**< Page is constant data in memory addressable area */
+    CY_DYNAMIC_URL_CONTENT,                /**< Page is dynamically generated by a @ref url_processor_t type function */
+    CY_RESOURCE_URL_CONTENT,               /**< Page data is proivded by a cypress Resource which may reside off-chip */
+    CY_RAW_STATIC_URL_CONTENT,             /**< Same as @ref CY_STATIC_URL_CONTENT but HTTP header must be supplied as part of the content */
+    CY_RAW_DYNAMIC_URL_CONTENT,            /**< Same as @ref CY_DYNAMIC_URL_CONTENT but HTTP header must be supplied as part of the content */
+    CY_RAW_RESOURCE_URL_CONTENT            /**< Same as @ref CY_RESOURCE_URL_CONTENT but HTTP header must be supplied as part of the content */
 } cy_url_resource_type;
+/**
+ * @}
+ */
+
+/**
+ * @addtogroup http_server_struct
+ *
+ * HTTP server data structures and type definitions
+ *
+ *  @{
+ */
 /******************************************************
  *                 Type Definitions
  ******************************************************/
@@ -224,24 +289,36 @@ typedef enum
  */
 typedef struct
 {
-    const uint8_t*            data;                         /* packet data in message body      */
-    uint16_t                  data_length;                  /* data length in current packet    */
-    uint32_t                  data_remaining;               /* data yet to be consumed          */
-    bool                      is_chunked_transfer;          /* chunked data format              */
-    cy_packet_mime_type_t     mime_type;                    /* mime type                        */
-    cy_http_request_type_t    request_type;                 /* request type                     */
+    const uint8_t*            data;                         /**< packet data in message body      */
+    uint16_t                  data_length;                  /**< data length in current packet    */
+    uint32_t                  data_remaining;               /**< data yet to be consumed          */
+    bool                      is_chunked_transfer;          /**< chunked data format              */
+    cy_packet_mime_type_t     mime_type;                    /**< mime type                        */
+    cy_http_request_type_t    request_type;                 /**< request type                     */
 } cy_http_message_body_t;
+
+/**
+ * @}
+ */
 
 typedef struct cy_http_page_s cy_http_page_t;
 
+/**
+ * HTTP server request info sent as part of the request callback
+ */
 typedef struct
 {
-   cy_http_page_t*           page_found;
-   uint32_t                  data_remaining;
-   cy_packet_mime_type_t     mime_type;
-   cy_http_request_type_t    request_type;
+   cy_http_page_t*           page_found;      /**< Pointer to the found page/resource */
+   uint32_t                  data_remaining;  /**< Number of bytes remaining to be sent to the application */
+   cy_packet_mime_type_t     mime_type;       /**< Mime type of the request */
+   cy_http_request_type_t    request_type;    /**< Request type */
 } cy_http_request_info_t;
 
+/**
+ * @addtogroup http_server_struct
+ *
+ * @{
+ */
 /**
  * Workspace structure for HTTP server stream
  * Users should not access these values - they are provided here only
@@ -249,14 +326,20 @@ typedef struct
  */
 typedef struct
 {
-    cy_tcp_stream_t tcp_stream;
-    bool            chunked_transfer_enabled;
+    cy_tcp_stream_t tcp_stream;                /**< TCP stream handle */
+    bool            chunked_transfer_enabled;  /**< Flag to indicate if chunked transfer is enabled */
 } cy_http_response_stream_t;
+/**
+ * @}
+ */
 
+/**
+ * HTTP server request/response stream info
+ */
 typedef struct
 {
-    cy_http_response_stream_t response;
-    cy_http_request_info_t    request;
+    cy_http_response_stream_t response;  /**< HTTP server response */
+    cy_http_request_info_t    request;   /**< HTTP server request */
 } cy_http_stream_t;
 
 /**
@@ -280,30 +363,33 @@ typedef int32_t (*url_processor_t)(  const char* url_path, const char* url_query
  */
 struct cy_http_page_s
 {
-    char*                url;                  /* String containing the path part of the URL of this page/file */
-    char*                mime_type;            /* String containing the MIME type of this page/file */
-    cy_url_resource_type url_content_type;     /* The page type - this selects which part of the @url_content union will be used - also see above */
+    char*                url;                  /**< String containing the path part of the URL of this page/file */
+    char*                mime_type;            /**< String containing the MIME type of this page/file */
+    cy_url_resource_type url_content_type;     /**< The page type - this selects which part of the url_content union will be used - also see above */
     union
     {
-        struct                                 /* Used for CY_DYNAMIC_URL_CONTENT and CY_RAW_DYNAMIC_URL_CONTENT */
+        struct                                 
         {
-            url_processor_t generator;         /* The function which will handle requests for this page */
-            void*           arg;               /* An argument to be passed to the generator function    */
-        } dynamic_data;
-        struct                                 /* Used for CY_STATIC_URL_CONTENT and CY_RAW_STATIC_URL_CONTENT */
+            url_processor_t generator;         /**< The function which will handle requests for this page */
+            void*           arg;               /**< An argument to be passed to the generator function    */
+        } dynamic_data;                        /**< Used for CY_DYNAMIC_URL_CONTENT and CY_RAW_DYNAMIC_URL_CONTENT */
+        struct                                 
         {
-            const void*     ptr;               /* A pointer to the data for the page / file */
-            uint32_t        length;            /* The length in bytes of the page / file */
-        } static_data;
-        const void*         resource_data;     /* A cypress Resource containing the page / file - Used for CY_RESOURCE_URL_CONTENT and CY_RAW_RESOURCE_URL_CONTENT */
-    } url_content;
+            const void*     ptr;               /**< A pointer to the data for the page/file */
+            uint32_t        length;            /**< The length in bytes of the page/file */
+        } static_data;                         /**< Used for CY_STATIC_URL_CONTENT and CY_RAW_STATIC_URL_CONTENT */
+        const void*         resource_data;     /**< A cypress Resource containing the page/file - Used for CY_RESOURCE_URL_CONTENT and CY_RAW_RESOURCE_URL_CONTENT */
+    } url_content;                             /**< Static/Dynamic URL content */
 };
 
+/**
+ * HTTP server secure TCP credentials
+ */
 typedef struct
 {
-    cy_tls_identity_t* tls_identity;
-    uint8_t*           root_ca;
-    uint16_t           root_ca_length;
+    cy_tls_identity_t* tls_identity;    /**< TLS identity */
+    uint8_t*           root_ca;         /**< Root certificate */
+    uint16_t           root_ca_length;  /**< Root certificate length */
 } cy_http_security_info;
 
 /**
@@ -313,18 +399,18 @@ typedef struct
  */
 typedef struct
 {
-    cy_network_interface_t                 network_interface;
-    cy_tcp_server_t    	                   tcp_server;
-    cy_thread_t                            event_thread;
-    cy_thread_t                            connect_thread;
-    cy_mutex_t                             mutex;
-    volatile bool                          quit;
-    const cy_http_page_t*                  page_database;
-    uint8_t*                               streams;
-    cy_linked_list_t                       active_stream_list;
-    cy_linked_list_t                       inactive_stream_list;
-    cy_http_server_receive_callback_t      receive_callback;
-    cy_http_server_disconnect_callback_t   disconnect_callback;
+    cy_network_interface_t                 network_interface;     /**< MBED network interface */
+    cy_tcp_server_t    	                   tcp_server;            /**< MBED TCP server socket handle */
+    cy_thread_t                            event_thread;          /**< HTTP server data event thread */
+    cy_thread_t                            connect_thread;        /**< HTTP server connection request thread */
+    cy_mutex_t                             mutex;                 /**< Mutex for critical section */
+    volatile bool                          quit;                  /**< Internal quit flag to stop HTTP server */
+    const cy_http_page_t*                  page_database;         /**< Handle to the page/resource database */
+    uint8_t*                               streams;               /**< Pointer to allocated streams for the max connections */
+    cy_linked_list_t                       active_stream_list;    /**< List of active streams */
+    cy_linked_list_t                       inactive_stream_list;  /**< List of inactive streams */
+    cy_http_server_receive_callback_t      receive_callback;      /**< Internal TCP socket receive callback */
+    cy_http_server_disconnect_callback_t   disconnect_callback;   /**< Internal TCP disconnect callback */
 } cy_http_server_t;
 
 /******************************************************
@@ -334,32 +420,6 @@ typedef struct
 /******************************************************
  *               Function Declarations
  ******************************************************/
-
-/*****************************************************************************/
-/**
- * @defgroup http       HTTP
- * @ingroup ipcoms
- *
- * @addtogroup http_server      HTTP Server
- * @ingroup http
- *
- * Communication functions for HTTP (Hypertext Transfer Protocol) Server
- *
- * HTTP functions as a request-response protocol in the client-server computing model. A web browser,
- * for example, may be the client and an application running on a computer hosting a website may be the
- * server. The client submits an HTTP request message to the server. The server, which provides
- * resources such as HTML files and other content, or performs other functions on behalf of the client,
- * returns a response message to the client. The response contains completion status information about
- * the request and may also contain requested content in its message body.
- *
- * The HTTP server library on CY is capable of both secure [with TLS security] and
- * non-secure mode of connection. The library also provides support for various RESTful HTTP methods
- * such as GET, POST and PUT; and has support for various content types [e.g. HTML, Plain, JSON].
- * The HTTP library is capable of handling content payload that is greater than MTU size for CY_RAW_DYNAMIC_URL_CONTENT and CY_DYNAMIC_URL_CONTENT type for now.
- *
- *  @{
- */
-/*****************************************************************************/
 
 /**
  * Start a HTTP server daemon (web server)
@@ -378,7 +438,7 @@ typedef struct
  * @param[in] identity                For non-secure server, identity will be NULL or ignored if passed. for secure server identity has server certificate, key and rootCA certificate
  *
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_server_start( cy_http_server_t* server, void* network_interface, uint16_t port, uint16_t max_sockets, cy_http_page_t* page_database, cy_server_type_t type, cy_http_security_info* security_info );
 
@@ -387,7 +447,7 @@ cy_rslt_t cy_http_server_start( cy_http_server_t* server, void* network_interfac
  *
  * @param[in] server   The structure workspace that was used with @ref cy_http_server_start
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_server_stop( cy_http_server_t* server );
 
@@ -405,7 +465,7 @@ cy_rslt_t cy_http_server_stop( cy_http_server_t* server );
  * @param[in] identity                 Certificate & private key of server
  * @param[in] url_processor_stack_size Thread stack size
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_https_server_start( cy_http_server_t* server, void* network_interface, uint16_t port, uint16_t max_sockets, const cy_http_page_t* page_database, void* identity, uint32_t url_processor_stack_size );
 
@@ -414,7 +474,7 @@ cy_rslt_t cy_https_server_start( cy_http_server_t* server, void* network_interfa
  *
  * @param[in] server   The structure workspace that was used with @ref cy_https_server_start
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_https_server_stop( cy_http_server_t* server );
 
@@ -425,7 +485,7 @@ cy_rslt_t cy_https_server_stop( cy_http_server_t* server );
  * @param[in] receive_callback    : Callback function that will be called when a packet is received by the server
  * @param[in] disconnect_callback : Callback function that will be called when a disconnection event is received by the server
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_server_register_callbacks( cy_http_server_t* server, cy_http_server_receive_callback_t receive_callback, cy_http_server_disconnect_callback_t disconnect_callback );
 
@@ -434,7 +494,7 @@ cy_rslt_t cy_http_server_register_callbacks( cy_http_server_t* server, cy_http_s
  *
  * @param[in] server : HTTP server
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_server_deregister_callbacks( cy_http_server_t* server );
 
@@ -443,7 +503,7 @@ cy_rslt_t cy_http_server_deregister_callbacks( cy_http_server_t* server );
  *
  * @param[in] stream : stream to disconnect
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_response_stream_disconnect( cy_http_response_stream_t* stream );
 
@@ -452,7 +512,7 @@ cy_rslt_t cy_http_response_stream_disconnect( cy_http_response_stream_t* stream 
  *
  * @param[in] server   The structure workspace that was used with @ref cy_http_server_start
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_disconnect_all_response_stream( cy_http_server_t* server );
 
@@ -462,7 +522,7 @@ cy_rslt_t cy_http_disconnect_all_response_stream( cy_http_server_t* server );
  * @param[in] stream : HTTP server stream
  * @param[in] socket : TCP socket for the stream to use
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_response_stream_init( cy_http_response_stream_t* stream, void* socket );
 
@@ -471,7 +531,7 @@ cy_rslt_t cy_http_response_stream_init( cy_http_response_stream_t* stream, void*
  *
  * @param[in] stream : HTTP server stream
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_response_stream_deinit( cy_http_response_stream_t* stream );
 
@@ -480,7 +540,7 @@ cy_rslt_t cy_http_response_stream_deinit( cy_http_response_stream_t* stream );
  *
  * @param[in] stream : HTTP stream
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_response_stream_enable_chunked_transfer( cy_http_response_stream_t* stream );
 
@@ -489,7 +549,7 @@ cy_rslt_t cy_http_response_stream_enable_chunked_transfer( cy_http_response_stre
  *
  * @param[in] stream : HTTP stream
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_response_stream_disable_chunked_transfer( cy_http_response_stream_t* stream );
 
@@ -502,7 +562,7 @@ cy_rslt_t cy_http_response_stream_disable_chunked_transfer( cy_http_response_str
  * @param[in] cache_type     : HTTP cache type (enabled or disabled)
  * @param[in] mime_type      : HTTP MIME type
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_response_stream_write_header( cy_http_response_stream_t* stream, cy_http_status_codes_t status_code, uint32_t content_length, cy_http_cache_t cache_type, cy_packet_mime_type_t mime_type );
 
@@ -513,7 +573,7 @@ cy_rslt_t cy_http_response_stream_write_header( cy_http_response_stream_t* strea
  * @param[in] data   : data to write
  * @param[in] length : data length in bytes
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_response_stream_write( cy_http_response_stream_t* stream, const void* data, uint32_t length );
 
@@ -523,7 +583,7 @@ cy_rslt_t cy_http_response_stream_write( cy_http_response_stream_t* stream, cons
  * @param[in] stream   : HTTP stream to write the resource into
  * @param[in] resource : Pointer to resource
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_response_stream_write_resource( cy_http_response_stream_t* stream, const void* resource );
 
@@ -532,7 +592,7 @@ cy_rslt_t cy_http_response_stream_write_resource( cy_http_response_stream_t* str
  *
  * @param[in] stream : HTTP stream to flush
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t
  */
 cy_rslt_t cy_http_response_stream_flush( cy_http_response_stream_t* stream );
 
@@ -544,7 +604,7 @@ cy_rslt_t cy_http_response_stream_flush( cy_http_response_stream_t* stream );
  * @param[out] parameter_value : If the parameter with the given key is found, this pointer will point to the parameter value upon return; NULL otherwise
  * @param[out] value_length    : This variable will contain the length of the parameter value upon return; 0 otherwise
  *
- * @return @ref cy_rslt_t CY_RSLT_SUCCESS if found; CY_RSLT_NOT_FOUND if not found
+ * @return cy_rslt_t CY_RSLT_SUCCESS if found; CY_RSLT_NOT_FOUND if not found
  */
 cy_rslt_t cy_http_get_query_parameter_value( const char* url_query, const char* parameter_key, char** parameter_value, uint32_t* value_length );
 
@@ -564,11 +624,9 @@ uint32_t cy_http_get_query_parameter_count( const char* url_query );
  * @param[in]  parameter_key   : NUL-terminated key or name of the parameter to find in the URL query string
  * @param[out] parameter_value : NUL-terminated value of the parameter to find in the URL query string
  *
- * @return @ref cy_rslt_t CY_RSLT_SUCCESS if matched; CY_RSLT_NOT_FOUND if matching parameter is not found
+ * @return cy_rslt_t CY_RSLT_SUCCESS if matched; CY_RSLT_NOT_FOUND if matching parameter is not found
  */
 cy_rslt_t cy_http_match_query_parameter( const char* url_query, const char* parameter_key, const char* parameter_value );
-
-/** @} */
 
 #ifdef __cplusplus
 } /* extern "C" */

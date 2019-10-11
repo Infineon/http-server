@@ -1,34 +1,18 @@
 /*
- * Copyright 2019, Cypress Semiconductor Corporation or a subsidiary of
- * Cypress Semiconductor Corporation. All Rights Reserved.
- *
- * This software, including source code, documentation and related
- * materials ("Software"), is owned by Cypress Semiconductor Corporation
- * or one of its subsidiaries ("Cypress") and is protected by and subject to
- * worldwide patent protection (United States and foreign),
- * United States copyright laws and international treaty provisions.
- * Therefore, you may use this Software only as provided in the license
- * agreement accompanying the software package from which you
- * obtained this Software ("EULA").
- * If no EULA applies, Cypress hereby grants you a personal, non-exclusive,
- * non-transferable license to copy, modify, and compile the Software
- * source code solely for use in connection with Cypress's
- * integrated circuit products. Any reproduction, modification, translation,
- * compilation, or representation of this Software except as specified
- * above is prohibited without the express written permission of Cypress.
- *
- * Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT, IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. Cypress
- * reserves the right to make changes to the Software without notice. Cypress
- * does not assume any liability arising out of the application or use of the
- * Software or any product or circuit described in the Software. Cypress does
- * not authorize its products for use in any products where a malfunction or
- * failure of the Cypress product may reasonably be expected to result in
- * significant property damage, injury or death ("High Risk Product"). By
- * including Cypress's product in a High Risk Product, the manufacturer
- * of such system or application assumes all risk of such use and in doing
- * so agrees to indemnify Cypress against all liability.
+ * Copyright 2019 Cypress Semiconductor Corporation
+ * SPDX-License-Identifier: Apache-2.0
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /** @file
@@ -39,6 +23,7 @@
 
 #include "cy_tls_wrapper.h"
 #include "cy_tcpip.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "nsapi_types.h"
@@ -46,56 +31,14 @@
 #define MIN(x,y) ((x) < (y) ? (x) : (y))
 
 #define TIMEOUT                  1000
-#define MAX_REQUEST_SIZE         20000
-#define MAX_REQUEST_SIZE_STR    "20000"
-#define ALPN_LIST_SIZE  10
-#define CURVE_LIST_SIZE 20
-#define DFL_SERVER_NAME         "localhost"
-#define DFL_SERVER_ADDR         NULL
-#define DFL_SERVER_PORT         "4433"
-#define DFL_REQUEST_PAGE        "/"
-#define DFL_REQUEST_SIZE        -1
-#define DFL_DEBUG_LEVEL          0
-#define DFL_NBIO                 0
-#define DFL_EVENT                0
 #define DFL_READ_TIMEOUT         0
-#define DFL_MAX_RESEND           0
-#define DFL_CA_FILE              ""
-#define DFL_CA_PATH              ""
-#define DFL_CRT_FILE             ""
-#define DFL_KEY_FILE             ""
-#define DFL_PSK                  ""
-#define DFL_PSK_IDENTITY         "Client_identity"
-#define DFL_ECJPAKE_PW           NULL
-#define DFL_EC_MAX_OPS          -1
-#define DFL_FORCE_CIPHER         0
-#define DFL_RENEGOTIATION        MBEDTLS_SSL_RENEGOTIATION_DISABLED
-#define DFL_ALLOW_LEGACY        -2
-#define DFL_RENEGOTIATE          0
-#define DFL_EXCHANGES            1
 #define DFL_MIN_VERSION         -1
 #define DFL_MAX_VERSION         -1
-#define DFL_ARC4                -1
-#define DFL_SHA1                -1
 #define DFL_AUTH_MODE           -1
 #define DFL_MFL_CODE            MBEDTLS_SSL_MAX_FRAG_LEN_NONE
-#define DFL_TRUNC_HMAC          -1
-#define DFL_RECSPLIT            -1
-#define DFL_DHMLEN              -1
-#define DFL_RECONNECT            0
-#define DFL_RECO_DELAY           0
-#define DFL_RECONNECT_HARD       0
-#define DFL_TICKETS              MBEDTLS_SSL_SESSION_TICKETS_ENABLED
-#define DFL_ALPN_STRING          NULL
-#define DFL_CURVES               NULL
-#define DFL_TRANSPORT            MBEDTLS_SSL_TRANSPORT_STREAM
+#define DFL_TRANSPORT           MBEDTLS_SSL_TRANSPORT_STREAM
 #define DFL_HS_TO_MIN            0
 #define DFL_HS_TO_MAX            0
-#define DFL_DTLS_MTU            -1
-#define DFL_DGRAM_PACKING        1
-#define DFL_FALLBACK            -1
-#define DFL_EXTENDED_MS         -1
-#define DFL_ETM                 -1
 
 static struct options
 {
@@ -282,16 +225,6 @@ cy_rslt_t cy_tls_generic_start_tls_with_ciphers( cy_tls_context_t* tls_context, 
     int ret = 0;
     cy_rslt_t result = CY_RSLT_SUCCESS;
 
-#if defined(MBEDTLS_KEY_EXCHANGE__SOME__PSK_ENABLED)
-    unsigned char psk[MBEDTLS_PSK_MAX_LEN];
-    size_t psk_len = 0;
-#endif
-#if defined(MBEDTLS_SSL_ALPN)
-    const char *alpn_list[ALPN_LIST_SIZE];
-#endif
-#if defined(MBEDTLS_ECP_C)
-    mbedtls_ecp_group_id curve_list[CURVE_LIST_SIZE];
-#endif
 
     const char *pers = "supplicant_client";
 
@@ -304,56 +237,9 @@ cy_rslt_t cy_tls_generic_start_tls_with_ciphers( cy_tls_context_t* tls_context, 
 
     mbedtls_ctr_drbg_init( &tls_context->ctr_drbg );
 
-#if defined(MBEDTLS_SSL_ALPN)
-    memset( (void * ) alpn_list, 0, sizeof( alpn_list ) );
-#endif
-
-    opt.server_name         = DFL_SERVER_NAME;
-    opt.server_addr         = DFL_SERVER_ADDR;
-    opt.server_port         = DFL_SERVER_PORT;
-    opt.debug_level         = DFL_DEBUG_LEVEL;
-    opt.nbio                = DFL_NBIO;
-    opt.event               = DFL_EVENT;
     opt.read_timeout        = DFL_READ_TIMEOUT;
-    opt.max_resend          = DFL_MAX_RESEND;
-    opt.request_page        = DFL_REQUEST_PAGE;
-    opt.request_size        = DFL_REQUEST_SIZE;
-    opt.ca_file             = DFL_CA_FILE;
-    opt.ca_path             = DFL_CA_PATH;
-    opt.crt_file            = DFL_CRT_FILE;
-    opt.key_file            = DFL_KEY_FILE;
-    opt.psk                 = DFL_PSK;
-    opt.psk_identity        = DFL_PSK_IDENTITY;
-    opt.ecjpake_pw          = DFL_ECJPAKE_PW;
-    opt.ec_max_ops          = DFL_EC_MAX_OPS;
-    opt.force_ciphersuite[0]= DFL_FORCE_CIPHER;
-    opt.renegotiation       = DFL_RENEGOTIATION;
-    opt.allow_legacy        = DFL_ALLOW_LEGACY;
-    opt.renegotiate         = DFL_RENEGOTIATE;
-    opt.exchanges           = DFL_EXCHANGES;
     opt.min_version         = DFL_MIN_VERSION;
     opt.max_version         = DFL_MAX_VERSION;
-    opt.arc4                = DFL_ARC4;
-    opt.allow_sha1          = DFL_SHA1;
-    opt.auth_mode           = DFL_AUTH_MODE;
-    opt.mfl_code            = DFL_MFL_CODE;
-    opt.trunc_hmac          = DFL_TRUNC_HMAC;
-    opt.recsplit            = DFL_RECSPLIT;
-    opt.dhmlen              = DFL_DHMLEN;
-    opt.reconnect           = DFL_RECONNECT;
-    opt.reco_delay          = DFL_RECO_DELAY;
-    opt.reconnect_hard      = DFL_RECONNECT_HARD;
-    opt.tickets             = DFL_TICKETS;
-    opt.alpn_string         = DFL_ALPN_STRING;
-    opt.curves              = DFL_CURVES;
-    opt.transport           = DFL_TRANSPORT;
-    opt.hs_to_min           = DFL_HS_TO_MIN;
-    opt.hs_to_max           = DFL_HS_TO_MAX;
-    opt.dtls_mtu            = DFL_DTLS_MTU;
-    opt.fallback            = DFL_FALLBACK;
-    opt.extended_ms         = DFL_EXTENDED_MS;
-    opt.etm                 = DFL_ETM;
-    opt.dgram_packing       = DFL_DGRAM_PACKING;
 
     /*
      * 0. Initialize the RNG and the session data
@@ -385,77 +271,15 @@ cy_rslt_t cy_tls_generic_start_tls_with_ciphers( cy_tls_context_t* tls_context, 
     {
         TLS_WRAPPER_DEBUG(( " failed\n  ! mbedtls_ssl_config_defaults returned -0x%x\n\n",
                         -ret ));
-        return CY_RSLT_MODULE_TLS_ERROR;
+        result = CY_RSLT_MODULE_TLS_ERROR;
+        goto exit_with_inited_context;
     }
-
-    if( opt.debug_level > 0 )
-        mbedtls_ssl_conf_verify( conf, NULL, NULL );
-
-
-#if defined(MBEDTLS_SSL_MAX_FRAGMENT_LENGTH)
-    if( ( ret = mbedtls_ssl_conf_max_frag_len( conf, opt.mfl_code ) ) != 0 )
-    {
-        TLS_WRAPPER_DEBUG(( " failed\n  ! mbedtls_ssl_conf_max_frag_len returned %d\n\n",
-                        ret ));
-        return CY_RSLT_MODULE_TLS_ERROR;
-    }
-#endif
-
-#if defined(MBEDTLS_SSL_TRUNCATED_HMAC)
-    if( opt.trunc_hmac != DFL_TRUNC_HMAC )
-        mbedtls_ssl_conf_truncated_hmac( conf, opt.trunc_hmac );
-#endif
-
-#if defined(MBEDTLS_SSL_EXTENDED_MASTER_SECRET)
-    if( opt.extended_ms != DFL_EXTENDED_MS )
-        mbedtls_ssl_conf_extended_master_secret( conf, opt.extended_ms );
-#endif
-
-#if defined(MBEDTLS_SSL_ENCRYPT_THEN_MAC)
-    if( opt.etm != DFL_ETM )
-        mbedtls_ssl_conf_encrypt_then_mac( conf, opt.etm );
-#endif
-
-#if defined(MBEDTLS_SSL_CBC_RECORD_SPLITTING)
-    if( opt.recsplit != DFL_RECSPLIT )
-        mbedtls_ssl_conf_cbc_record_splitting( conf, opt.recsplit
-                                  ? MBEDTLS_SSL_CBC_RECORD_SPLITTING_ENABLED
-                                  : MBEDTLS_SSL_CBC_RECORD_SPLITTING_DISABLED );
-#endif
-
-#if defined(MBEDTLS_DHM_C)
-    if( opt.dhmlen != DFL_DHMLEN )
-        mbedtls_ssl_conf_dhm_min_bitlen( conf, opt.dhmlen );
-#endif
-
-#if defined(MBEDTLS_SSL_ALPN)
-    if( opt.alpn_string != NULL )
-        if( ( ret = mbedtls_ssl_conf_alpn_protocols( conf, alpn_list ) ) != 0 )
-        {
-            TLS_WRAPPER_DEBUG(( " failed\n  ! mbedtls_ssl_conf_alpn_protocols returned %d\n\n",
-                            ret ));
-            return CY_RSLT_MODULE_TLS_ERROR;
-        }
-#endif
 
     mbedtls_ssl_conf_rng( conf, mbedtls_ctr_drbg_random, &tls_context->ctr_drbg );
 
     mbedtls_ssl_conf_dbg( conf, mbedtls_debug, stdout );
 
     mbedtls_ssl_conf_read_timeout( conf, opt.read_timeout );
-
-#if defined(MBEDTLS_SSL_SESSION_TICKETS)
-    mbedtls_ssl_conf_session_tickets( conf, opt.tickets );
-#endif
-
-    if( opt.force_ciphersuite[0] != DFL_FORCE_CIPHER )
-        mbedtls_ssl_conf_ciphersuites( conf, opt.force_ciphersuite );
-
-#if defined(MBEDTLS_ARC4_C)
-    if( opt.arc4 != DFL_ARC4 )
-        mbedtls_ssl_conf_arc4_support( &conf, opt.arc4 );
-#endif
-
 
     if (tls_context->root_ca_certificates != NULL)
     {
@@ -472,36 +296,17 @@ cy_rslt_t cy_tls_generic_start_tls_with_ciphers( cy_tls_context_t* tls_context, 
         mbedtls_ssl_conf_authmode( conf, MBEDTLS_SSL_VERIFY_NONE );
     }
 
-#if defined(MBEDTLS_ECP_C)
-    if( opt.curves != NULL &&
-        strcmp( opt.curves, "default" ) != 0 )
-    {
-        mbedtls_ssl_conf_curves( conf, curve_list );
-    }
-#endif
-
-#if defined(MBEDTLS_KEY_EXCHANGE__SOME__PSK_ENABLED)
-    if( ( ret = mbedtls_ssl_conf_psk( conf, psk, psk_len,
-                             (const unsigned char *) opt.psk_identity,
-                             strlen( opt.psk_identity ) ) ) != 0 )
-    {
-        TLS_WRAPPER_DEBUG(( " failed\n  ! mbedtls_ssl_conf_psk returned %d\n\n",
-                        ret ));
-        return CY_RSLT_MODULE_TLS_ERROR;
-    }
-#endif
 
     if (tls_context->identity != NULL) {
         if ((ret = mbedtls_ssl_conf_own_cert(conf,&tls_context->identity->certificate,
                 &tls_context->identity->private_key)) != 0) {
             result = CY_RSLT_MODULE_TLS_ERROR;
-            return result;
+            goto exit_with_inited_context;
         }
 
     } else {
-        conf->key_cert = NULL;
+    	conf->key_cert = NULL;
     }
-
 
 
     if( opt.min_version != DFL_MIN_VERSION )
@@ -512,16 +317,12 @@ cy_rslt_t cy_tls_generic_start_tls_with_ciphers( cy_tls_context_t* tls_context, 
         mbedtls_ssl_conf_max_version( conf, MBEDTLS_SSL_MAJOR_VERSION_3,
                                       opt.max_version );
 
-#if defined(MBEDTLS_SSL_FALLBACK_SCSV)
-    if( opt.fallback != DFL_FALLBACK )
-        mbedtls_ssl_conf_fallback( &conf, opt.fallback );
-#endif
-
     if( ( ret = mbedtls_ssl_setup( ssl, conf ) ) != 0 )
     {
         TLS_WRAPPER_DEBUG(( " failed\n  ! mbedtls_ssl_setup returned -0x%x\n\n",
                         -ret ));
-        return CY_RSLT_MODULE_TLS_ERROR;
+        result = CY_RSLT_MODULE_TLS_ERROR;
+        goto exit_with_inited_context;
     }
 
 #if defined(MBEDTLS_X509_CRT_PARSE_C)
@@ -529,30 +330,12 @@ cy_rslt_t cy_tls_generic_start_tls_with_ciphers( cy_tls_context_t* tls_context, 
     {
         TLS_WRAPPER_DEBUG(( " failed\n  ! mbedtls_ssl_set_hostname returned %d\n\n",
                         ret ));
-        return CY_RSLT_MODULE_TLS_ERROR;
+        result = CY_RSLT_MODULE_TLS_ERROR;
+        goto exit_with_inited_context;
     }
 #endif
 
-#if defined(MBEDTLS_KEY_EXCHANGE_ECJPAKE_ENABLED)
-    if( opt.ecjpake_pw != DFL_ECJPAKE_PW )
-    {
-        if( ( ret = mbedtls_ssl_set_hs_ecjpake_password( ssl,
-                        (const unsigned char *) opt.ecjpake_pw,
-                                        strlen( opt.ecjpake_pw ) ) ) != 0 )
-        {
-            TLS_WRAPPER_DEBUG(( " failed\n  ! mbedtls_ssl_set_hs_ecjpake_password returned %d\n\n",
-                            ret ));
-            return CY_RSLT_MODULE_TLS_ERROR;
-        }
-    }
-#endif
-
-         mbedtls_ssl_set_bio( ssl, referee, ssl_flush_output, ssl_receive_packet, NULL );
-
-#if defined(MBEDTLS_ECP_RESTARTABLE)
-    if( opt.ec_max_ops != DFL_EC_MAX_OPS )
-        mbedtls_ecp_set_max_ops( opt.ec_max_ops );
-#endif
+    mbedtls_ssl_set_bio( ssl, referee, ssl_flush_output, ssl_receive_packet, NULL );
 
     TLS_WRAPPER_DEBUG(( " ok\n" ));
 
@@ -567,31 +350,31 @@ cy_rslt_t cy_tls_generic_start_tls_with_ciphers( cy_tls_context_t* tls_context, 
             ret != MBEDTLS_ERR_SSL_WANT_WRITE &&
             ret != MBEDTLS_ERR_SSL_CRYPTO_IN_PROGRESS )
         {
-            TLS_WRAPPER_DEBUG(( " failed\n  ! mbedtls_ssl_handshake returned -0x%x\n",
-                            -ret ));
-            if( ret == MBEDTLS_ERR_X509_CERT_VERIFY_FAILED ){
-                TLS_WRAPPER_DEBUG((
-                    "    Unable to verify the server's certificate. "
-                        "Either it is invalid,\n"
-                    "    or you didn't set ca_file or ca_path "
-                        "to an appropriate value.\n"
-                    "    Alternatively, you may want to use "
-                        "auth_mode=optional for testing purposes.\n" ));
-            TLS_WRAPPER_DEBUG(( "\n" ));
-            }
-
-            return ret;
+            TLS_WRAPPER_DEBUG(( " failed\n  ! mbedtls_ssl_handshake returned -0x%x\n", -ret ));
+            
+            result = CY_RSLT_MODULE_TLS_HANDSHAKE_FAILURE;
+            goto exit_with_inited_context;
 
         }
     }
 
-#if defined(MBEDTLS_ECP_RESTARTABLE)
-        if( ret == MBEDTLS_ERR_SSL_CRYPTO_IN_PROGRESS )
-            continue;
-#endif
-
     return( CY_RSLT_SUCCESS );
 
+exit_with_inited_context:
+    mbedtls_ssl_close_notify( &tls_context->context );
+    mbedtls_entropy_free(&tls_context->entropy );
+    mbedtls_ctr_drbg_free( &tls_context->ctr_drbg );
+    if ( tls_context->context.conf != NULL )
+    {
+        mbedtls_ssl_config_free( (mbedtls_ssl_config*) tls_context->context.conf  );
+    }
+
+    mbedtls_ssl_free(&tls_context->context);
+
+    /* FIXME : For now, conf is malloced in tls_init_context, and mbedtls_ssl_free does memset of context so assigning conf pointer back so it can be resused. Need to fix it properly */
+    tls_context->context.conf = conf;
+
+    return result;
 }
 
 
@@ -677,6 +460,10 @@ cy_rslt_t cy_tls_deinit_context( cy_tls_context_t* tls_context )
         TLS_WRAPPER_DEBUG( (" [%s][%s][%d] Invalid TLS context\r\n",__FILE__,__func__,__LINE__));
         return CY_RSLT_MODULE_TLS_BAD_INPUT_DATA;
     }
+
+    mbedtls_entropy_free( &tls_context->entropy );
+    mbedtls_ctr_drbg_free( &tls_context->ctr_drbg );
+
     mbedtls_ssl_config_free( (mbedtls_ssl_config*) tls_context->context.conf );
     if ( tls_context->context.conf != NULL )
     {
@@ -685,8 +472,6 @@ cy_rslt_t cy_tls_deinit_context( cy_tls_context_t* tls_context )
         tls_context->context.conf = NULL;
     }
     mbedtls_ssl_free( &tls_context->context );
-    mbedtls_ctr_drbg_free( &tls_context->ctr_drbg );
-    mbedtls_entropy_free( &tls_context->entropy );
 
     if (tls_context->root_ca_certificates != NULL)
     {
@@ -696,7 +481,6 @@ cy_rslt_t cy_tls_deinit_context( cy_tls_context_t* tls_context )
         tls_context->root_ca_certificates = NULL;
     }
 
-    memset( tls_context, 0, sizeof( *tls_context ) );
 
     return CY_RSLT_SUCCESS;
 }
@@ -743,12 +527,9 @@ cy_rslt_t cy_tls_deinit_identity(cy_tls_identity_t* identity)
         TLS_WRAPPER_DEBUG( (" [%s][%s][%d] Invalid identity \n",__FILE__,__func__,__LINE__));
         return CY_RSLT_MODULE_TLS_BAD_INPUT_DATA;
     }
-    if (identity != NULL) {
 
-        mbedtls_x509_crt_free(&identity->certificate);
-        mbedtls_pk_free(&identity->private_key);
+    mbedtls_x509_crt_free(&identity->certificate);
+    mbedtls_pk_free(&identity->private_key);
 
-    }
     return CY_RSLT_SUCCESS;
-
 }

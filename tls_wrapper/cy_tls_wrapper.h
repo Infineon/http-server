@@ -1,34 +1,18 @@
 /*
- * Copyright 2019, Cypress Semiconductor Corporation or a subsidiary of
- * Cypress Semiconductor Corporation. All Rights Reserved.
- *
- * This software, including source code, documentation and related
- * materials ("Software"), is owned by Cypress Semiconductor Corporation
- * or one of its subsidiaries ("Cypress") and is protected by and subject to
- * worldwide patent protection (United States and foreign),
- * United States copyright laws and international treaty provisions.
- * Therefore, you may use this Software only as provided in the license
- * agreement accompanying the software package from which you
- * obtained this Software ("EULA").
- * If no EULA applies, Cypress hereby grants you a personal, non-exclusive,
- * non-transferable license to copy, modify, and compile the Software
- * source code solely for use in connection with Cypress's
- * integrated circuit products. Any reproduction, modification, translation,
- * compilation, or representation of this Software except as specified
- * above is prohibited without the express written permission of Cypress.
- *
- * Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT, IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. Cypress
- * reserves the right to make changes to the Software without notice. Cypress
- * does not assume any liability arising out of the application or use of the
- * Software or any product or circuit described in the Software. Cypress does
- * not authorize its products for use in any products where a malfunction or
- * failure of the Cypress product may reasonably be expected to result in
- * significant property damage, injury or death ("High Risk Product"). By
- * including Cypress's product in a High Risk Product, the manufacturer
- * of such system or application assumes all risk of such use and in doing
- * so agrees to indemnify Cypress against all liability.
+ * Copyright 2019 Cypress Semiconductor Corporation
+ * SPDX-License-Identifier: Apache-2.0
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /** @file
@@ -67,21 +51,23 @@ typedef enum
 } cy_tls_certificate_verification_t;
 
 
+/**
+ * Secure TCP context
+ */
 typedef struct
 {
-    void                    *usr_data;
-    char*                   peer_cn;
-    cy_tls_session_t        *session;                  /* This session pointer is only used to resume connection for client, If application/library wants to resume connection it needs to pass pointer of previous stored session */
-    cy_tls_workspace_t      context;
-    cy_tls_identity_t       *identity;
-    cy_x509_crt_t*          root_ca_certificates;      /* Context specific root-ca-chain */
-    cy_entropy_context_t    entropy;
-    cy_ctr_drbg_context_t   ctr_drbg;
-    unsigned char           randbytes[TLS_RANDOM_BYTES_LENGTH];        /*!<  random bytes            */
-    unsigned char           master_session_key[TLS_MASTER_SESSION_KEY_LENGTH];
-    int                     resume;
-    int                     (*supplicant_tls_prf)( const unsigned char *, size_t, const char *, const unsigned char *, size_t, unsigned char *, size_t );
-
+    void                    *usr_data;                                      /**< User data */
+    char*                   peer_cn;                                        /**< Peer common name (optional) */
+    cy_tls_session_t        *session;                                       /**< Session pointer for TLS resumption */
+    cy_tls_workspace_t      context;                                        /**< Internal SSL context object */
+    cy_tls_identity_t       *identity;                                      /**< TLS identity */
+    cy_x509_crt_t*          root_ca_certificates;                           /**< Context specific root CA chain */
+    cy_entropy_context_t    entropy;                                        /**< Internal entropy context */
+    cy_ctr_drbg_context_t   ctr_drbg;                                       /**< Internal context for RNG */
+    unsigned char           randbytes[TLS_RANDOM_BYTES_LENGTH];             /**< Initial TLS handshake random bytes */
+    unsigned char           master_session_key[TLS_MASTER_SESSION_KEY_LENGTH]; /**< Master key for TLS handshake */
+    int                     resume;                                         /**< Flag for session resumption */
+    int                     (*supplicant_tls_prf)( const unsigned char *, size_t, const char *, const unsigned char *, size_t, unsigned char *, size_t ); /**< Internal PRF function pointer */
 } cy_tls_context_t;
 
 /** Initializes TLS context handle
@@ -92,7 +78,7 @@ typedef struct
  * @param[in]  identity : A pointer to a cy_tls_identity_t object initialized with @ref cy_tls_init_identity.
  * @param[in]  peer_cn  : Expected peer CommonName (or NULL)
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t    : CY_RESULT_SUCCESS on success, refer to cy_result_mw.h in connectivity-utilities for error
  */
 cy_rslt_t cy_tls_init_context( cy_tls_context_t* context, cy_tls_identity_t* identity, char* peer_cn );
 
@@ -100,7 +86,7 @@ cy_rslt_t cy_tls_init_context( cy_tls_context_t* context, cy_tls_identity_t* ide
  *
  * @param[in] context : A pointer to a cy_tls_context_t context object
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t    : CY_RESULT_SUCCESS on success, refer to cy_result_mw.h in connectivity-utilities for error
  */
 cy_rslt_t cy_tls_deinit_context( cy_tls_context_t* context );
 
@@ -112,7 +98,7 @@ cy_rslt_t cy_tls_deinit_context( cy_tls_context_t* context );
  *                                      During the handshake, these public keys are used to verify the authenticity of the peer
  * @param[in] cert_length             : Certificate length
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t    : CY_RESULT_SUCCESS on success, refer to cy_result_mw.h in connectivity-utilities for error
  */
 cy_rslt_t cy_tls_set_context_root_ca_certificates( cy_tls_context_t* context, const char* trusted_ca_certificates, const uint32_t cert_length );
 
@@ -125,13 +111,13 @@ cy_rslt_t cy_tls_set_context_root_ca_certificates( cy_tls_context_t* context, co
  *                                                   During the handshake, these public keys are used to verify the authenticity of the peer
  * @param[in] cert_length             : Certificate length
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t    : CY_RESULT_SUCCESS on success, refer to cy_result_mw.h in connectivity-utilities for error
  */
 cy_rslt_t cy_tls_init_root_ca_certificates( const char* trusted_ca_certificates, const uint32_t cert_length );
 
 /** De-initialise the trusted root CA certificates
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t    : CY_RESULT_SUCCESS on success, refer to cy_result_mw.h in connectivity-utilities for error
  */
 cy_rslt_t cy_tls_deinit_root_ca_certificates( void );
 
@@ -144,7 +130,7 @@ cy_rslt_t cy_tls_deinit_root_ca_certificates( void );
  * @param[in]  certificate_data   : The server x509 certificate in PEM or DER format
  * @param[in]  certificate_length : The length of the certificate
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t    : CY_RESULT_SUCCESS on success, refer to cy_result_mw.h in connectivity-utilities for error
  */
 cy_rslt_t cy_tls_init_identity( cy_tls_identity_t* identity, const char* private_key, const uint32_t key_length, const uint8_t* certificate_data, uint32_t certificate_length );
 
@@ -152,7 +138,7 @@ cy_rslt_t cy_tls_init_identity( cy_tls_identity_t* identity, const char* private
  *
  * @param[in] tls_identity    : A pointer to a cy_tls_identity_t object that will be de-initialised
  *
- * @return @ref cy_rslt_t
+ * @return cy_rslt_t    : CY_RESULT_SUCCESS on success, refer to cy_result_mw.h in connectivity-utilities for error
  */
 cy_rslt_t cy_tls_deinit_identity( cy_tls_identity_t* tls_identity );
 
@@ -164,6 +150,8 @@ cy_rslt_t cy_tls_deinit_identity( cy_tls_identity_t* tls_identity );
  * @param[in,out] tls_context  : The tls context to work with
  * @param[in,out] referee      : Transport reference - e.g. TCP socket
  * @param[in]     verification : Indicates whether to verify the certificate chain against a root server.
+ *
+ * @return cy_rslt_t    : CY_RESULT_SUCCESS on success, refer to cy_result_mw.h in connectivity-utilities for error
  *
  */
 cy_rslt_t cy_tls_generic_start_tls_with_ciphers( cy_tls_context_t* tls_context, void* referee, cy_tls_certificate_verification_t verification );

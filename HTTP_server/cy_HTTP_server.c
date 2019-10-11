@@ -22,6 +22,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include "nsapi_types.h"
 #include "cy_HTTP_server.h"
 
 /******************************************************
@@ -43,8 +44,13 @@
 
 #define HTTP_ERROR( X )      //printf X
 
+#ifndef HTTP_SERVER_CONNECT_THREAD_STACK_SIZE
 #define HTTP_SERVER_CONNECT_THREAD_STACK_SIZE (6000)
+#endif
+
+#ifndef HTTP_SERVER_EVENT_THREAD_STACK_SIZE
 #define HTTP_SERVER_EVENT_THREAD_STACK_SIZE   (6000)
+#endif
 
 #define HTTP_SERVER_THREAD_PRIORITY    (osPriorityNormal)
 #define HTTP_SERVER_RECEIVE_TIMEOUT    (cy_NO_WAIT)
@@ -261,7 +267,7 @@ static cy_rslt_t http_internal_server_start(cy_http_server_t* server, void* netw
     {
         HTTP_ERROR(("Error starting tcp server : %d \n", (int) result));
         result = CY_RSLT_HTTP_SERVER_ERROR_TCP_SERVER_START;
-        goto ERROR_TCP_SERVER_START;
+        goto ERROR_THREAD_INIT;
     }
 
     server->tcp_server.identity = security_info->tls_identity;
@@ -269,9 +275,6 @@ static cy_rslt_t http_internal_server_start(cy_http_server_t* server, void* netw
     cy_register_connect_callback(&server->tcp_server.server_socket, http_server_connect_callback);
 
     return result;
-
-ERROR_TCP_SERVER_START:
-    cy_tcp_server_stop( &server->tcp_server );
 
 ERROR_THREAD_INIT:
     if ( server->connect_thread != NULL )
@@ -647,6 +650,11 @@ cy_rslt_t cy_http_response_stream_disconnect( cy_http_response_stream_t* stream 
     current_event.socket     = stream->tcp_stream.socket;
 
     result = cy_rtos_put_queue(&event_queue, &current_event, 0, 0);
+    if( result != CY_RSLT_SUCCESS)
+    {
+        HTTP_ERROR((" failure in pushing to queue : %d \n", (int) result));
+        return result;
+    }
 
     return result;
 }
@@ -1470,6 +1478,45 @@ void http_server_event_thread_main( cy_thread_arg_t arg )
         HTTP_DEBUG((" L%d : %s() : ----- Current event = [%d]\r\n", __LINE__, __FUNCTION__, current_event.event_type));
         switch ( current_event.event_type )
         {
+            case CY_SOCKET_DISCONNECT_EVENT:
+            {
+                cy_stream_node_t* stream;
+                cy_tcp_socket_t*  tcp_socket = NULL;
+
+                tcp_socket = current_event.socket;
+                if ( tcp_socket != NULL )
+                {
+
+                    /* Search in active stream whether stream for this socket is available. If available, removed it */
+                    HTTP_DEBUG ((" ### DBG : Search Stream to be removed\r\n"));
+
+                    if ( cy_linked_list_find_node( &http_server->active_stream_list, http_server_compare_stream_socket, (void*)tcp_socket->socket, (cy_linked_list_node_t**)&stream ) == CY_RSLT_SUCCESS )
+                    {
+                        HTTP_DEBUG((" %s() : ----- ### DBG : Found Stream to be removed = [0x%X], Socket = [0x%X]\r\n", __FUNCTION__, (unsigned int)stream, (unsigned int)current_event.socket));
+                        HTTP_DEBUG((" L%d : %s() : ----- Disconnect event for Stream = [0x%X]\r\n", __LINE__, __FUNCTION__, (unsigned int)&stream->stream.response));
+                        /* If application registers a disconnection callback, call the callback before further processing */
+                        if( http_server->disconnect_callback != NULL )
+                        {
+                            http_server->disconnect_callback( &stream->stream.response );
+                        }
+
+                        cy_rtos_get_mutex(&http_server->mutex, osWaitForever);
+
+                        cy_linked_list_remove_node( &http_server->active_stream_list, &stream->node );
+                        cy_linked_list_insert_node_at_rear( &http_server->inactive_stream_list, &stream->node );
+
+                        cy_rtos_set_mutex(&http_server->mutex);
+
+                        cy_http_response_stream_deinit( &stream->stream.response );
+
+                        cy_tcp_server_disconnect_socket( &http_server->tcp_server, tcp_socket );
+
+                        HTTP_DEBUG((" L%d : %s() : Disconnect event processed\r\n", __LINE__, __FUNCTION__));
+                     }
+                }
+
+                break;
+            }
             case CY_SERVER_STOP_EVENT:
             {
                 cy_stream_node_t* stream;
