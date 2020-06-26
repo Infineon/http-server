@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['page_5fdatabase',['page_database',['../structcy__http__server__t.html#a63c7d4e5b2022c0113b60f8243c03581',1,'cy_http_server_t']]],
-  ['page_5ffound',['page_found',['../structcy__http__request__info__t.html#ada8a48079748fc8d4bddcadaed31400f',1,'cy_http_request_info_t']]],
-  ['peer_5fcn',['peer_cn',['../structcy__tls__context__t.html#aa73c1a0f0f9efcf2f1015ce0a169151c',1,'cy_tls_context_t']]],
-  ['private_5fkey',['private_key',['../structcy__https__server__security__info__t.html#ab0df9038e60cccd0e8812c813c6b4c13',1,'cy_https_server_security_info_t::private_key()'],['../structcy__tls__identity__t.html#a343c95ffd8401756499c6fce63bbc1b7',1,'cy_tls_identity_t::private_key()']]],
-  ['ptr',['ptr',['../structcy__http__page__s.html#aef9bf9844f50a7bbb77f5ecc8b0bb622',1,'cy_http_page_s']]]
+  ['register_5fresource',['register_resource',['../class_h_t_t_p_server.html#a58eb80fb7f039210cc9d7040f0008232',1,'HTTPServer']]],
+  ['request_5ftype',['request_type',['../structcy__http__message__body__t.html#a63816ce209da9210ab93c3699ce775f9',1,'cy_http_message_body_t']]],
+  ['resource_5fhandler',['resource_handler',['../structcy__resource__dynamic__data__t.html#a2fa3f6203db2348184a4cd0409c1d6cb',1,'cy_resource_dynamic_data_t']]],
+  ['root_5fca_5fcertificate',['root_ca_certificate',['../structcy__https__server__security__info__t.html#af85967438ec03bba793c57ea2f7d1b2c',1,'cy_https_server_security_info_t']]],
+  ['root_5fca_5fcertificate_5flength',['root_ca_certificate_length',['../structcy__https__server__security__info__t.html#a1b1bd39e4abc48f6789b001c7d67a554',1,'cy_https_server_security_info_t']]]
 ];

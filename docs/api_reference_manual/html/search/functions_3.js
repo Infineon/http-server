@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['_7ehttpserver',['~HTTPServer',['../class_h_t_t_p_server.html#af09066b05417f9a9ce9f1cd8e5ad9e18',1,'HTTPServer']]]
+  ['start',['start',['../class_h_t_t_p_server.html#a5f1e04f9dab07ce5a251ecd4aa822f13',1,'HTTPServer']]],
+  ['stop',['stop',['../class_h_t_t_p_server.html#ae4d9963945a344e9f86e7dc74a4e9d6a',1,'HTTPServer']]]
 ];

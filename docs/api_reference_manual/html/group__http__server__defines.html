@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cypress HTTP Server Middleware Library: HTTP server preprocessor directives</title>
+<title>HTTP Server Middleware Library: Macros</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><a href="http://www.cypress.com/"><img alt="Logo" src="cypress_logo.png"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Cypress HTTP Server Middleware Library</div>
+   <div id="projectname">HTTP Server Middleware Library</div>
   </td>
  </tr>
  </tbody>
@@ -83,12 +83,12 @@ $(document).ready(function(){initNavTree('group__http__server__defines.html','')
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">HTTP server preprocessor directives<div class="ingroups"><a class="el" href="group__http__server.html">HTTP server library</a></div></div>  </div>
+<div class="title">Macros<div class="ingroups"><a class="el" href="group__group__c__api.html">C API</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">General Description</h2>
 <p>HTTP server preprocessor directives such as results and error codes. </p>
-<p>Cypress middleware APIs return results of type cy_rslt_t and comprise of three parts:</p><ul>
+<p>Middleware APIs return results of type cy_rslt_t and are composed of three parts:</p><ul>
 <li>module base</li>
 <li>type</li>
 <li>error code</li>
@@ -100,18 +100,18 @@ $(document).ready(function(){initNavTree('group__http__server__defines.html','')
    +---------------------------+------+------------------------------+
              14-bits            2-bits            16-bits
 
-Refer to the macro section of this document for library specific error codes.
-</pre><p>The data structure cy_rslt_t is part of cy_result.h in MBED OS PSoC6 target platform, located in &lt;mbed-os/targets/TARGET_Cypress/TARGET_PSOC6/psoc6csp/core_lib/include&gt;</p>
-<p>Module base: This base is derived from CY_RSLT_MODULE_MIDDLEWARE_BASE (defined in cy_result.h) and is an offset of the CY_RSLT_MODULE_MIDDLEWARE_BASE The details of the offset and the middleware base are defined in cy_result_mw.h, that is part of <a href="https://github.com/cypresssemiconductorco/connectivity-utilities">Github connectivity-utilities</a> For instance, HTTP server uses CY_RSLT_MODULE_HTTP_SERVER as the module base</p>
-<p>Type: This type is defined in cy_result.h and can be one of CY_RSLT_TYPE_FATAL, CY_RSLT_TYPE_ERROR, CY_RSLT_TYPE_WARNING or CY_RSLT_TYPE_INFO. AWS library error codes are of type CY_RSLT_TYPE_ERROR</p>
-<p>Library specific error code: These error codes are library specific and defined in macro section</p>
-<p>Helper macros used for creating the library specific result are provided as part of cy_result.h </p>
+See the macro section of this document for library-specific error codes.
+</pre><p>The cy_rslt_t data structure is a part of cy_result.h in Mbed OS PSoC 6 MCU target platform, located in &lt;mbed-os/targets/TARGET_Cypress/TARGET_PSOC6/psoc6csp/core_lib/include&gt;</p>
+<p>Module base: This base is derived from CY_RSLT_MODULE_MIDDLEWARE_BASE (defined in cy_result.h) and is an offset of the CY_RSLT_MODULE_MIDDLEWARE_BASE. The details of the offset and the middleware base are defined in cy_result_mw.h, which is part of <a href="https://github.com/cypresssemiconductorco/connectivity-utilities">Github connectivity-utilities</a> For example, the HTTP server uses CY_RSLT_MODULE_HTTP_SERVER as the module base.</p>
+<p>Type: This type is defined in cy_result.h and can be one of CY_RSLT_TYPE_FATAL, CY_RSLT_TYPE_ERROR, CY_RSLT_TYPE_WARNING or CY_RSLT_TYPE_INFO. AWS library error codes are of type CY_RSLT_TYPE_ERROR.</p>
+<p>Library-specific error code: These error codes are library-specific and defined in the macro section.</p>
+<p>Helper macros used for creating library-specific results are provided as part of cy_result.h. </p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ga425a68fa7a0370bc6e5860c5071ff678"><td class="memItemLeft" align="right" valign="top"><a id="ga425a68fa7a0370bc6e5860c5071ff678"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__defines.html#ga425a68fa7a0370bc6e5860c5071ff678">CY_RSLT_MODULE_HTTP_SERVER_ERR_CODE_START</a>&#160;&#160;&#160;(0)</td></tr>
-<tr class="memdesc:ga425a68fa7a0370bc6e5860c5071ff678"><td class="mdescLeft">&#160;</td><td class="mdescRight">Results returned by HTTP server library. <br /></td></tr>
+<tr class="memdesc:ga425a68fa7a0370bc6e5860c5071ff678"><td class="mdescLeft">&#160;</td><td class="mdescRight">Results returned by HTTP Server Library. <br /></td></tr>
 <tr class="separator:ga425a68fa7a0370bc6e5860c5071ff678"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadf0bfe131ef6b6df00ccd63fc5c3f97d"><td class="memItemLeft" align="right" valign="top"><a id="gadf0bfe131ef6b6df00ccd63fc5c3f97d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__defines.html#gadf0bfe131ef6b6df00ccd63fc5c3f97d">CY_RSLT_HTTP_SERVER_ERR_BASE</a>&#160;&#160;&#160;CY_RSLT_CREATE(CY_RSLT_TYPE_ERROR, CY_RSLT_MODULE_HTTP_SERVER, <a class="el" href="group__http__server__defines.html#ga425a68fa7a0370bc6e5860c5071ff678">CY_RSLT_MODULE_HTTP_SERVER_ERR_CODE_START</a>)</td></tr>
@@ -160,6 +160,9 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__defines.html#gaf18faa0179a6087e4b03d9a81d02010e">CY_RSLT_ERROR</a>&#160;&#160;&#160;((cy_rslt_t)(<a class="el" href="group__http__server__defines.html#gadf0bfe131ef6b6df00ccd63fc5c3f97d">CY_RSLT_HTTP_SERVER_ERR_BASE</a> + 11))</td></tr>
 <tr class="memdesc:gaf18faa0179a6087e4b03d9a81d02010e"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP server generic error. <br /></td></tr>
 <tr class="separator:gaf18faa0179a6087e4b03d9a81d02010e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6e47b484776a72216039a2af358bcedc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__defines.html#ga6e47b484776a72216039a2af358bcedc">MAX_NUMBER_OF_HTTP_SERVER_RESOURCES</a>&#160;&#160;&#160;(10)</td></tr>
+<tr class="memdesc:ga6e47b484776a72216039a2af358bcedc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max number of resources supported by the HTTP server.  <a href="#ga6e47b484776a72216039a2af358bcedc">More...</a><br /></td></tr>
+<tr class="separator:ga6e47b484776a72216039a2af358bcedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ga7f11e40b478453160843230b18ee3857"></a>
@@ -179,13 +182,30 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<a id="ga6e47b484776a72216039a2af358bcedc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6e47b484776a72216039a2af358bcedc">&#9670;&nbsp;</a></span>MAX_NUMBER_OF_HTTP_SERVER_RESOURCES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAX_NUMBER_OF_HTTP_SERVER_RESOURCES&#160;&#160;&#160;(10)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Max number of resources supported by the HTTP server. </p>
+<dl class="section note"><dt>Note</dt><dd>Change this macro to support more resources. </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath">
     <ul>
         <li class="footer">
-            Generated for <b>Cypress HTTP Server Middleware Library</b> by <b>Cypress Semiconductor Corporation</b>.
+            Generated for <b>HTTP Server Middleware Library</b> by <b>Cypress Semiconductor Corporation</b>.
             All rights reserved.
         </li>
     </ul>

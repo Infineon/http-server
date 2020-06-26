@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cypress HTTP Server Middleware Library: cy_https_server_security_info_t Struct Reference</title>
+<title>HTTP Server Middleware Library: cy_https_server_security_info_t Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><a href="http://www.cypress.com/"><img alt="Logo" src="cypress_logo.png"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Cypress HTTP Server Middleware Library</div>
+   <div id="projectname">HTTP Server Middleware Library</div>
   </td>
  </tr>
  </tbody>
@@ -83,7 +83,7 @@ $(document).ready(function(){initNavTree('structcy__https__server__security__inf
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">cy_https_server_security_info_t Struct Reference<div class="ingroups"><a class="el" href="group__http__server.html">HTTP server library</a> &raquo; <a class="el" href="group__http__server__struct.html">HTTP server data structures</a></div></div>  </div>
+<div class="title">cy_https_server_security_info_t Struct Reference<div class="ingroups"><a class="el" href="group__group__c__api.html">C API</a> &raquo; <a class="el" href="group__http__server__struct.html">Structures &amp; Enumerations</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Description</h2>
@@ -93,11 +93,11 @@ $(document).ready(function(){initNavTree('structcy__https__server__security__inf
 Data Fields</h2></td></tr>
 <tr class="memitem:ab0df9038e60cccd0e8812c813c6b4c13"><td class="memItemLeft" align="right" valign="top"><a id="ab0df9038e60cccd0e8812c813c6b4c13"></a>
 uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__https__server__security__info__t.html#ab0df9038e60cccd0e8812c813c6b4c13">private_key</a></td></tr>
-<tr class="memdesc:ab0df9038e60cccd0e8812c813c6b4c13"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP server private key. <br /></td></tr>
+<tr class="memdesc:ab0df9038e60cccd0e8812c813c6b4c13"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP server private key (base64 encoded) <br /></td></tr>
 <tr class="separator:ab0df9038e60cccd0e8812c813c6b4c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9a1a0499abc77950cfde7aa19a9e3a2"><td class="memItemLeft" align="right" valign="top"><a id="ad9a1a0499abc77950cfde7aa19a9e3a2"></a>
 uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__https__server__security__info__t.html#ad9a1a0499abc77950cfde7aa19a9e3a2">key_length</a></td></tr>
-<tr class="memdesc:ad9a1a0499abc77950cfde7aa19a9e3a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP server private key length. <br /></td></tr>
+<tr class="memdesc:ad9a1a0499abc77950cfde7aa19a9e3a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP server private key length excluding 'null' termination character. <br /></td></tr>
 <tr class="separator:ad9a1a0499abc77950cfde7aa19a9e3a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac99aee7927d640ff6dfbe200dc44d8ae"><td class="memItemLeft" align="right" valign="top"><a id="ac99aee7927d640ff6dfbe200dc44d8ae"></a>
 uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__https__server__security__info__t.html#ac99aee7927d640ff6dfbe200dc44d8ae">certificate</a></td></tr>
@@ -105,7 +105,7 @@ uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <tr class="separator:ac99aee7927d640ff6dfbe200dc44d8ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3025afbe193cd4e514a711f09d3024e4"><td class="memItemLeft" align="right" valign="top"><a id="a3025afbe193cd4e514a711f09d3024e4"></a>
 uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__https__server__security__info__t.html#a3025afbe193cd4e514a711f09d3024e4">certificate_length</a></td></tr>
-<tr class="memdesc:a3025afbe193cd4e514a711f09d3024e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP server certificate length. <br /></td></tr>
+<tr class="memdesc:a3025afbe193cd4e514a711f09d3024e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP server certificate length excluding 'null' termination character. <br /></td></tr>
 <tr class="separator:a3025afbe193cd4e514a711f09d3024e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af85967438ec03bba793c57ea2f7d1b2c"><td class="memItemLeft" align="right" valign="top"><a id="af85967438ec03bba793c57ea2f7d1b2c"></a>
 uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__https__server__security__info__t.html#af85967438ec03bba793c57ea2f7d1b2c">root_ca_certificate</a></td></tr>
@@ -113,7 +113,7 @@ uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <tr class="separator:af85967438ec03bba793c57ea2f7d1b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b1bd39e4abc48f6789b001c7d67a554"><td class="memItemLeft" align="right" valign="top"><a id="a1b1bd39e4abc48f6789b001c7d67a554"></a>
 uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__https__server__security__info__t.html#a1b1bd39e4abc48f6789b001c7d67a554">root_ca_certificate_length</a></td></tr>
-<tr class="memdesc:a1b1bd39e4abc48f6789b001c7d67a554"><td class="mdescLeft">&#160;</td><td class="mdescRight">Root CA certificate length. <br /></td></tr>
+<tr class="memdesc:a1b1bd39e4abc48f6789b001c7d67a554"><td class="mdescLeft">&#160;</td><td class="mdescRight">Root CA certificate length excluding 'null' termination character. <br /></td></tr>
 <tr class="separator:a1b1bd39e4abc48f6789b001c7d67a554"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
@@ -122,7 +122,7 @@ uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <div id="nav-path" class="navpath">
     <ul>
         <li class="footer">
-            Generated for <b>Cypress HTTP Server Middleware Library</b> by <b>Cypress Semiconductor Corporation</b>.
+            Generated for <b>HTTP Server Middleware Library</b> by <b>Cypress Semiconductor Corporation</b>.
             All rights reserved.
         </li>
     </ul>

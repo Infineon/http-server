@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cypress HTTP Server Middleware Library: cy_http_message_body_t Struct Reference</title>
+<title>HTTP Server Middleware Library: cy_http_message_body_t Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><a href="http://www.cypress.com/"><img alt="Logo" src="cypress_logo.png"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Cypress HTTP Server Middleware Library</div>
+   <div id="projectname">HTTP Server Middleware Library</div>
   </td>
  </tr>
  </tbody>
@@ -83,7 +83,7 @@ $(document).ready(function(){initNavTree('structcy__http__message__body__t.html'
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">cy_http_message_body_t Struct Reference<div class="ingroups"><a class="el" href="group__http__server.html">HTTP server library</a> &raquo; <a class="el" href="group__http__server__struct.html">HTTP server data structures</a></div></div>  </div>
+<div class="title">cy_http_message_body_t Struct Reference<div class="ingroups"><a class="el" href="group__group__c__api.html">C API</a> &raquo; <a class="el" href="group__http__server__struct.html">Structures &amp; Enumerations</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Description</h2>
@@ -93,27 +93,27 @@ $(document).ready(function(){initNavTree('structcy__http__message__body__t.html'
 Data Fields</h2></td></tr>
 <tr class="memitem:a3d07565cc43cf954e63ebaa5c2db1ca6"><td class="memItemLeft" align="right" valign="top"><a id="a3d07565cc43cf954e63ebaa5c2db1ca6"></a>
 const uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__http__message__body__t.html#a3d07565cc43cf954e63ebaa5c2db1ca6">data</a></td></tr>
-<tr class="memdesc:a3d07565cc43cf954e63ebaa5c2db1ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">packet data in message body <br /></td></tr>
+<tr class="memdesc:a3d07565cc43cf954e63ebaa5c2db1ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Packet data in message body. <br /></td></tr>
 <tr class="separator:a3d07565cc43cf954e63ebaa5c2db1ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cfde2375f1e55e21bd204a8f843f473"><td class="memItemLeft" align="right" valign="top"><a id="a3cfde2375f1e55e21bd204a8f843f473"></a>
 uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__http__message__body__t.html#a3cfde2375f1e55e21bd204a8f843f473">data_length</a></td></tr>
-<tr class="memdesc:a3cfde2375f1e55e21bd204a8f843f473"><td class="mdescLeft">&#160;</td><td class="mdescRight">data length in current packet <br /></td></tr>
+<tr class="memdesc:a3cfde2375f1e55e21bd204a8f843f473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data length in current packet. <br /></td></tr>
 <tr class="separator:a3cfde2375f1e55e21bd204a8f843f473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeaaa983c593be6dc2ba404ea086d44c"><td class="memItemLeft" align="right" valign="top"><a id="afeaaa983c593be6dc2ba404ea086d44c"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__http__message__body__t.html#afeaaa983c593be6dc2ba404ea086d44c">data_remaining</a></td></tr>
-<tr class="memdesc:afeaaa983c593be6dc2ba404ea086d44c"><td class="mdescLeft">&#160;</td><td class="mdescRight">data yet to be consumed <br /></td></tr>
+<tr class="memdesc:afeaaa983c593be6dc2ba404ea086d44c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data yet to be consumed. <br /></td></tr>
 <tr class="separator:afeaaa983c593be6dc2ba404ea086d44c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a732a4fae8ab65d0d2b4e686c61402fbc"><td class="memItemLeft" align="right" valign="top"><a id="a732a4fae8ab65d0d2b4e686c61402fbc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__http__message__body__t.html#a732a4fae8ab65d0d2b4e686c61402fbc">is_chunked_transfer</a></td></tr>
-<tr class="memdesc:a732a4fae8ab65d0d2b4e686c61402fbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">chunked data format <br /></td></tr>
+<tr class="memdesc:a732a4fae8ab65d0d2b4e686c61402fbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chunked data format. <br /></td></tr>
 <tr class="separator:a732a4fae8ab65d0d2b4e686c61402fbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b6aa6b9921a443e7dc54a4ab12bc5a8"><td class="memItemLeft" align="right" valign="top"><a id="a0b6aa6b9921a443e7dc54a4ab12bc5a8"></a>
-cy_packet_mime_type_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__http__message__body__t.html#a0b6aa6b9921a443e7dc54a4ab12bc5a8">mime_type</a></td></tr>
-<tr class="memdesc:a0b6aa6b9921a443e7dc54a4ab12bc5a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">mime type <br /></td></tr>
-<tr class="separator:a0b6aa6b9921a443e7dc54a4ab12bc5a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38d892177ec43905ae3f8bd1107e1e31"><td class="memItemLeft" align="right" valign="top"><a id="a38d892177ec43905ae3f8bd1107e1e31"></a>
+<a class="el" href="group__http__server__struct.html#gab6be7a35bfdbd62b763603d280dc4ee1">cy_http_mime_type_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__http__message__body__t.html#a38d892177ec43905ae3f8bd1107e1e31">mime_type</a></td></tr>
+<tr class="memdesc:a38d892177ec43905ae3f8bd1107e1e31"><td class="mdescLeft">&#160;</td><td class="mdescRight">MIME type. <br /></td></tr>
+<tr class="separator:a38d892177ec43905ae3f8bd1107e1e31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63816ce209da9210ab93c3699ce775f9"><td class="memItemLeft" align="right" valign="top"><a id="a63816ce209da9210ab93c3699ce775f9"></a>
-cy_http_request_type_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__http__message__body__t.html#a63816ce209da9210ab93c3699ce775f9">request_type</a></td></tr>
-<tr class="memdesc:a63816ce209da9210ab93c3699ce775f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">request type <br /></td></tr>
+<a class="el" href="group__http__server__struct.html#ga133e1438783bd7430e0e80b23518e743">cy_http_request_type_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__http__message__body__t.html#a63816ce209da9210ab93c3699ce775f9">request_type</a></td></tr>
+<tr class="memdesc:a63816ce209da9210ab93c3699ce775f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request type. <br /></td></tr>
 <tr class="separator:a63816ce209da9210ab93c3699ce775f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
@@ -122,7 +122,7 @@ cy_http_request_type_t&#160;</td><td class="memItemRight" valign="bottom"><a cla
 <div id="nav-path" class="navpath">
     <ul>
         <li class="footer">
-            Generated for <b>Cypress HTTP Server Middleware Library</b> by <b>Cypress Semiconductor Corporation</b>.
+            Generated for <b>HTTP Server Middleware Library</b> by <b>Cypress Semiconductor Corporation</b>.
             All rights reserved.
         </li>
     </ul>

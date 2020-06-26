@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['network_5finterface',['network_interface',['../structcy__http__server__t.html#af65e1c0c35791125ec68a08891ad42f2',1,'cy_http_server_t']]]
+  ['tcp_5fstream',['tcp_stream',['../structcy__http__response__stream__t.html#aa18641ca5f33f4a35f8c263e4c5a2b2a',1,'cy_http_response_stream_t']]]
 ];

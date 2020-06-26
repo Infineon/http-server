@@ -1,14 +1,21 @@
 var searchData=
 [
-  ['http_5fdisconnect_5fall_5fresponse_5fstream',['http_disconnect_all_response_stream',['../class_h_t_t_p_server.html#a73a2c6a64d557e5656541b72f8ceb7a5',1,'HTTPServer']]],
-  ['http_5fget_5fquery_5fparameter_5fcount',['http_get_query_parameter_count',['../class_h_t_t_p_server.html#aab729b524e417d3a816c6eba3beeefbf',1,'HTTPServer']]],
-  ['http_5fget_5fquery_5fparameter_5fvalue',['http_get_query_parameter_value',['../class_h_t_t_p_server.html#a973632c22f7040c30d2a7162c2a3a236',1,'HTTPServer']]],
-  ['http_5fmatch_5fquery_5fparameter',['http_match_query_parameter',['../class_h_t_t_p_server.html#a90253acc6cd8fcbdf4dd0c42743b26dc',1,'HTTPServer']]],
-  ['http_5fresponse_5fstream_5fdisable_5fchunked_5ftransfer',['http_response_stream_disable_chunked_transfer',['../class_h_t_t_p_server.html#a72d96603c15870cd4d8a424e7e500c14',1,'HTTPServer']]],
-  ['http_5fresponse_5fstream_5fdisconnect',['http_response_stream_disconnect',['../class_h_t_t_p_server.html#ac6f99ff4a888494453553cdced6565b3',1,'HTTPServer']]],
-  ['http_5fresponse_5fstream_5fenable_5fchunked_5ftransfer',['http_response_stream_enable_chunked_transfer',['../class_h_t_t_p_server.html#a937e00e6f94294fcdb1aac15c1050a9a',1,'HTTPServer']]],
-  ['http_5fresponse_5fstream_5fflush',['http_response_stream_flush',['../class_h_t_t_p_server.html#a6bed49ab05fa4223993b4129ae966e69',1,'HTTPServer']]],
-  ['http_5fresponse_5fstream_5fwrite',['http_response_stream_write',['../class_h_t_t_p_server.html#a1c092569ed367ec082e0c320e1d24979',1,'HTTPServer']]],
-  ['http_5fresponse_5fstream_5fwrite_5fheader',['http_response_stream_write_header',['../class_h_t_t_p_server.html#ad3c28a50787b38f96ba679472fc1bb06',1,'HTTPServer']]],
-  ['httpserver',['HTTPServer',['../class_h_t_t_p_server.html#a447813075f8c93c5a18d09b964c441f2',1,'HTTPServer::HTTPServer(cy_network_interface_t *interface, uint16_t port, uint16_t max_connection)'],['../class_h_t_t_p_server.html#a2b3c118e41b43e9b5a6b8ecc181a6c5b',1,'HTTPServer::HTTPServer(cy_network_interface_t *interface, uint16_t port, uint16_t max_connection, cy_https_server_security_info_t *security_info)']]]
+  ['cy_5fhttp_5fserver_5fcreate',['cy_http_server_create',['../group__group__c__api__functions.html#ga1ca51f61222e3aed87c0a15955e2e269',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fdelete',['cy_http_server_delete',['../group__group__c__api__functions.html#ga13251efe44c82d506b1ccf48e5acc5dd',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fget_5fquery_5fparameter_5fcount',['cy_http_server_get_query_parameter_count',['../group__group__c__api__functions.html#ga3825981f26c68c82d781f5fb7f2a4bfc',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fget_5fquery_5fparameter_5fvalue',['cy_http_server_get_query_parameter_value',['../group__group__c__api__functions.html#gaf2bee362096d822f39a4851c63c5abf3',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fmatch_5fquery_5fparameter',['cy_http_server_match_query_parameter',['../group__group__c__api__functions.html#gac1cd7f7af7f2f9aa6e288be4e2a6419f',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fnetwork_5fdeinit',['cy_http_server_network_deinit',['../group__group__c__api__functions.html#ga1922ac08bf92b285a8f96bb6170291af',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fnetwork_5finit',['cy_http_server_network_init',['../group__group__c__api__functions.html#ga74c8a85310d1537177f80adaef20cfd9',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fregister_5fresource',['cy_http_server_register_resource',['../group__group__c__api__functions.html#gad03c8e19c0792c4307356e52ba3006ee',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fresponse_5fstream_5fdisable_5fchunked_5ftransfer',['cy_http_server_response_stream_disable_chunked_transfer',['../group__group__c__api__functions.html#gab24071765e97d90225a33ead1318298e',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fresponse_5fstream_5fdisconnect',['cy_http_server_response_stream_disconnect',['../group__group__c__api__functions.html#gaf051d4ad577610bdbd38fa6aa8297592',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fresponse_5fstream_5fdisconnect_5fall',['cy_http_server_response_stream_disconnect_all',['../group__group__c__api__functions.html#gaf6442a83a82a102c4490280d85e0ef88',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fresponse_5fstream_5fenable_5fchunked_5ftransfer',['cy_http_server_response_stream_enable_chunked_transfer',['../group__group__c__api__functions.html#gaf4743c3b0e6ef9ba4afc5e1b5531691f',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fresponse_5fstream_5fflush',['cy_http_server_response_stream_flush',['../group__group__c__api__functions.html#ga42ed7afac50f1e923520e6ef6f3c0098',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fresponse_5fstream_5fwrite_5fheader',['cy_http_server_response_stream_write_header',['../group__group__c__api__functions.html#gafb8df6439fdadb46d738ecd43cbaf002',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fresponse_5fstream_5fwrite_5fpayload',['cy_http_server_response_stream_write_payload',['../group__group__c__api__functions.html#ga743dd1f394056a6ac09a6d4d8f17035c',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fresponse_5fstream_5fwrite_5fresource',['cy_http_server_response_stream_write_resource',['../group__group__c__api__functions.html#ga38608388fa4a8298375bec0b3a74c28f',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fstart',['cy_http_server_start',['../group__group__c__api__functions.html#ga3cb020a5e45f80b55ea3fc2eb1c6c3df',1,'cy_http_server.h']]],
+  ['cy_5fhttp_5fserver_5fstop',['cy_http_server_stop',['../group__group__c__api__functions.html#ga9883b5677f3f49d229d8883f414e9806',1,'cy_http_server.h']]]
 ];

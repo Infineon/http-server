@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cypress HTTP Server Middleware Library: HTTPServer Class Reference</title>
+<title>HTTP Server Middleware Library: HTTPServer Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><a href="http://www.cypress.com/"><img alt="Logo" src="cypress_logo.png"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Cypress HTTP Server Middleware Library</div>
+   <div id="projectname">HTTP Server Middleware Library</div>
   </td>
  </tr>
  </tbody>
@@ -83,11 +83,11 @@ $(document).ready(function(){initNavTree('class_h_t_t_p_server.html','');});
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
-<div class="title">HTTPServer Class Reference<div class="ingroups"><a class="el" href="group__http__server.html">HTTP server library</a> &raquo; <a class="el" href="group__http__server__classes.html">HTTP server base class and sub-classes</a></div></div>  </div>
+<div class="title">HTTPServer Class Reference<div class="ingroups"><a class="el" href="group__group__api__cpp.html">C++ Class Interface</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Description</h2>
-<div class="textblock"><p>Defines HTTP server class. </p>
+<div class="textblock"><p>Definition of the HTTP server class object. </p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -106,18 +106,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae4d9963945a344e9f86e7dc74a4e9d6a"><td class="memItemLeft" align="right" valign="top">cy_rslt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_t_t_p_server.html#ae4d9963945a344e9f86e7dc74a4e9d6a">stop</a> ()</td></tr>
 <tr class="memdesc:ae4d9963945a344e9f86e7dc74a4e9d6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the HTTP server.  <a href="#ae4d9963945a344e9f86e7dc74a4e9d6a">More...</a><br /></td></tr>
 <tr class="separator:ae4d9963945a344e9f86e7dc74a4e9d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b743415ad3fe806e14b7507e728c072"><td class="memItemLeft" align="right" valign="top">cy_rslt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_t_t_p_server.html#a2b743415ad3fe806e14b7507e728c072">register_resource</a> (uint8_t *uri, uint8_t *mime_type, cy_url_resource_type url_resource_type, void *resource_data)</td></tr>
-<tr class="memdesc:a2b743415ad3fe806e14b7507e728c072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to register a static resource with the HTTP server.  <a href="#a2b743415ad3fe806e14b7507e728c072">More...</a><br /></td></tr>
-<tr class="separator:a2b743415ad3fe806e14b7507e728c072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58eb80fb7f039210cc9d7040f0008232"><td class="memItemLeft" align="right" valign="top">cy_rslt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_t_t_p_server.html#a58eb80fb7f039210cc9d7040f0008232">register_resource</a> (uint8_t *url, uint8_t *mime_type, <a class="el" href="group__http__server__struct.html#ga32d601085911dbd59b7ecd50a6b7f584">cy_url_resource_type</a> url_resource_type, void *resource_data)</td></tr>
+<tr class="memdesc:a58eb80fb7f039210cc9d7040f0008232"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to register a static resource with the HTTP server.  <a href="#a58eb80fb7f039210cc9d7040f0008232">More...</a><br /></td></tr>
+<tr class="separator:a58eb80fb7f039210cc9d7040f0008232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a937e00e6f94294fcdb1aac15c1050a9a"><td class="memItemLeft" align="right" valign="top">cy_rslt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_t_t_p_server.html#a937e00e6f94294fcdb1aac15c1050a9a">http_response_stream_enable_chunked_transfer</a> (<a class="el" href="structcy__http__response__stream__t.html">cy_http_response_stream_t</a> *stream)</td></tr>
 <tr class="memdesc:a937e00e6f94294fcdb1aac15c1050a9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable chunked transfer encoding on the HTTP stream.  <a href="#a937e00e6f94294fcdb1aac15c1050a9a">More...</a><br /></td></tr>
 <tr class="separator:a937e00e6f94294fcdb1aac15c1050a9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72d96603c15870cd4d8a424e7e500c14"><td class="memItemLeft" align="right" valign="top">cy_rslt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_t_t_p_server.html#a72d96603c15870cd4d8a424e7e500c14">http_response_stream_disable_chunked_transfer</a> (<a class="el" href="structcy__http__response__stream__t.html">cy_http_response_stream_t</a> *stream)</td></tr>
 <tr class="memdesc:a72d96603c15870cd4d8a424e7e500c14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable chunked transfer encoding on the HTTP stream.  <a href="#a72d96603c15870cd4d8a424e7e500c14">More...</a><br /></td></tr>
 <tr class="separator:a72d96603c15870cd4d8a424e7e500c14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3c28a50787b38f96ba679472fc1bb06"><td class="memItemLeft" align="right" valign="top">cy_rslt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_t_t_p_server.html#ad3c28a50787b38f96ba679472fc1bb06">http_response_stream_write_header</a> (<a class="el" href="structcy__http__response__stream__t.html">cy_http_response_stream_t</a> *stream, cy_http_status_codes_t status_code, uint32_t content_length, cy_http_cache_t cache_type, cy_packet_mime_type_t mime_type)</td></tr>
-<tr class="memdesc:ad3c28a50787b38f96ba679472fc1bb06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write HTTP header to the TCP stream provided.  <a href="#ad3c28a50787b38f96ba679472fc1bb06">More...</a><br /></td></tr>
-<tr class="separator:ad3c28a50787b38f96ba679472fc1bb06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac16d556a72c51030a4da8b4a959dfe40"><td class="memItemLeft" align="right" valign="top">cy_rslt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_t_t_p_server.html#ac16d556a72c51030a4da8b4a959dfe40">http_response_stream_write_header</a> (<a class="el" href="structcy__http__response__stream__t.html">cy_http_response_stream_t</a> *stream, <a class="el" href="group__http__server__struct.html#gad1b0486d4ab51b5b1969e54aae1e5edd">cy_http_status_codes_t</a> status_code, uint32_t content_length, <a class="el" href="group__http__server__struct.html#ga64b862dacedd67c3d74845c1a6038b89">cy_http_cache_t</a> cache_type, <a class="el" href="group__http__server__struct.html#gab6be7a35bfdbd62b763603d280dc4ee1">cy_http_mime_type_t</a> mime_type)</td></tr>
+<tr class="memdesc:ac16d556a72c51030a4da8b4a959dfe40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write HTTP header to the TCP stream provided.  <a href="#ac16d556a72c51030a4da8b4a959dfe40">More...</a><br /></td></tr>
+<tr class="separator:ac16d556a72c51030a4da8b4a959dfe40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c092569ed367ec082e0c320e1d24979"><td class="memItemLeft" align="right" valign="top">cy_rslt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_t_t_p_server.html#a1c092569ed367ec082e0c320e1d24979">http_response_stream_write</a> (<a class="el" href="structcy__http__response__stream__t.html">cy_http_response_stream_t</a> *stream, const void *data, uint32_t length)</td></tr>
 <tr class="memdesc:a1c092569ed367ec082e0c320e1d24979"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data to HTTP stream.  <a href="#a1c092569ed367ec082e0c320e1d24979">More...</a><br /></td></tr>
 <tr class="separator:a1c092569ed367ec082e0c320e1d24979"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,9 +133,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a973632c22f7040c30d2a7162c2a3a236"><td class="memItemLeft" align="right" valign="top">cy_rslt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_t_t_p_server.html#a973632c22f7040c30d2a7162c2a3a236">http_get_query_parameter_value</a> (const char *url_query, const char *key, char **value, uint32_t *value_length)</td></tr>
 <tr class="memdesc:a973632c22f7040c30d2a7162c2a3a236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search for a parameter (key-value pair) in a URL query string and return a pointer to the value.  <a href="#a973632c22f7040c30d2a7162c2a3a236">More...</a><br /></td></tr>
 <tr class="separator:a973632c22f7040c30d2a7162c2a3a236"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab729b524e417d3a816c6eba3beeefbf"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_t_t_p_server.html#aab729b524e417d3a816c6eba3beeefbf">http_get_query_parameter_count</a> (const char *url_query)</td></tr>
-<tr class="memdesc:aab729b524e417d3a816c6eba3beeefbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of parameters found in the URL query string.  <a href="#aab729b524e417d3a816c6eba3beeefbf">More...</a><br /></td></tr>
-<tr class="separator:aab729b524e417d3a816c6eba3beeefbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05965ce0cf59ea53608650ff36a0edb8"><td class="memItemLeft" align="right" valign="top">cy_rslt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_t_t_p_server.html#a05965ce0cf59ea53608650ff36a0edb8">http_get_query_parameter_count</a> (const char *url_query, uint32_t *count)</td></tr>
+<tr class="memdesc:a05965ce0cf59ea53608650ff36a0edb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of parameters found in the URL query string.  <a href="#a05965ce0cf59ea53608650ff36a0edb8">More...</a><br /></td></tr>
+<tr class="separator:a05965ce0cf59ea53608650ff36a0edb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90253acc6cd8fcbdf4dd0c42743b26dc"><td class="memItemLeft" align="right" valign="top">cy_rslt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_h_t_t_p_server.html#a90253acc6cd8fcbdf4dd0c42743b26dc">http_match_query_parameter</a> (const char *url_query, const char *parameter_key, const char *parameter_value)</td></tr>
 <tr class="memdesc:a90253acc6cd8fcbdf4dd0c42743b26dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Match a URL query string contains a parameter with the given parameter key and value.  <a href="#a90253acc6cd8fcbdf4dd0c42743b26dc">More...</a><br /></td></tr>
 <tr class="separator:a90253acc6cd8fcbdf4dd0c42743b26dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -272,7 +272,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Start the HTTP server. </p>
-<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">HTTP server preprocessor directives</a> otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">Macros</a> otherwise </dd></dl>
 
 </div>
 </div>
@@ -292,12 +292,12 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Stop the HTTP server. </p>
-<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">HTTP server preprocessor directives</a> otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">Macros</a> otherwise </dd></dl>
 
 </div>
 </div>
-<a id="a2b743415ad3fe806e14b7507e728c072"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b743415ad3fe806e14b7507e728c072">&#9670;&nbsp;</a></span>register_resource()</h2>
+<a id="a58eb80fb7f039210cc9d7040f0008232"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58eb80fb7f039210cc9d7040f0008232">&#9670;&nbsp;</a></span>register_resource()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -306,7 +306,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">cy_rslt_t HTTPServer::register_resource </td>
           <td>(</td>
           <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>uri</em>, </td>
+          <td class="paramname"><em>url</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -317,7 +317,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">cy_url_resource_type&#160;</td>
+          <td class="paramtype"><a class="el" href="group__http__server__struct.html#ga32d601085911dbd59b7ecd50a6b7f584">cy_url_resource_type</a>&#160;</td>
           <td class="paramname"><em>url_resource_type</em>, </td>
         </tr>
         <tr>
@@ -337,14 +337,14 @@ Public Member Functions</h2></td></tr>
 <p>Used to register a static resource with the HTTP server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">uri</td><td>: URI of the resource. Application should reserve memory for the URI </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">mime_type</td><td>: MIME type of the resource. Application should reserve memory for the MIME type </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">url_resource_type</td><td>: Content type of the resource </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">resource_data</td><td>: Pointer to structure of static, dynamic or resource type</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">url</td><td>: URL of the resource. Application should reserve memory for the URL. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mime_type</td><td>: MIME type of the resource. Application should reserve memory for the MIME type. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">url_resource_type</td><td>: Content type of the resource. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">resource_data</td><td>: Pointer to structure of static, dynamic or resource type.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">HTTP server preprocessor directives</a> otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">Macros</a> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -371,7 +371,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">HTTP server preprocessor directives</a> otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">Macros</a> otherwise </dd></dl>
 
 </div>
 </div>
@@ -398,12 +398,12 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">HTTP server preprocessor directives</a> otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">Macros</a> otherwise </dd></dl>
 
 </div>
 </div>
-<a id="ad3c28a50787b38f96ba679472fc1bb06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3c28a50787b38f96ba679472fc1bb06">&#9670;&nbsp;</a></span>http_response_stream_write_header()</h2>
+<a id="ac16d556a72c51030a4da8b4a959dfe40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac16d556a72c51030a4da8b4a959dfe40">&#9670;&nbsp;</a></span>http_response_stream_write_header()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -417,7 +417,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">cy_http_status_codes_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group__http__server__struct.html#gad1b0486d4ab51b5b1969e54aae1e5edd">cy_http_status_codes_t</a>&#160;</td>
           <td class="paramname"><em>status_code</em>, </td>
         </tr>
         <tr>
@@ -429,13 +429,13 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">cy_http_cache_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group__http__server__struct.html#ga64b862dacedd67c3d74845c1a6038b89">cy_http_cache_t</a>&#160;</td>
           <td class="paramname"><em>cache_type</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">cy_packet_mime_type_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group__http__server__struct.html#gab6be7a35bfdbd62b763603d280dc4ee1">cy_http_mime_type_t</a>&#160;</td>
           <td class="paramname"><em>mime_type</em>&#160;</td>
         </tr>
         <tr>
@@ -457,7 +457,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">HTTP server preprocessor directives</a> otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">Macros</a> otherwise </dd></dl>
 
 </div>
 </div>
@@ -502,7 +502,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">HTTP server preprocessor directives</a> otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">Macros</a> otherwise </dd></dl>
 
 </div>
 </div>
@@ -529,7 +529,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">HTTP server preprocessor directives</a> otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">Macros</a> otherwise </dd></dl>
 
 </div>
 </div>
@@ -549,7 +549,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Disconnect all HTTP stream in a server. </p>
-<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">HTTP server preprocessor directives</a> otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">Macros</a> otherwise </dd></dl>
 
 </div>
 </div>
@@ -576,7 +576,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">HTTP server preprocessor directives</a> otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">Macros</a> otherwise </dd></dl>
 
 </div>
 </div>
@@ -628,34 +628,45 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">HTTP server preprocessor directives</a> otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">Macros</a> otherwise </dd></dl>
 
 </div>
 </div>
-<a id="aab729b524e417d3a816c6eba3beeefbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab729b524e417d3a816c6eba3beeefbf">&#9670;&nbsp;</a></span>http_get_query_parameter_count()</h2>
+<a id="a05965ce0cf59ea53608650ff36a0edb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05965ce0cf59ea53608650ff36a0edb8">&#9670;&nbsp;</a></span>http_get_query_parameter_count()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t HTTPServer::http_get_query_parameter_count </td>
+          <td class="memname">cy_rslt_t HTTPServer::http_get_query_parameter_count </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>url_query</em></td><td>)</td>
+          <td class="paramname"><em>url_query</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Return the number of parameters found in the URL query string. </p>
+<p>Returns number of parameters found in the URL query string. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">url_query</td><td>: URL query string</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">url_query</td><td>: NULL terminated URL query string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">count</td><td>: Parameter count.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>parameter count </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes from <a class="el" href="group__http__server__defines.html">Macros</a> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -700,7 +711,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">HTTP server preprocessor directives</a> otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>cy_rslt_t : CY_RSLT_SUCCESS - on success, error codes in <a class="el" href="group__http__server__defines.html">Macros</a> otherwise </dd></dl>
 
 </div>
 </div>
@@ -710,7 +721,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath">
     <ul>
         <li class="footer">
-            Generated for <b>Cypress HTTP Server Middleware Library</b> by <b>Cypress Semiconductor Corporation</b>.
+            Generated for <b>HTTP Server Middleware Library</b> by <b>Cypress Semiconductor Corporation</b>.
             All rights reserved.
         </li>
     </ul>

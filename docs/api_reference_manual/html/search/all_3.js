@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['entropy',['entropy',['../structcy__tls__context__t.html#a6d3213f826815ba013f73e7e632a41c4',1,'cy_tls_context_t']]],
-  ['event_5fthread',['event_thread',['../structcy__http__server__t.html#abb07739a8cf20cd945c831adb2584522',1,'cy_http_server_t']]]
+  ['expand_5fas_5fenumeration',['EXPAND_AS_ENUMERATION',['../group__http__server__struct.html#ga9570abf22d29227cd523da79c1e216eb',1,'cy_http_server.h']]]
 ];

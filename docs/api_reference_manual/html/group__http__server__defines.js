@@ -12,5 +12,6 @@ var group__http__server__defines =
     [ "CY_RSLT_HTTP_SERVER_ERROR_NOT_FOUND", "group__http__server__defines.html#ga1ed8eeca1b0a95ddf9e5392eb6ff8591", null ],
     [ "CY_RSLT_HTTP_SERVER_ERROR_PARTIAL_RESULTS", "group__http__server__defines.html#ga7f11e40b478453160843230b18ee3857", null ],
     [ "CY_RSLT_HTTP_SERVER_PAGE_DATABASE_FULL", "group__http__server__defines.html#ga9984e926fea988cbf4872348e2370c55", null ],
-    [ "CY_RSLT_ERROR", "group__http__server__defines.html#gaf18faa0179a6087e4b03d9a81d02010e", null ]
+    [ "CY_RSLT_ERROR", "group__http__server__defines.html#gaf18faa0179a6087e4b03d9a81d02010e", null ],
+    [ "MAX_NUMBER_OF_HTTP_SERVER_RESOURCES", "group__http__server__defines.html#ga6e47b484776a72216039a2af358bcedc", null ]
 ];

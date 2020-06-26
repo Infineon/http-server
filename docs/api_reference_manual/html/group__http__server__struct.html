@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cypress HTTP Server Middleware Library: HTTP server data structures</title>
+<title>HTTP Server Middleware Library: Structures &amp; Enumerations</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><a href="http://www.cypress.com/"><img alt="Logo" src="cypress_logo.png"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Cypress HTTP Server Middleware Library</div>
+   <div id="projectname">HTTP Server Middleware Library</div>
   </td>
  </tr>
  </tbody>
@@ -81,9 +81,12 @@ $(document).ready(function(){initNavTree('group__http__server__struct.html','');
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a>  </div>
+<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
-<div class="title">HTTP server data structures<div class="ingroups"><a class="el" href="group__http__server.html">HTTP server library</a></div></div>  </div>
+<div class="title">Structures &amp; Enumerations<div class="ingroups"><a class="el" href="group__group__c__api.html">C API</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">General Description</h2>
@@ -95,7 +98,10 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP message structure that gets passed to dynamic URL processor functions.  <a href="structcy__http__message__body__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__http__response__stream__t.html">cy_http_response_stream_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Workspace structure for HTTP server stream Users should not access these values - they are provided here only to provide the compiler with datatype size information allowing static declarations.  <a href="structcy__http__response__stream__t.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Context structure for HTTP server stream Users should not access these values - they are provided here only to provide the compiler with datatype size information that allows static declarations.  <a href="structcy__http__response__stream__t.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__https__server__security__info__t.html">cy_https_server_security_info_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP server security info.  <a href="structcy__https__server__security__info__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__resource__dynamic__data__t.html">cy_resource_dynamic_data_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamic HTTP resource info.  <a href="structcy__resource__dynamic__data__t.html#details">More...</a><br /></td></tr>
@@ -103,17 +109,307 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__resource__static__data__t.html">cy_resource_static_data_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static HTTP resource info.  <a href="structcy__resource__static__data__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcy__https__server__security__info__t.html">cy_https_server_security_info_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP server security info.  <a href="structcy__https__server__security__info__t.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga9570abf22d29227cd523da79c1e216eb"><td class="memItemLeft" align="right" valign="top"><a id="ga9570abf22d29227cd523da79c1e216eb"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__struct.html#ga9570abf22d29227cd523da79c1e216eb">EXPAND_AS_ENUMERATION</a>(a,  b)&#160;&#160;&#160;a,</td></tr>
+<tr class="memdesc:ga9570abf22d29227cd523da79c1e216eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to expand the enumeration. <br /></td></tr>
+<tr class="separator:ga9570abf22d29227cd523da79c1e216eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga517bd1687351d721dfa5f6ec4053493f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__struct.html#ga517bd1687351d721dfa5f6ec4053493f">MIME_TABLE</a>(ENTRY)</td></tr>
+<tr class="memdesc:ga517bd1687351d721dfa5f6ec4053493f"><td class="mdescLeft">&#160;</td><td class="mdescRight">MIME table.  <a href="#ga517bd1687351d721dfa5f6ec4053493f">More...</a><br /></td></tr>
+<tr class="separator:ga517bd1687351d721dfa5f6ec4053493f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga047ac1c7063077c58da4cc991ad3b1bf"><td class="memItemLeft" align="right" valign="top"><a id="ga047ac1c7063077c58da4cc991ad3b1bf"></a>
+typedef void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__struct.html#ga047ac1c7063077c58da4cc991ad3b1bf">cy_http_server_t</a></td></tr>
+<tr class="memdesc:ga047ac1c7063077c58da4cc991ad3b1bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP server handle. <br /></td></tr>
+<tr class="separator:ga047ac1c7063077c58da4cc991ad3b1bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6515ad09b10c358aa2d1d1efd4a4f2cd"><td class="memItemLeft" align="right" valign="top">typedef int32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__struct.html#ga6515ad09b10c358aa2d1d1efd4a4f2cd">url_processor_t</a>) (const char *url_path, const char *url_query_string, <a class="el" href="structcy__http__response__stream__t.html">cy_http_response_stream_t</a> *stream, void *arg, <a class="el" href="structcy__http__message__body__t.html">cy_http_message_body_t</a> *http_data)</td></tr>
+<tr class="memdesc:ga6515ad09b10c358aa2d1d1efd4a4f2cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prototype for URL processor functions.  <a href="#ga6515ad09b10c358aa2d1d1efd4a4f2cd">More...</a><br /></td></tr>
+<tr class="separator:ga6515ad09b10c358aa2d1d1efd4a4f2cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ga133e1438783bd7430e0e80b23518e743"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__struct.html#ga133e1438783bd7430e0e80b23518e743">cy_http_request_type_t</a> { <br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#gga133e1438783bd7430e0e80b23518e743aae6efd1e64c25ff81cc5114051db036b">CY_HTTP_REQUEST_GET</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#gga133e1438783bd7430e0e80b23518e743a1c330cdb770148314e8e6c568b48acd9">CY_HTTP_REQUEST_POST</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#gga133e1438783bd7430e0e80b23518e743ae6f844ee75f8cadd252bddfd3fde3532">CY_HTTP_REQUEST_PUT</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#gga133e1438783bd7430e0e80b23518e743ae033858556d98e39e1c0f624c83c0b4a">CY_HTTP_REQUEST_UNDEFINED</a>
+<br />
+ }<tr class="memdesc:ga133e1438783bd7430e0e80b23518e743"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP request type.  <a href="group__http__server__struct.html#ga133e1438783bd7430e0e80b23518e743">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:ga133e1438783bd7430e0e80b23518e743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga64b862dacedd67c3d74845c1a6038b89"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__struct.html#ga64b862dacedd67c3d74845c1a6038b89">cy_http_cache_t</a> { <br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#gga64b862dacedd67c3d74845c1a6038b89a21676ce46eff61339e33dded1daeaaea">CY_HTTP_CACHE_DISABLED</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#gga64b862dacedd67c3d74845c1a6038b89a1ba6f4e19b464a2b890040aa84c32a6b">CY_HTTP_CACHE_ENABLED</a>
+<br />
+ }<tr class="memdesc:ga64b862dacedd67c3d74845c1a6038b89"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP cache.  <a href="group__http__server__struct.html#ga64b862dacedd67c3d74845c1a6038b89">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:ga64b862dacedd67c3d74845c1a6038b89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab6be7a35bfdbd62b763603d280dc4ee1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__struct.html#gab6be7a35bfdbd62b763603d280dc4ee1">cy_http_mime_type_t</a> <tr class="memdesc:gab6be7a35bfdbd62b763603d280dc4ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP MIME type.  <a href="group__http__server__struct.html#gab6be7a35bfdbd62b763603d280dc4ee1">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:gab6be7a35bfdbd62b763603d280dc4ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad1b0486d4ab51b5b1969e54aae1e5edd"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__struct.html#gad1b0486d4ab51b5b1969e54aae1e5edd">cy_http_status_codes_t</a> { <br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5eddad3dbd9c89c618dff06785fdd77ec0419">CY_HTTP_200_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5edda5e39c01af97526ea6c9b9e4406f7f7d0">CY_HTTP_204_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5edda64594c9218c45ad4c7b424b819839587">CY_HTTP_207_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5edda31bb5770a3687bea226677fcbec762ef">CY_HTTP_301_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5edda19e795ef6a5cf0f638b8cd329aa6796a">CY_HTTP_400_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5edda09b0f7124d716a8b21c1d299f87180ab">CY_HTTP_403_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5edda4f45531dbee97b7a5dcc026a767eb977">CY_HTTP_404_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5eddaf0b401449ba5fcada5c49976e8d9b41a">CY_HTTP_405_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5edda56149d89c04690ca8aa577e123434930">CY_HTTP_406_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5edda887ccefc0440437c131f3639754cf3a1">CY_HTTP_412_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5edda1d7c7f7009c9a2030ebdd746f5b55f00">CY_HTTP_415_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5eddac667e393604e80ea50bfd22788911250">CY_HTTP_429_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5edda3e0ac33f9701d44a95cad9c5a30f4e05">CY_HTTP_444_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5edda56844ab35f128c4ca409ec704dcb3ac5">CY_HTTP_470_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5eddae099016f20b49bfd86f2b2282ab6858b">CY_HTTP_500_TYPE</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#ggad1b0486d4ab51b5b1969e54aae1e5eddad3c183b10c91de68efdf076efab73876">CY_HTTP_504_TYPE</a>
+<br />
+ }<tr class="memdesc:gad1b0486d4ab51b5b1969e54aae1e5edd"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP status code.  <a href="group__http__server__struct.html#gad1b0486d4ab51b5b1969e54aae1e5edd">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:gad1b0486d4ab51b5b1969e54aae1e5edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga32d601085911dbd59b7ecd50a6b7f584"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__http__server__struct.html#ga32d601085911dbd59b7ecd50a6b7f584">cy_url_resource_type</a> { <br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#gga32d601085911dbd59b7ecd50a6b7f584a16c98c125133981542d412c2449988a1">CY_STATIC_URL_CONTENT</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#gga32d601085911dbd59b7ecd50a6b7f584ab61d536399015bfa53ede0e680aae9f7">CY_DYNAMIC_URL_CONTENT</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#gga32d601085911dbd59b7ecd50a6b7f584a4e628b0071460eed61ea11b4d8b09087">CY_RESOURCE_URL_CONTENT</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#gga32d601085911dbd59b7ecd50a6b7f584a3a560fd0b3405a9114a1d50f721cd33b">CY_RAW_STATIC_URL_CONTENT</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#gga32d601085911dbd59b7ecd50a6b7f584a6b8d1cd5fef8b7ffc82c06591b8e3bc1">CY_RAW_DYNAMIC_URL_CONTENT</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__http__server__struct.html#gga32d601085911dbd59b7ecd50a6b7f584a7a1b3a5cd969740f25d02edb5e2bafba">CY_RAW_RESOURCE_URL_CONTENT</a>
+<br />
+ }<tr class="memdesc:ga32d601085911dbd59b7ecd50a6b7f584"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP server resource type.  <a href="group__http__server__struct.html#ga32d601085911dbd59b7ecd50a6b7f584">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:ga32d601085911dbd59b7ecd50a6b7f584"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga517bd1687351d721dfa5f6ec4053493f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga517bd1687351d721dfa5f6ec4053493f">&#9670;&nbsp;</a></span>MIME_TABLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MIME_TABLE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ENTRY</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">ENTRY( MIME_TYPE_TLV = 0 ,                <span class="stringliteral">&quot;application/x-tlv8&quot;</span>               ) \</div><div class="line">    ENTRY( MIME_TYPE_APPLE_BINARY_PLIST,      <span class="stringliteral">&quot;application/x-apple-binary-plist&quot;</span> ) \</div><div class="line">    ENTRY( MIME_TYPE_APPLE_PROXY_AUTOCONFIG,  <span class="stringliteral">&quot;application/x-ns-proxy-autoconfig&quot;</span>) \</div><div class="line">    ENTRY( MIME_TYPE_BINARY_DATA,             <span class="stringliteral">&quot;application/octet-stream&quot;</span>         ) \</div><div class="line">    ENTRY( MIME_TYPE_JAVASCRIPT,              <span class="stringliteral">&quot;application/javascript&quot;</span>           ) \</div><div class="line">    ENTRY( MIME_TYPE_JSON,                    <span class="stringliteral">&quot;application/json&quot;</span>                 ) \</div><div class="line">    ENTRY( MIME_TYPE_HAP_JSON,                <span class="stringliteral">&quot;application/hap+json&quot;</span>             ) \</div><div class="line">    ENTRY( MIME_TYPE_HAP_PAIRING,             <span class="stringliteral">&quot;application/pairing+tlv8&quot;</span>         ) \</div><div class="line">    ENTRY( MIME_TYPE_HAP_VERIFY,              <span class="stringliteral">&quot;application/hap+verify&quot;</span>           ) \</div><div class="line">    ENTRY( MIME_TYPE_TEXT_HTML,               <span class="stringliteral">&quot;text/html&quot;</span>                        ) \</div><div class="line">    ENTRY( MIME_TYPE_TEXT_PLAIN,              <span class="stringliteral">&quot;text/plain&quot;</span>                       ) \</div><div class="line">    ENTRY( MIME_TYPE_TEXT_EVENT_STREAM,       <span class="stringliteral">&quot;text/event-stream&quot;</span>                ) \</div><div class="line">    ENTRY( MIME_TYPE_TEXT_CSS,                <span class="stringliteral">&quot;text/css&quot;</span>                         ) \</div><div class="line">    ENTRY( MIME_TYPE_IMAGE_PNG,               <span class="stringliteral">&quot;image/png&quot;</span>                        ) \</div><div class="line">    ENTRY( MIME_TYPE_IMAGE_GIF,               <span class="stringliteral">&quot;image/gif&quot;</span>                        ) \</div><div class="line">    ENTRY( MIME_TYPE_IMAGE_MICROSOFT,         <span class="stringliteral">&quot;image/vnd.microsoft.icon&quot;</span>         ) \</div><div class="line">    ENTRY( MIME_TYPE_ALL,                     <span class="stringliteral">&quot;*/*&quot;</span>                              ) <span class="comment">/* This must always be the last mime*/</span></div></div><!-- fragment -->
+<p>MIME table. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="ga6515ad09b10c358aa2d1d1efd4a4f2cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6515ad09b10c358aa2d1d1efd4a4f2cd">&#9670;&nbsp;</a></span>url_processor_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int32_t(* url_processor_t) (const char *url_path, const char *url_query_string, <a class="el" href="structcy__http__response__stream__t.html">cy_http_response_stream_t</a> *stream, void *arg, <a class="el" href="structcy__http__message__body__t.html">cy_http_message_body_t</a> *http_data)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prototype for URL processor functions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">url_path</td><td>: URL path. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">url_query_string</td><td>: NULL terminated URL query string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">stream</td><td>: HTTP stream on which data was received. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>: Arguments passed along with callback function. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">http_data</td><td>: Buffer having HTTP data </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ga133e1438783bd7430e0e80b23518e743"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga133e1438783bd7430e0e80b23518e743">&#9670;&nbsp;</a></span>cy_http_request_type_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__http__server__struct.html#ga133e1438783bd7430e0e80b23518e743">cy_http_request_type_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>HTTP request type. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga133e1438783bd7430e0e80b23518e743aae6efd1e64c25ff81cc5114051db036b"></a>CY_HTTP_REQUEST_GET&#160;</td><td class="fielddoc"><p>HTTP server GET request type. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga133e1438783bd7430e0e80b23518e743a1c330cdb770148314e8e6c568b48acd9"></a>CY_HTTP_REQUEST_POST&#160;</td><td class="fielddoc"><p>HTTP server POST request type. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga133e1438783bd7430e0e80b23518e743ae6f844ee75f8cadd252bddfd3fde3532"></a>CY_HTTP_REQUEST_PUT&#160;</td><td class="fielddoc"><p>HTTP server PUT request type. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga133e1438783bd7430e0e80b23518e743ae033858556d98e39e1c0f624c83c0b4a"></a>CY_HTTP_REQUEST_UNDEFINED&#160;</td><td class="fielddoc"><p>HTTP server undefined request type. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ga64b862dacedd67c3d74845c1a6038b89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga64b862dacedd67c3d74845c1a6038b89">&#9670;&nbsp;</a></span>cy_http_cache_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__http__server__struct.html#ga64b862dacedd67c3d74845c1a6038b89">cy_http_cache_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>HTTP cache. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga64b862dacedd67c3d74845c1a6038b89a21676ce46eff61339e33dded1daeaaea"></a>CY_HTTP_CACHE_DISABLED&#160;</td><td class="fielddoc"><p>Do not cache previously fetched resources. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga64b862dacedd67c3d74845c1a6038b89a1ba6f4e19b464a2b890040aa84c32a6b"></a>CY_HTTP_CACHE_ENABLED&#160;</td><td class="fielddoc"><p>Allow caching of previously fetched resources. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="gab6be7a35bfdbd62b763603d280dc4ee1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab6be7a35bfdbd62b763603d280dc4ee1">&#9670;&nbsp;</a></span>cy_http_mime_type_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__http__server__struct.html#gab6be7a35bfdbd62b763603d280dc4ee1">cy_http_mime_type_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>HTTP MIME type. </p>
+<dl class="section note"><dt>Note</dt><dd>Refer to the 1st argument of <a class="el" href="group__http__server__struct.html#ga517bd1687351d721dfa5f6ec4053493f">MIME_TABLE</a> for the list of MIME types supported. Example: MIME_TYPE_TLV. </dd></dl>
+
+</div>
+</div>
+<a id="gad1b0486d4ab51b5b1969e54aae1e5edd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad1b0486d4ab51b5b1969e54aae1e5edd">&#9670;&nbsp;</a></span>cy_http_status_codes_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__http__server__struct.html#gad1b0486d4ab51b5b1969e54aae1e5edd">cy_http_status_codes_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>HTTP status code. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5eddad3dbd9c89c618dff06785fdd77ec0419"></a>CY_HTTP_200_TYPE&#160;</td><td class="fielddoc"><p>OK. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5edda5e39c01af97526ea6c9b9e4406f7f7d0"></a>CY_HTTP_204_TYPE&#160;</td><td class="fielddoc"><p>No Content. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5edda64594c9218c45ad4c7b424b819839587"></a>CY_HTTP_207_TYPE&#160;</td><td class="fielddoc"><p>Multi-Status. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5edda31bb5770a3687bea226677fcbec762ef"></a>CY_HTTP_301_TYPE&#160;</td><td class="fielddoc"><p>Moved Permanently. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5edda19e795ef6a5cf0f638b8cd329aa6796a"></a>CY_HTTP_400_TYPE&#160;</td><td class="fielddoc"><p>Bad Request. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5edda09b0f7124d716a8b21c1d299f87180ab"></a>CY_HTTP_403_TYPE&#160;</td><td class="fielddoc"><p>Forbidden. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5edda4f45531dbee97b7a5dcc026a767eb977"></a>CY_HTTP_404_TYPE&#160;</td><td class="fielddoc"><p>Not Found. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5eddaf0b401449ba5fcada5c49976e8d9b41a"></a>CY_HTTP_405_TYPE&#160;</td><td class="fielddoc"><p>Method Not Allowed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5edda56149d89c04690ca8aa577e123434930"></a>CY_HTTP_406_TYPE&#160;</td><td class="fielddoc"><p>Not Acceptable. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5edda887ccefc0440437c131f3639754cf3a1"></a>CY_HTTP_412_TYPE&#160;</td><td class="fielddoc"><p>Precondition Failed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5edda1d7c7f7009c9a2030ebdd746f5b55f00"></a>CY_HTTP_415_TYPE&#160;</td><td class="fielddoc"><p>Unsupported Media Type. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5eddac667e393604e80ea50bfd22788911250"></a>CY_HTTP_429_TYPE&#160;</td><td class="fielddoc"><p>Too Many Requests. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5edda3e0ac33f9701d44a95cad9c5a30f4e05"></a>CY_HTTP_444_TYPE&#160;</td><td class="fielddoc"><p>No Response. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5edda56844ab35f128c4ca409ec704dcb3ac5"></a>CY_HTTP_470_TYPE&#160;</td><td class="fielddoc"><p>Connection Authorization Required. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5eddae099016f20b49bfd86f2b2282ab6858b"></a>CY_HTTP_500_TYPE&#160;</td><td class="fielddoc"><p>Internal Server Error. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad1b0486d4ab51b5b1969e54aae1e5eddad3c183b10c91de68efdf076efab73876"></a>CY_HTTP_504_TYPE&#160;</td><td class="fielddoc"><p>Gateway Timeout. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ga32d601085911dbd59b7ecd50a6b7f584"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga32d601085911dbd59b7ecd50a6b7f584">&#9670;&nbsp;</a></span>cy_url_resource_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__http__server__struct.html#ga32d601085911dbd59b7ecd50a6b7f584">cy_url_resource_type</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>HTTP server resource type. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga32d601085911dbd59b7ecd50a6b7f584a16c98c125133981542d412c2449988a1"></a>CY_STATIC_URL_CONTENT&#160;</td><td class="fielddoc"><p>Page is constant data in memory-addressable area. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga32d601085911dbd59b7ecd50a6b7f584ab61d536399015bfa53ede0e680aae9f7"></a>CY_DYNAMIC_URL_CONTENT&#160;</td><td class="fielddoc"><p>Page is dynamically generated by a <a class="el" href="group__http__server__struct.html#ga6515ad09b10c358aa2d1d1efd4a4f2cd">url_processor_t</a> type function. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga32d601085911dbd59b7ecd50a6b7f584a4e628b0071460eed61ea11b4d8b09087"></a>CY_RESOURCE_URL_CONTENT&#160;</td><td class="fielddoc"><p>Page data is provided by a Resource which may reside off-chip. </p>
+<p>Currently this URL type is not supported in Mbed OS and AnyCloud frameworks. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga32d601085911dbd59b7ecd50a6b7f584a3a560fd0b3405a9114a1d50f721cd33b"></a>CY_RAW_STATIC_URL_CONTENT&#160;</td><td class="fielddoc"><p>Same as <a class="el" href="group__http__server__struct.html#gga32d601085911dbd59b7ecd50a6b7f584a16c98c125133981542d412c2449988a1">CY_STATIC_URL_CONTENT</a>, but the HTTP header must be supplied as part of the content. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga32d601085911dbd59b7ecd50a6b7f584a6b8d1cd5fef8b7ffc82c06591b8e3bc1"></a>CY_RAW_DYNAMIC_URL_CONTENT&#160;</td><td class="fielddoc"><p>Same as <a class="el" href="group__http__server__struct.html#gga32d601085911dbd59b7ecd50a6b7f584ab61d536399015bfa53ede0e680aae9f7">CY_DYNAMIC_URL_CONTENT</a>, but the HTTP header must be supplied as part of the content. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga32d601085911dbd59b7ecd50a6b7f584a7a1b3a5cd969740f25d02edb5e2bafba"></a>CY_RAW_RESOURCE_URL_CONTENT&#160;</td><td class="fielddoc"><p>Same as <a class="el" href="group__http__server__struct.html#gga32d601085911dbd59b7ecd50a6b7f584a4e628b0071460eed61ea11b4d8b09087">CY_RESOURCE_URL_CONTENT</a>, but the HTTP header must be supplied as part of the content. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath">
     <ul>
         <li class="footer">
-            Generated for <b>Cypress HTTP Server Middleware Library</b> by <b>Cypress Semiconductor Corporation</b>.
+            Generated for <b>HTTP Server Middleware Library</b> by <b>Cypress Semiconductor Corporation</b>.
             All rights reserved.
         </li>
     </ul>
