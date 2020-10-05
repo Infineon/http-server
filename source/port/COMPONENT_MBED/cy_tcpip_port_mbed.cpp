@@ -400,7 +400,8 @@ cy_rslt_t cy_register_disconnect_callback( cy_tcp_socket_t* socket, disconnect_c
 
 cy_rslt_t cy_set_socket_recv_timeout( cy_tcp_socket_t* socket, uint32_t timeout )
 {
-    /* Dummy implementation of cy_set_socket_recv_timeout */
+    TCPSocket* tcp_socket = (TCPSocket*) socket->socket;
+    tcp_socket->set_timeout(timeout);
     return CY_RSLT_SUCCESS;
 }
 

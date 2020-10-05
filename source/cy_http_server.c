@@ -392,9 +392,6 @@ cy_rslt_t cy_http_server_create( cy_network_interface_t *interface,
 cy_rslt_t cy_http_server_start( cy_http_server_t server_handle )
 {
     cy_rslt_t result = CY_RSLT_SUCCESS;
-    cy_resource_static_data_t static_resource;
-    static_resource.length = 0;
-    static_resource.data = NULL;
     cy_http_server_object_t *server_obj;
 
     if( server_handle == NULL )
@@ -413,14 +410,6 @@ cy_rslt_t cy_http_server_start( cy_http_server_t server_handle )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nServer already started\n" );
         return CY_RSLT_ERROR;
-    }
-
-    /* Add static resource to find out the end of the resource list */
-    result = cy_http_server_register_resource( server_obj, 0, 0, CY_STATIC_URL_CONTENT, &static_resource );
-    if( result != CY_RSLT_SUCCESS )
-    {
-        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nRegistration of resource failed" );
-        return result;
     }
 
     if( server_obj->is_secure == true )
@@ -1863,7 +1852,7 @@ cy_rslt_t http_server_find_url_in_page_database( char *url, uint32_t length, cy_
         return CY_RSLT_ERROR;
     }
 
-    while( page_database[ i ].url != NULL )
+    while( (i < MAX_NUMBER_OF_HTTP_SERVER_RESOURCES) && (page_database[ i ].url != NULL) )
     {
         if( match_string_with_wildcard_pattern( url, length, page_database[ i ].url ) != 0 )
         {

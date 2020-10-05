@@ -8,7 +8,7 @@ It supports RESTful methods such as GET, PUT, and POST for the client to communi
 * Secure [with TLS security] and non-secure modes of connection.
 * Supports RESTful HTTP methods: GET, PUT, and POST.
 * Handles various resource content types such as HTML, Plain, and JSON.
-* Capable of handling content payload greater than the MTU size using the Content-Length HTTP header. This feature is supported only for `CY_RAW_DYNAMIC_URL_CONTENT` and `CY_DYNAMIC_URL_CONTENT` content types
+* Capable of handling content payload greater than the MTU size using the Content-Length HTTP header. This feature is supported only for `CY_RAW_DYNAMIC_URL_CONTENT` and `CY_DYNAMIC_URL_CONTENT` content types.
 * Supports chunked encoding for GET and POST methods.   
   **Note:** For a POST request, chunked encoding is supported only for the data that is less than a single MTU; Content-Length headers are recommended for larger data.
 * Supports Server-Sent Events (SSE). SSE is a server push technology, enabling an HTTP client (for example, a browser or any device running an HTTP client) to receive automatic updates from the HTTP server via the HTTP connection.
@@ -35,7 +35,7 @@ This section provides the list of dependent libraries required for this middlewa
   * [Wi-Fi Middleware Core](https://github.com/cypresssemiconductorco/wifi-mw-core)
 
 ### Mbed OS
-  * [Arm Mbed OS Stack version 5.15.3](https://os.mbed.com/mbed-os/releases)
+  * [Arm Mbed OS 6.2.0](https://os.mbed.com/mbed-os/releases)
   * [Connectivity Utilities Library](https://github.com/cypresssemiconductorco/connectivity-utilities)
 
 ## Quick Start
@@ -75,3 +75,4 @@ This library is supported on both AnyCloud and Mbed OS frameworks. The section b
 * [HTTP Server RELEASE.md](./RELEASE.md)
 * [HTTP Server API Reference Guide](https://cypresssemiconductorco.github.io/http-server/api_reference_manual/html/index.html)
 * [HTTP Server Library Version](./version.txt)
+
