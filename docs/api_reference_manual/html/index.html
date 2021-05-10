@@ -131,7 +131,7 @@ AnyCloud</h2>
 Mbed OS</h2>
 <ul>
 <li><a href="https://os.mbed.com/mbed-os/releases">Arm Mbed OS 6.2.0</a></li>
-<li><a href="https://github.com/cypresssemiconductorco/connectivity-utilities">Connectivity Utilities Library</a></li>
+<li><a href="https://github.com/cypresssemiconductorco/connectivity-utilities/releases/tag/latest-v3.X">Connectivity Utilities Library</a></li>
 </ul>
 <h1><a class="anchor" id="section_quick_start"></a>
 Quick Start</h1>
@@ -151,6 +151,15 @@ AnyCloud</h2>
 <h2><a class="anchor" id="framework_2"></a>
 Mbed OS</h2>
 <ul>
+<li>Add the .lib file(s) for dependent libraries.<ul>
+<li>Create a folder named <code>deps</code>.</li>
+<li>Create a file with name mbed-os.lib and add the following line to this file: <div class="fragment"><div class="line">https:<span class="comment">//github.com/ARMmbed/mbed-os/#a2ada74770f043aff3e61e29d164a8e78274fcd4</span></div></div><!-- fragment --></li>
+<li>Create a file with name connectivity-utilities.lib and add the following line to this file: <div class="fragment"><div class="line">https:<span class="comment">//github.com/cypresssemiconductorco/connectivity-utilities/#&lt;commit-SHA-for-latest-release-v3.X&gt;</span></div></div><!-- fragment --><ul>
+<li>Replace <code>&lt;commit-SHA-for-latest-release-v3.X&gt;</code> in the above line with commit SHA of the latest-v3.X tag available in the <a href="https://github.com/cypresssemiconductorco/connectivity-utilities/releases/tag/latest-v3.X">GitHub repository</a>. Example: For tag <code>release-v3.0.1</code> <div class="fragment"><div class="line">https:<span class="comment">//github.com/cypresssemiconductorco/connectivity-utilities/#68bd1bc9883a0ab424eb6daf1e726f0aba2c54a6</span></div></div><!-- fragment --></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>HTTP Server Library disables all the debug log messages by default. To enable log messages, the application must perform the following:<ul>
 <li>Add <code>ENABLE_HTTP_SERVER_LOGS</code> macro to the <em>DEFINES</em> in the code example's JSON file. The JSON file entry would look like as follows: <div class="fragment"><div class="line"><span class="stringliteral">&quot;macros&quot;</span>: [<span class="stringliteral">&quot;ENABLE_HTTP_SERVER_LOGS&quot;</span>],</div><div class="line"><span class="stringliteral">&quot;target.components_add&quot;</span>: [<span class="stringliteral">&quot;MBED&quot;</span>],</div></div><!-- fragment --></li>
 <li>Call the <code>cy_log_init()</code> function provided by the <em>cy-log</em> module. cy-log is part of the <em>connectivity-utilities</em> library. See <a href="https://cypresssemiconductorco.github.io/connectivity-utilities/api_reference_manual/html/group__logging__utils.html">connectivity-utilities library API documentation</a> for cy-log details.</li>

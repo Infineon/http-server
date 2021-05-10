@@ -1,18 +1,34 @@
 /*
- * Copyright 2020 Cypress Semiconductor Corporation
- * SPDX-License-Identifier: Apache-2.0
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2021, Cypress Semiconductor Corporation (an Infineon company) or
+ * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
+ *
+ * This software, including source code, documentation and related
+ * materials ("Software") is owned by Cypress Semiconductor Corporation
+ * or one of its affiliates ("Cypress") and is protected by and subject to
+ * worldwide patent protection (United States and foreign),
+ * United States copyright laws and international treaty provisions.
+ * Therefore, you may use this Software only as provided in the license
+ * agreement accompanying the software package from which you
+ * obtained this Software ("EULA").
+ * If no EULA applies, Cypress hereby grants you a personal, non-exclusive,
+ * non-transferable license to copy, modify, and compile the Software
+ * source code solely for use in connection with Cypress's
+ * integrated circuit products.  Any reproduction, modification, translation,
+ * compilation, or representation of this Software except as specified
+ * above is prohibited without the express written permission of Cypress.
+ *
+ * Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT, IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. Cypress
+ * reserves the right to make changes to the Software without notice. Cypress
+ * does not assume any liability arising out of the application or use of the
+ * Software or any product or circuit described in the Software. Cypress does
+ * not authorize its products for use in any products where a malfunction or
+ * failure of the Cypress product may reasonably be expected to result in
+ * significant property damage, injury or death ("High Risk Product"). By
+ * including Cypress's product in a High Risk Product, the manufacturer
+ * of such system or application assumes all risk of such use and in doing
+ * so agrees to indemnify Cypress against all liability.
  */
 
 /** @file
@@ -174,6 +190,7 @@ cy_rslt_t cy_tcp_server_start( cy_tcp_server_t* server,
     cy_network_interface_t *interface;
     cy_socket_sockaddr_t *tcp_server_addr;
     bool socketcreated = false;
+    cy_socket_tls_auth_mode_t mode = CY_SOCKET_TLS_VERIFY_NONE;
 
     if( server == NULL || network_interface == NULL )
     {
@@ -222,6 +239,35 @@ cy_rslt_t cy_tcp_server_start( cy_tcp_server_t* server,
         }
 
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nSet TLS identity completed successfully" );
+
+        if( server->root_ca_certificate != NULL )
+        {
+            mode = CY_SOCKET_TLS_VERIFY_REQUIRED;
+            result = cy_socket_setsockopt( server->server_socket.socket, CY_SOCKET_SOL_TLS,
+                                        CY_SOCKET_SO_TLS_AUTH_MODE, (const void *) &mode,
+                                        (uint32_t) sizeof( mode ) );
+            if( result != CY_RSLT_SUCCESS)
+            {
+                hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nSet TLS AUTH mode failed with error : [0x%X]", ( unsigned int )result );
+                goto exit;
+            }
+
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nTLS AUTH mode set to CY_SOCKET_TLS_VERIFY_REQUIRED successfully" );
+        }
+        else
+        {
+            mode = CY_SOCKET_TLS_VERIFY_NONE;
+            result = cy_socket_setsockopt( server->server_socket.socket, CY_SOCKET_SOL_TLS,
+                                        CY_SOCKET_SO_TLS_AUTH_MODE, (const void *) &mode,
+                                        (uint32_t) sizeof( mode ) );
+            if( result != CY_RSLT_SUCCESS)
+            {
+                hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nSet TLS AUTH mode failed with error : [0x%X]", ( unsigned int )result );
+                goto exit;
+            }
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nTLS AUTH mode set to CY_SOCKET_TLS_VERIFY_NONE successfully" );
+        }
+
     }
     else
     {
@@ -332,10 +378,10 @@ int cy_tcp_server_recv( cy_tcp_socket_t* tcp_socket, char* buffer, int length )
     size_t bytesReceived = 0;
     size_t bytesTobeRead = length;
 
-    if( tcp_socket->socket == NULL || buffer == NULL )
+    if( tcp_socket == NULL || tcp_socket->socket == NULL || buffer == NULL )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_tcp_server_recv" );
-        return CY_RSLT_TCPIP_ERROR;
+        return CY_HTTP_SERVER_SOCKET_ERROR;
     }
 
     handle = ( cy_socket_t )tcp_socket->socket;
@@ -377,7 +423,6 @@ cy_rslt_t cy_tcp_stream_deinit( cy_tcp_stream_t* stream )
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_tcp_stream_deinit" );
         return CY_RSLT_TCPIP_ERROR;
     }
-    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_tcp_stream_deinit - stream->socket = %p", stream->socket );
     stream->socket = NULL ;
     hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_tcp_stream_deinit - stream->socket = %p", stream->socket );
     return CY_RSLT_SUCCESS;
@@ -389,7 +434,13 @@ cy_rslt_t cy_tcp_stream_write( cy_tcp_stream_t* stream, const void* data, uint32
     size_t bytesSent = 0;
     cy_socket_t sockethandle;
 
-    if( stream == NULL || data == NULL )
+    if( (stream == NULL) || (stream->socket == NULL) )
+    {
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid stream or already stream is closed..!\n" );
+        return CY_RSLT_TCPIP_ERROR;
+    }
+
+    if( data == NULL )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_tcp_stream_write" );
         return CY_RSLT_TCPIP_ERROR;
@@ -430,7 +481,7 @@ cy_rslt_t cy_register_socket_callback( cy_tcp_socket_t* socket, receive_callback
     cy_socket_opt_callback_t tcp_receive_option;
     cy_socket_t server_socket;
 
-    if( socket == NULL )
+    if( (socket == NULL) || (socket->socket == NULL) )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_register_socket_callback" );
         return CY_RSLT_TCPIP_ERROR;
@@ -465,7 +516,7 @@ cy_rslt_t cy_register_connect_callback( cy_tcp_socket_t* socket, connect_callbac
     cy_socket_opt_callback_t tcp_connection_option;
     cy_socket_t server_socket;
 
-    if( socket == NULL )
+    if( (socket == NULL) || (socket->socket == NULL) )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_register_connect_callback" );
         return CY_RSLT_TCPIP_ERROR;
@@ -507,7 +558,7 @@ cy_rslt_t cy_register_disconnect_callback( cy_tcp_socket_t* socket, disconnect_c
     cy_socket_opt_callback_t tcp_disconnection_option;
     cy_socket_t server_socket;
 
-    if( socket == NULL )
+    if( (socket == NULL) || (socket->socket == NULL) )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_register_disconnect_callback" );
         return CY_RSLT_TCPIP_ERROR;
@@ -540,7 +591,8 @@ cy_rslt_t cy_set_socket_recv_timeout( cy_tcp_socket_t* socket, uint32_t timeout 
     cy_rslt_t result = CY_RSLT_SUCCESS;
     cy_socket_t server_socket;
     uint32_t timeout_milliseconds = timeout;
-    if( socket == NULL )
+
+    if( (socket == NULL) || (socket->socket == NULL) )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_set_socket_recv_timeout" );
         return CY_RSLT_TCPIP_ERROR;
@@ -625,7 +677,8 @@ cy_rslt_t cy_tcp_server_disconnect_socket( cy_tcp_server_t* server, cy_tcp_socke
     cy_socket_sockaddr_t  peer_addr;
     uint32_t peer_addr_len = 0;
 
-    if( server == NULL || client_socket == NULL )
+    if( (server == NULL) || (server->server_socket.socket == NULL) ||
+        (client_socket == NULL) || (client_socket->socket == NULL) )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_tcp_server_disconnect_socket" );
         return CY_RSLT_TCPIP_ERROR;
@@ -655,6 +708,14 @@ cy_rslt_t cy_tcp_server_disconnect_socket( cy_tcp_server_t* server, cy_tcp_socke
             {
                 hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_socket_disconnect failed with Error : [0x%X]", ( unsigned int )result );
             }
+
+            /* Delete the client socket handle. */
+            result = cy_socket_delete( tcp_socket );
+            if( result != CY_RSLT_SUCCESS )
+            {
+                hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_socket_delete failed with Error : [0x%X]", ( unsigned int )result );
+            }
+
             /*
              * In case of unexpected network disconnection, cy_socket_disconnect API always returns failure.
              * Return value of cy_socket_disconnect API is not checked here to avoid calling multiple times the API.

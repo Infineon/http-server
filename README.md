@@ -36,7 +36,7 @@ This section provides the list of dependent libraries required for this middlewa
 
 ### Mbed OS
   * [Arm Mbed OS 6.2.0](https://os.mbed.com/mbed-os/releases)
-  * [Connectivity Utilities Library](https://github.com/cypresssemiconductorco/connectivity-utilities)
+  * [Connectivity Utilities Library](https://github.com/cypresssemiconductorco/connectivity-utilities/releases/tag/latest-v3.X)
 
 ## Quick Start
 This library is supported on both AnyCloud and Mbed OS frameworks. The section below provides information on how to build the library in those framework.
@@ -59,6 +59,21 @@ This library is supported on both AnyCloud and Mbed OS frameworks. The section b
   ```
 
 ### Mbed OS
+- Add the .lib file(s) for dependent libraries.
+  - Create a folder named `deps`.
+  - Create a file with name mbed-os.lib and add the following line to this file:
+    ```
+    https://github.com/ARMmbed/mbed-os/#a2ada74770f043aff3e61e29d164a8e78274fcd4
+    ```
+  - Create a file with name connectivity-utilities.lib and add the following line to this file:
+    ```
+    https://github.com/cypresssemiconductorco/connectivity-utilities/#<commit-SHA-for-latest-release-v3.X>
+    ```
+    - Replace `<commit-SHA-for-latest-release-v3.X>` in the above line with commit SHA of the latest-v3.X tag available in the [GitHub repository](https://github.com/cypresssemiconductorco/connectivity-utilities/releases/tag/latest-v3.X).
+      -  Example: For tag `release-v3.0.1`
+         ```
+         https://github.com/cypresssemiconductorco/connectivity-utilities/#68bd1bc9883a0ab424eb6daf1e726f0aba2c54a6
+         ```
 - HTTP Server Library disables all the debug log messages by default. To enable log messages, the application must perform the following:   
   - Add `ENABLE_HTTP_SERVER_LOGS` macro to the *DEFINES* in the code example's JSON file. The JSON file entry would look like as follows:
      ```

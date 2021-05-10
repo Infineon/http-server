@@ -103,6 +103,7 @@ var NAVTREEINDEX0 =
 "structcy__http__message__body__t.html#a732a4fae8ab65d0d2b4e686c61402fbc":[1,0,0,0,3],
 "structcy__http__message__body__t.html#afeaaa983c593be6dc2ba404ea086d44c":[1,0,0,0,2],
 "structcy__http__response__stream__t.html":[1,0,0,1],
+"structcy__http__response__stream__t.html#a5795022fcd82f6f12fc77160cf39b283":[1,0,0,1,2],
 "structcy__http__response__stream__t.html#aa18641ca5f33f4a35f8c263e4c5a2b2a":[1,0,0,1,0],
 "structcy__http__response__stream__t.html#add4a8cc936e3e5af9e3323ca03ddf716":[1,0,0,1,1],
 "structcy__https__server__security__info__t.html":[1,0,0,2],

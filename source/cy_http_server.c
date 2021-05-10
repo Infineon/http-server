@@ -1,18 +1,34 @@
 /*
- * Copyright 2020 Cypress Semiconductor Corporation
- * SPDX-License-Identifier: Apache-2.0
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2021, Cypress Semiconductor Corporation (an Infineon company) or
+ * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
+ *
+ * This software, including source code, documentation and related
+ * materials ("Software") is owned by Cypress Semiconductor Corporation
+ * or one of its affiliates ("Cypress") and is protected by and subject to
+ * worldwide patent protection (United States and foreign),
+ * United States copyright laws and international treaty provisions.
+ * Therefore, you may use this Software only as provided in the license
+ * agreement accompanying the software package from which you
+ * obtained this Software ("EULA").
+ * If no EULA applies, Cypress hereby grants you a personal, non-exclusive,
+ * non-transferable license to copy, modify, and compile the Software
+ * source code solely for use in connection with Cypress's
+ * integrated circuit products.  Any reproduction, modification, translation,
+ * compilation, or representation of this Software except as specified
+ * above is prohibited without the express written permission of Cypress.
+ *
+ * Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT, IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. Cypress
+ * reserves the right to make changes to the Software without notice. Cypress
+ * does not assume any liability arising out of the application or use of the
+ * Software or any product or circuit described in the Software. Cypress does
+ * not authorize its products for use in any products where a malfunction or
+ * failure of the Cypress product may reasonably be expected to result in
+ * significant property damage, injury or death ("High Risk Product"). By
+ * including Cypress's product in a High Risk Product, the manufacturer
+ * of such system or application assumes all risk of such use and in doing
+ * so agrees to indemnify Cypress against all liability.
  */
 
 /** @file
@@ -202,8 +218,8 @@ typedef struct
 typedef struct
 {
     cy_tls_identity_t  *tls_identity;    /**< TLS identity */
-    uint8_t            *root_ca;        /**< Root certificate */
-    uint16_t           root_ca_length;  /**< Root certificate length */
+    uint8_t            *root_ca;         /**< Root certificate */
+    uint16_t           root_ca_length;   /**< Root certificate length */
 } cy_http_security_info;
 
 typedef struct
@@ -298,9 +314,9 @@ static cy_rslt_t           http_server_start( cy_http_server_info_t *server,
                                               cy_http_page_t *page_database,
                                               cy_server_type_t type,
                                               cy_http_security_info *security_info );
-static cy_rslt_t           http_server_stop( cy_http_server_info_t *server );
+static cy_rslt_t           http_server_stop( cy_http_server_info_t *server, uint16_t max_sockets );
 static cy_rslt_t           http_response_stream_init( cy_http_response_stream_t *stream,
-                                                         void *socket );
+                                                      void *socket );
 static cy_rslt_t           http_response_stream_deinit( cy_http_response_stream_t *stream );
 
 /******************************************************
@@ -443,6 +459,8 @@ cy_rslt_t cy_http_server_start( cy_http_server_t server_handle )
                 }
                 return result;
             }
+            server_obj->certificate_info.root_ca = ((server_obj->security_credentials)->root_ca_certificate);
+            server_obj->certificate_info.root_ca_length = (server_obj->security_credentials)->root_ca_certificate_length;
         }
 
         server_obj->certificate_info.tls_identity = &(server_obj->identity);
@@ -514,7 +532,7 @@ cy_rslt_t cy_http_server_stop( cy_http_server_t server_handle )
         return CY_RSLT_ERROR;
     }
 
-    result = http_server_stop( &(server_obj->http_server) );
+    result = http_server_stop( &(server_obj->http_server), server_obj->max_sockets );
     if( result != CY_RSLT_SUCCESS )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "Failed to stop HTTP server : %d \n", (int) result );
@@ -641,7 +659,7 @@ static cy_rslt_t http_internal_server_start( cy_http_server_info_t *server,
 {
     cy_rslt_t result = CY_RSLT_SUCCESS;
     cy_stream_node_t* stream_node;
-    uint32_t a;
+    uint16_t a;
 
     /* Store the inputs database */
     server->page_database = page_database;
@@ -658,6 +676,14 @@ static cy_rslt_t http_internal_server_start( cy_http_server_info_t *server,
     stream_node = (cy_stream_node_t*)server->streams;
     for ( a = 0; a < max_sockets; a++ )
     {
+        result = cy_rtos_init_mutex( &(stream_node[a].stream.response.mutex) );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, " Error in mutex init : %d : %s() \r\n", (int) result, __FUNCTION__ );
+            result = CY_RSLT_HTTP_SERVER_ERROR_MUTEX_INIT;
+            goto ERROR_QUEUE_INIT;
+        }
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nInitialized Mutex %p \n", (stream_node[a].stream.response.mutex) );
         cy_linked_list_set_node_data( &stream_node[a].node, (void*)&stream_node[a] );
         cy_linked_list_insert_node_at_rear( &server->inactive_stream_list, &stream_node[a].node );
     }
@@ -710,6 +736,8 @@ static cy_rslt_t http_internal_server_start( cy_http_server_info_t *server,
     }
 
     server->tcp_server.identity = security_info->tls_identity;
+    server->tcp_server.root_ca_certificate = security_info->root_ca;
+    server->tcp_server.root_ca_certificate_length = security_info->root_ca_length;
 
     result = cy_tcp_server_start( &server->tcp_server,
                                   (cy_network_interface_t*) network_interface,
@@ -720,8 +748,6 @@ static cy_rslt_t http_internal_server_start( cy_http_server_info_t *server,
         result = CY_RSLT_HTTP_SERVER_ERROR_TCP_SERVER_START;
         goto ERROR_THREAD_INIT;
     }
-
-    server->tcp_server.identity = security_info->tls_identity;
 
     cy_register_connect_callback( &server->tcp_server.server_socket, http_server_connect_callback );
 
@@ -754,14 +780,22 @@ ERROR_QUEUE_INIT:
         event_queue = NULL;
     }
 
-    free(server->streams);
+    stream_node = (cy_stream_node_t*)server->streams;
+    for ( a = 0; a < max_sockets; a++ )
+    {
+        cy_rtos_deinit_mutex( &(stream_node[a].stream.response.mutex) );
+    }
+    free( server->streams );
+    server->streams = NULL;
     return result;
 }
 
-static cy_rslt_t http_server_stop( cy_http_server_info_t *server )
+static cy_rslt_t http_server_stop( cy_http_server_info_t *server, uint16_t max_sockets )
 {
     cy_rslt_t result = CY_RSLT_SUCCESS;
     server_event_message_t current_event;
+    cy_stream_node_t *stream_node;
+    uint16_t a;
 
     if( server == NULL )
     {
@@ -811,7 +845,7 @@ static cy_rslt_t http_server_stop( cy_http_server_info_t *server )
         return result;
     }
 
-    cy_rtos_deinit_mutex(&server->mutex);
+    cy_rtos_deinit_mutex( &server->mutex );
 
     hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, " %s() : ----- ### DBG : Message queue delete\r\n", __FUNCTION__ );
     cy_rtos_deinit_queue(&event_queue);
@@ -820,6 +854,12 @@ static cy_rslt_t http_server_stop( cy_http_server_info_t *server )
     hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, " %s() : ----- ### Delete stream mgmt lists\r\n", __FUNCTION__ );
     cy_linked_list_deinit( &server->inactive_stream_list );
     cy_linked_list_deinit( &server->active_stream_list );
+
+    stream_node = (cy_stream_node_t*)server->streams;
+    for ( a = 0; a < max_sockets; a++ )
+    {
+        cy_rtos_deinit_mutex( &(stream_node[a].stream.response.mutex) );
+    }
     free( server->streams );
     server->streams = NULL;
 
@@ -836,25 +876,51 @@ cy_rslt_t cy_http_server_response_stream_enable_chunked_transfer( cy_http_respon
         return CY_RSLT_HTTP_SERVER_ERROR_BADARG;
     }
 
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_response_stream_enable_chunked_transfer- Acquiring Mutex %p ", stream->mutex );
+    cy_rtos_get_mutex( &stream->mutex, CY_RTOS_NEVER_TIMEOUT );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_response_stream_enable_chunked_transfer- Acquired Mutex %p ", stream->mutex );
+
     stream->chunked_transfer_enabled = true;
+
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_response_stream_enable_chunked_transfer- Releasing Mutex %p ", stream->mutex );
+    cy_rtos_set_mutex( &stream->mutex );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_response_stream_enable_chunked_transfer- Released Mutex %p ", stream->mutex );
     return CY_RSLT_SUCCESS;
 }
 
 cy_rslt_t cy_http_server_response_stream_disable_chunked_transfer( cy_http_response_stream_t *stream )
 {
+    cy_rslt_t result = CY_RSLT_SUCCESS;
+
     if( stream == NULL )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_http_response_stream_disable_chunked_transfer" );
         return CY_RSLT_HTTP_SERVER_ERROR_BADARG;
     }
 
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_disable_chunked_transfer- Acquiring Mutex %p ", stream->mutex );
+    cy_rtos_get_mutex( &stream->mutex, CY_RTOS_NEVER_TIMEOUT );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_disable_chunked_transfer- Acquired Mutex %p ", stream->mutex );
+
     if( stream->chunked_transfer_enabled == true )
     {
         /* Send final chunked frame */
-        CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, FINAL_CHUNKED_PACKET, sizeof( FINAL_CHUNKED_PACKET ) - 1 ) );
+        result = cy_tcp_stream_write( &stream->tcp_stream, FINAL_CHUNKED_PACKET, sizeof( FINAL_CHUNKED_PACKET ) - 1 );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_disable_chunked_transfer- Releasing Mutex %p ", stream->mutex );
+            cy_rtos_set_mutex( &stream->mutex );
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_disable_chunked_transfer- Released Mutex %p ", stream->mutex );
+            return result;
+        }
     }
-
     stream->chunked_transfer_enabled = false;
+
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_disable_chunked_transfer- Releasing Mutex %p ", stream->mutex );
+    cy_rtos_set_mutex( &stream->mutex );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_disable_chunked_transfer- Released Mutex %p ", stream->mutex );
+
     return CY_RSLT_SUCCESS;
 }
 
@@ -944,6 +1010,7 @@ static char* strnstrn( const char *s, uint16_t s_len, const char *substr, uint16
 
 cy_rslt_t cy_http_server_response_stream_write_header( cy_http_response_stream_t *stream, cy_http_status_codes_t status_code, uint32_t content_length, cy_http_cache_t cache_type, cy_http_mime_type_t mime_type )
 {
+    cy_rslt_t result = CY_RSLT_SUCCESS;
     if( stream == NULL )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_http_response_stream_write_header" );
@@ -953,38 +1020,113 @@ cy_rslt_t cy_http_server_response_stream_write_header( cy_http_response_stream_t
     char data_length_string[ 15 ];
     memset( data_length_string, 0x0, sizeof( data_length_string ) );
 
-    /*HTTP/1.1 <status code>\r\n*/
-    CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, cy_http_status_codes[ status_code ], strlen( cy_http_status_codes[ status_code ] ) ) );
-    CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, CRLF, sizeof( CRLF )-1 ) );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_write_header- Acquiring Mutex %p ", stream->mutex );
+    cy_rtos_get_mutex( &stream->mutex, CY_RTOS_NEVER_TIMEOUT );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_write_header- Acquired Mutex %p ", stream->mutex );
 
+    /*HTTP/1.1 <status code>\r\n*/
+    result = cy_tcp_stream_write( &stream->tcp_stream, cy_http_status_codes[ status_code ], strlen( cy_http_status_codes[ status_code ] ) );
+    if( result != CY_RSLT_SUCCESS )
+    {
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+        goto exit;
+    }
+
+    result = cy_tcp_stream_write( &stream->tcp_stream, CRLF, sizeof( CRLF )-1 );
+    if( result != CY_RSLT_SUCCESS )
+    {
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+        goto exit;
+    }
     /* Content-Type: xx/yy\r\n */
-    CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, HTTP_HEADER_CONTENT_TYPE, strlen( HTTP_HEADER_CONTENT_TYPE ) ) );
-    CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, http_mime_array[ mime_type ], strlen( http_mime_array[ mime_type ] ) ) );
-    CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) ) );
+    result = cy_tcp_stream_write( &stream->tcp_stream, HTTP_HEADER_CONTENT_TYPE, strlen( HTTP_HEADER_CONTENT_TYPE ) );
+    if( result != CY_RSLT_SUCCESS )
+    {
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+        goto exit;
+    }
+
+    result = cy_tcp_stream_write( &stream->tcp_stream, http_mime_array[ mime_type ], strlen( http_mime_array[ mime_type ] ) );
+    if( result != CY_RSLT_SUCCESS )
+    {
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+        goto exit;
+    }
+
+    result = cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) );
+    if( result != CY_RSLT_SUCCESS )
+    {
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+        goto exit;
+    }
 
     if( cache_type == CY_HTTP_CACHE_DISABLED )
     {
-        CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, NO_CACHE_HEADER, strlen( NO_CACHE_HEADER ) ) );
-        CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) ) );
+        result = cy_tcp_stream_write( &stream->tcp_stream, NO_CACHE_HEADER, strlen( NO_CACHE_HEADER ) );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+            goto exit;
+        }
+
+        result = cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+            goto exit;
+        }
     }
 
     if( status_code == CY_HTTP_444_TYPE )
     {
         /* Connection: close */
-        CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, HTTP_HEADER_CLOSE, strlen( HTTP_HEADER_CLOSE ) ) );
-        CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) ) );
+        result = cy_tcp_stream_write( &stream->tcp_stream, HTTP_HEADER_CLOSE, strlen( HTTP_HEADER_CLOSE ) );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+            goto exit;
+        }
+
+        result = cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+            goto exit;
+        }
     }
     else
     {
-        CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, HTTP_HEADER_KEEP_ALIVE, strlen( HTTP_HEADER_KEEP_ALIVE ) ) );
-        CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) ) );
+        result = cy_tcp_stream_write( &stream->tcp_stream, HTTP_HEADER_KEEP_ALIVE, strlen( HTTP_HEADER_KEEP_ALIVE ) );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+            goto exit;
+        }
+
+        result = cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+            goto exit;
+        }
     }
 
     if( stream->chunked_transfer_enabled == true )
     {
         /* Chunked transfer encoding */
-        CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, HTTP_HEADER_CHUNKED, strlen( HTTP_HEADER_CHUNKED ) ) );
-        CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) ) );
+        result = cy_tcp_stream_write( &stream->tcp_stream, HTTP_HEADER_CHUNKED, strlen( HTTP_HEADER_CHUNKED ) );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+            goto exit;
+        }
+
+        result = cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+            goto exit;
+        }
     }
     else
     {
@@ -993,43 +1135,99 @@ cy_rslt_t cy_http_server_response_stream_write_header( cy_http_response_stream_t
         {
             /* Content-Length: xx\r\n */
             sprintf( data_length_string, "%lu", (long) content_length );
-            CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, HTTP_HEADER_CONTENT_LENGTH, strlen( HTTP_HEADER_CONTENT_LENGTH ) ) );
-            CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, data_length_string, strlen( data_length_string ) ) );
-            CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) ) );
+            result = cy_tcp_stream_write( &stream->tcp_stream, HTTP_HEADER_CONTENT_LENGTH, strlen( HTTP_HEADER_CONTENT_LENGTH ) );
+            if( result != CY_RSLT_SUCCESS )
+            {
+                hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+                goto exit;
+            }
+
+            result = cy_tcp_stream_write( &stream->tcp_stream, data_length_string, strlen( data_length_string ) );
+            if( result != CY_RSLT_SUCCESS )
+            {
+                hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+                goto exit;
+            }
+
+            result = cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) );
+            if( result != CY_RSLT_SUCCESS )
+            {
+                hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+                goto exit;
+            }
         }
     }
 
     /* Closing sequence */
-    CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) ) );
+    result = cy_tcp_stream_write( &stream->tcp_stream, CRLF, strlen( CRLF ) );
+    if( result != CY_RSLT_SUCCESS )
+    {
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+        goto exit;
+    }
 
-    return CY_RSLT_SUCCESS;
+exit :
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_write_header- Releasing Mutex %p ", stream->mutex );
+    cy_rtos_set_mutex( &stream->mutex );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_write_header- Released Mutex %p ", stream->mutex );
+    return result;
 }
 
 cy_rslt_t cy_http_server_response_stream_write_payload( cy_http_response_stream_t *stream, const void *data, uint32_t length )
 {
+    cy_rslt_t result = CY_RSLT_SUCCESS;
+
     if( length == 0 || stream == NULL )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_http_response_stream_write" );
         return CY_RSLT_HTTP_SERVER_ERROR_BADARG;
     }
 
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_write_payload- Acquiring Mutex %p ", stream->mutex );
+    cy_rtos_get_mutex( &stream->mutex, CY_RTOS_NEVER_TIMEOUT );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_write_payload- Acquired Mutex %p ", stream->mutex );
+
     if( stream->chunked_transfer_enabled == true )
     {
         char data_length_string[10];
         memset( data_length_string, 0x0, sizeof( data_length_string ) );
         sprintf( data_length_string, "%lx", (long unsigned int)length );
-        CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, data_length_string, strlen( data_length_string ) ) );
-        CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, CRLF, sizeof( CRLF ) - 1 ) );
+        result = cy_tcp_stream_write( &stream->tcp_stream, data_length_string, strlen( data_length_string ) );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+            goto exit;
+        }
+        result = cy_tcp_stream_write( &stream->tcp_stream, CRLF, sizeof( CRLF ) - 1 );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+            goto exit;
+        }
     }
 
-    CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, data, length ) );
+    result = cy_tcp_stream_write( &stream->tcp_stream, data, length );
+    if( result != CY_RSLT_SUCCESS )
+    {
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+        goto exit;
+    }
 
     if( stream->chunked_transfer_enabled == true )
     {
-        CY_VERIFY( cy_tcp_stream_write( &stream->tcp_stream, CRLF, sizeof( CRLF ) - 1 ) );
+        result = cy_tcp_stream_write( &stream->tcp_stream, CRLF, sizeof( CRLF ) - 1 );
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_write() failed with Error : [0x%X] ", (unsigned int)result );
+            goto exit;
+        }
     }
 
-    return CY_RSLT_SUCCESS;
+exit :
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_write_payload- Releasing Mutex %p ", stream->mutex );
+    cy_rtos_set_mutex( &stream->mutex );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_write_payload- Released Mutex %p ", stream->mutex );
+    return result;
 }
 
 cy_rslt_t cy_http_server_response_stream_write_resource( cy_http_response_stream_t *stream, const void *resource )
@@ -1093,7 +1291,7 @@ cy_rslt_t cy_http_server_response_stream_flush( cy_http_response_stream_t *strea
 
 cy_rslt_t cy_http_server_response_stream_disconnect( cy_http_response_stream_t *stream )
 {
-    if( ( stream == NULL ) || ( stream->tcp_stream.socket == NULL ) )
+    if( stream == NULL )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_http_disconnect_response_stream" );
         return CY_RSLT_HTTP_SERVER_ERROR_BADARG;
@@ -1103,8 +1301,23 @@ cy_rslt_t cy_http_server_response_stream_disconnect( cy_http_response_stream_t *
 
     hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, " L%d : %s() : ----- ### DBG : Stream = [%p]\r\n", __LINE__, __FUNCTION__, (void *)stream );
 
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_disconnect- Acquiring Mutex %p ", stream->mutex );
+    cy_rtos_get_mutex( &stream->mutex, CY_RTOS_NEVER_TIMEOUT );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_disconnect- Acquired Mutex %p ", stream->mutex );
+
     current_event.event_type = CY_SOCKET_DISCONNECT_EVENT;
+    if( stream->tcp_stream.socket == NULL )
+    {
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_http_disconnect_response_stream" );
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_disconnect- Releasing Mutex %p ", stream->mutex );
+        cy_rtos_set_mutex( &stream->mutex );
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_disconnect- Released Mutex %p ", stream->mutex );
+        return CY_RSLT_HTTP_SERVER_ERROR_BADARG;
+    }
     current_event.socket     = stream->tcp_stream.socket;
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_disconnect- Releasing Mutex %p ", stream->mutex );
+    cy_rtos_set_mutex( &stream->mutex );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\ncy_http_server_response_stream_disconnect- Released Mutex %p ", stream->mutex );
 
     result = cy_rtos_put_queue( &event_queue, &current_event, 0, 0 );
     if( result != CY_RSLT_SUCCESS )
@@ -1139,31 +1352,54 @@ cy_rslt_t cy_http_server_response_stream_disconnect_all( cy_http_server_t server
 
 static cy_rslt_t http_response_stream_init( cy_http_response_stream_t *stream, void *socket )
 {
+    cy_rslt_t  result;
+
     if( stream == NULL )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to http_response_stream_init" );
         return CY_RSLT_HTTP_SERVER_ERROR_BADARG;
     }
 
-    memset( stream, 0, sizeof( cy_http_response_stream_t ) );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nhttp_response_stream_init- Acquiring Mutex %p ", stream->mutex );
+    cy_rtos_get_mutex( &stream->mutex, CY_RTOS_NEVER_TIMEOUT );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nhttp_response_stream_init- Acquired Mutex %p ", stream->mutex );
 
+    memset( &(stream->tcp_stream), 0, sizeof( cy_tcp_stream_t ) );
     stream->chunked_transfer_enabled = false;
-
-    return cy_tcp_stream_init( &stream->tcp_stream, socket );
+    result = cy_tcp_stream_init( &stream->tcp_stream, socket );
+    if( result != CY_RSLT_SUCCESS )
+    {
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_init() failed with Error : [0x%X] ", (unsigned int)result );
+    }
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nhttp_response_stream_init- Releasing Mutex %p ", stream->mutex );
+    cy_rtos_set_mutex( &stream->mutex );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nhttp_response_stream_init- Released Mutex %p ", stream->mutex );
+    return result;
 }
 
 cy_rslt_t http_response_stream_deinit( cy_http_response_stream_t *stream )
 {
     cy_rslt_t  result;
 
-    if( ( stream == NULL ) || ( stream->tcp_stream.socket == NULL ) )
+    if( stream == NULL )
     {
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to http_response_stream_deinit" );
         return CY_RSLT_HTTP_SERVER_ERROR_BADARG;
     }
 
-    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, " %s() : ----- ### DBG : Stream = [0x%X]\r\n", __FUNCTION__, (unsigned int)stream );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nhttp_response_stream_deinit- Acquiring Mutex %p ", stream->mutex );
+    cy_rtos_get_mutex( &stream->mutex, CY_RTOS_NEVER_TIMEOUT );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nhttp_response_stream_deinit- Acquired Mutex %p ", stream->mutex );
+
     result = cy_tcp_stream_deinit( &stream->tcp_stream );
+    if( result != CY_RSLT_SUCCESS )
+    {
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\ncy_tcp_stream_deinit() failed with Error : [0x%X] ", (unsigned int)result );
+    }
+
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nhttp_response_stream_deinit- Releasing Mutex %p ", stream->mutex );
+    cy_rtos_set_mutex( &stream->mutex );
+    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nhttp_response_stream_deinit- Released Mutex %p ", stream->mutex );
     return result;
 }
 
@@ -1922,10 +2158,9 @@ void http_server_connect_thread_main( cy_thread_arg_t arg )
 
             /* Create a new stream for client socket, remove node from inactive_stream_list and add it to active_stream_list */
             cy_linked_list_remove_node_from_front( &http_server->inactive_stream_list, (cy_linked_list_node_t**)&stream );
-
             hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "L%d : %s() : ----- ### DBG : Stream = [0x%X], Socket = [0x%X]\r\n", __LINE__, __FUNCTION__, (unsigned int)stream, (unsigned int)client_socket );
-
             cy_linked_list_insert_node_at_rear( &http_server->active_stream_list, &stream->node );
+            cy_rtos_set_mutex( &server->mutex );
             http_response_stream_init( &stream->stream.response, client_socket );
             memset( &stream->stream.request, 0, sizeof( stream->stream.request ) );
 
@@ -1935,8 +2170,6 @@ void http_server_connect_thread_main( cy_thread_arg_t arg )
              * LWIP MBEDOS wrapper to fix the issue. But for now, this fix is adequate for GET and POST requests.
              */
             http_server_receive_callback( client_socket );
-
-            cy_rtos_set_mutex( &server->mutex );
         }
     }
 }
@@ -1986,16 +2219,11 @@ void http_server_event_thread_main( cy_thread_arg_t arg )
                         }
 
                         cy_rtos_get_mutex( &http_server->mutex, CY_RTOS_NEVER_TIMEOUT );
-
                         cy_linked_list_remove_node( &http_server->active_stream_list, &stream->node );
                         cy_linked_list_insert_node_at_rear( &http_server->inactive_stream_list, &stream->node );
-
                         cy_rtos_set_mutex( &http_server->mutex );
-
                         http_response_stream_deinit( &stream->stream.response );
-
                         cy_tcp_server_disconnect_socket( &http_server->tcp_server, tcp_socket );
-
                         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "L%d : %s() : Disconnect event processed\r\n", __LINE__, __FUNCTION__ );
                      }
                 }
@@ -2005,11 +2233,8 @@ void http_server_event_thread_main( cy_thread_arg_t arg )
             case CY_SERVER_STOP_EVENT:
             {
                 cy_stream_node_t* stream;
-
                 http_server->quit = true;
-
                 cy_rtos_get_mutex( &http_server->mutex, CY_RTOS_NEVER_TIMEOUT );
-
                 /* Deinit all response stream */
                 cy_linked_list_get_front_node( &http_server->active_stream_list, (cy_linked_list_node_t**)&stream );
                 while ( stream != NULL )
@@ -2019,8 +2244,7 @@ void http_server_event_thread_main( cy_thread_arg_t arg )
                     http_response_stream_deinit( &stream->stream.response );
                     cy_linked_list_get_front_node( &http_server->active_stream_list, (cy_linked_list_node_t**)&stream );
                 }
-
-                cy_rtos_set_mutex(&http_server->mutex);
+                cy_rtos_set_mutex( &http_server->mutex );
 
                 hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "### DBG : Stop event processed\r\n" );
                 break;
@@ -2037,9 +2261,7 @@ void http_server_event_thread_main( cy_thread_arg_t arg )
                 else
                 {
                     received_length = cy_tcp_server_recv( client_socket, buffer, HTTP_SERVER_MTU_SIZE );
-
                     hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "Received [%d] bytes \r\n", received_length );
-
                     if( received_length == CY_HTTP_SERVER_SOCKET_NO_DATA )
                     {
                         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "L%d : %s() : ----- No data is available to read \r\n", __LINE__, __FUNCTION__ );
@@ -2064,12 +2286,9 @@ void http_server_event_thread_main( cy_thread_arg_t arg )
                             }
 
                             cy_rtos_get_mutex( &http_server->mutex, CY_RTOS_NEVER_TIMEOUT );
-
                             cy_linked_list_remove_node( &http_server->active_stream_list, &stream->node );
                             cy_linked_list_insert_node_at_rear( &http_server->inactive_stream_list, &stream->node );
-
                             cy_rtos_set_mutex( &http_server->mutex );
-
                             http_response_stream_deinit( &stream->stream.response );
                         }
                         else

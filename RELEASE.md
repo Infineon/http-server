@@ -6,11 +6,16 @@ Refer to the [README.md](./README.md) for a complete description of the HTTP ser
 ## Known Issues
 | Problem | Workaround |
 | ------- | ---------- |
-| The implementation of newlib from GCC will leak ~1.4kb of heap memory per task/thread that uses stdio functions (i.e. printf, snprintf, etc.) | By default,  log messages are disabled in the HTTP server library. Refer to the [README.md](./README.md) for enabling log messages. It is recommended to enable log  messages, only for debugging purposes |
 | If the HTTP server is stopped while connected to certain clients (such as some browsers), then a duration of approximately 2-3 minutes needs to elapse (TCP wait time) prior to re-starting the HTTP server again (or it could result in socket bind to fail). | None |
 | On memory constrained devices (such as CY8CKIT_062_WIFI_BT), there could be a limit on the max number of simultaneous secure connections. | None |
 
 ## Changelog
+### v2.0.0
+* Updated library to enable/disable RootCA validation based on the user input.
+* Introduced deps folder for AnyCloud build.
+* ARMC6 build support added for AnyCloud build.
+* Integrated with v3.X version of wifi-mw-core library.
+
 ### v1.1.1
 * Updates to support mbed-os 6.2 version
 
@@ -32,12 +37,11 @@ The current version of the library was validated for compatibility with the foll
 
 | Software and Tools                                      | Version |
 | :---                                                    | :----:  |
-| ModusToolbox Software Environment                       | 2.1     |
-| - ModusToolbox Device Configurator                      | 2.1     |
-| - ModusToolbox CSD Personality in Device Configurator   | 2.0     |
-| - ModusToolbox CapSense Configurator / Tuner tools      | 3.0     |
-| PSoC 6 Peripheral Driver Library (PDL)                  | 1.5.1   |
-| GCC Compiler                                            | 9.2.1   |
+| ModusToolbox Software Environment                       | 2.3     |
+| - ModusToolbox Device Configurator                      | 3.0     |
+| - ModusToolbox CapSense Configurator / Tuner tools      | 3.15    |
+| PSoC 6 Peripheral Driver Library (PDL)                  | 2.2.0   |
+| GCC Compiler                                            | 9.3.1   |
 | IAR Compiler (only for AnyCloud)                        | 8.32    |
 | Arm Compiler 6                                          | 6.14    |
 | MBED OS                                                 | 6.2.0   |
