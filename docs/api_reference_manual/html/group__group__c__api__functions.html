@@ -502,7 +502,7 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">stream</td><td>: Pointer to the HTTP stream. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">status_code</td><td>: HTTP status code. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">content_length</td><td>: HTTP content length to follow, in bytes. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">cache_type</td><td>: HTTP cache type (enabled or disabled). In AnyCloud and Mbed frameworks, the caching feature is not supported; therefore, this parameter should be always <a class="el" href="group__http__server__struct.html#gga64b862dacedd67c3d74845c1a6038b89a21676ce46eff61339e33dded1daeaaea">CY_HTTP_CACHE_DISABLED</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cache_type</td><td>: HTTP cache type (enabled or disabled). The caching feature is currently not supported; therefore, this parameter should be always <a class="el" href="group__http__server__struct.html#gga64b862dacedd67c3d74845c1a6038b89a21676ce46eff61339e33dded1daeaaea">CY_HTTP_CACHE_DISABLED</a>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">mime_type</td><td>: HTTP MIME type.</td></tr>
   </table>
   </dd>
@@ -583,7 +583,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Writes resource to HTTP stream. </p>
-<p>Currently not supported in AnyCloud and Mbed frameworks.</p>
+<p>Currently not supported.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">stream</td><td>: HTTP stream to write the resource into. </td></tr>

@@ -32,7 +32,7 @@
  */
 
 /** @file
- *  Implements TCP server APIs using secure socket library for AnyCloud framework.
+ *  Implements TCP server APIs using secure socket library.
  *
  */
 #include <stdio.h>
@@ -755,8 +755,7 @@ cy_rslt_t cy_tcp_server_disconnect_socket( cy_tcp_server_t* server, cy_tcp_socke
 
 /*****************************************************************/
 /* These are helper functions for TLS wrapper to communicate with
- * MBEDOS TCPIP C++ APIs. For AnyCloud network wrapper these functions are
- * not required.
+ * MBEDOS TCPIP C++ APIs.
  */
 cy_rslt_t cy_tls_generic_start_tls_with_ciphers( cy_tls_context_t* tls_context, void* referee, cy_tls_certificate_verification_t verification )
 {

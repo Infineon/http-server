@@ -10,6 +10,10 @@ Refer to the [README.md](./README.md) for a complete description of the HTTP ser
 | On memory constrained devices (such as CY8CKIT_062_WIFI_BT), there could be a limit on the max number of simultaneous secure connections. | None |
 
 ## Changelog
+
+### v2.0.1
+* Minor documentation changes to add support for CY8CEVAL-062S2-LAI-4373M2 kit.
+
 ### v2.0.0
 * Updated library to enable/disable RootCA validation based on the user input.
 * Introduced deps folder for AnyCloud build.
@@ -35,13 +39,13 @@ Refer to the [README.md](./README.md) for a complete description of the HTTP ser
 ## Supported Software and Tools
 The current version of the library was validated for compatibility with the following Software and Tools:
 
-| Software and Tools                                      | Version |
-| :---                                                    | :----:  |
-| ModusToolbox Software Environment                       | 2.3     |
-| - ModusToolbox Device Configurator                      | 3.0     |
-| - ModusToolbox CapSense Configurator / Tuner tools      | 3.15    |
-| PSoC 6 Peripheral Driver Library (PDL)                  | 2.2.0   |
-| GCC Compiler                                            | 9.3.1   |
-| IAR Compiler (only for AnyCloud)                        | 8.32    |
-| Arm Compiler 6                                          | 6.14    |
-| MBED OS                                                 | 6.2.0   |
+| Software and Tools                                        | Version |
+| :---                                                      | :----:  |
+| ModusToolbox&trade; Software Environment                  | 2.4     |
+| - ModusToolbox&trade; Device Configurator                 | 3.10    |
+| - ModusToolbox&trade; CapSense Configurator / Tuner tools | 4.0     |
+| PSoC 6 Peripheral Driver Library (PDL)                    | 2.3.0   |
+| GCC Compiler                                              | 10.3.1  |
+| IAR Compiler (only for ModusToolbox&trade;)               | 8.32    |
+| Arm Compiler 6                                            | 6.14    |
+| MBED OS                                                   | 6.2.0   |

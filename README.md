@@ -5,6 +5,7 @@ This library provides the HTTP Server implementation that can work on the PSoC 6
 It supports RESTful methods such as GET, PUT, and POST for the client to communicate with this HTTP Server library.
  
 ## Features
+* Supports HTTP/1.1 protocol version.
 * Secure [with TLS security] and non-secure modes of connection.
 * Supports RESTful HTTP methods: GET, PUT, and POST.
 * Handles various resource content types such as HTML, Plain, and JSON.
@@ -14,9 +15,11 @@ It supports RESTful methods such as GET, PUT, and POST for the client to communi
 * Supports Server-Sent Events (SSE). SSE is a server push technology, enabling an HTTP client (for example, a browser or any device running an HTTP client) to receive automatic updates from the HTTP server via the HTTP connection.
 
 ## Supported Platforms
-### AnyCloud
+
+### ModusToolbox&trade;
 * [PSoC 6 WiFi-BT Prototyping Kit (CY8CPROTO-062-4343W)](https://www.cypress.com/documentation/development-kitsboards/psoc-6-wi-fi-bt-prototyping-kit-cy8cproto-062-4343w)
 * [PSoC 62S2 Wi-Fi BT Pioneer Kit (CY8CKIT-062S2-43012)](https://www.cypress.com/documentation/development-kitsboards/psoc-62s2-wi-fi-bt-pioneer-kit-cy8ckit-062s2-43012)
+* [PSoC 62S2 evaluation kit (CY8CEVAL-062S2-LAI-4373M2)](https://www.cypress.com/documentation/development-kitsboards/psoc-62s2-evaluation-kit-cy8ceval-062s2)
 
 ### Mbed OS
 * [PSoC 6 WiFi-BT Prototyping Kit (CY8CPROTO-062-4343W)](https://www.cypress.com/documentation/development-kitsboards/psoc-6-wi-fi-bt-prototyping-kit-cy8cproto-062-4343w)
@@ -25,13 +28,13 @@ It supports RESTful methods such as GET, PUT, and POST for the client to communi
 
 ## Supported Frameworks
 This middleware library supports the following frameworks:
-* AnyCloud Framework: AnyCloud is a FreeRTOS-based solution. HTTP Server Library uses the [abstraction-rtos](https://github.com/cypresssemiconductorco/abstraction-rtos) library that provides the RTOS abstraction API and uses the [secure-sockets](https://github.com/cypresssemiconductorco/secure-sockets) library for implementing socket functions.
+* ModusToolbox&trade; environment: In this environment the HTTP Server Library uses the [abstraction-rtos](https://github.com/cypresssemiconductorco/abstraction-rtos) library that provides the RTOS abstraction API and uses the [secure-sockets](https://github.com/cypresssemiconductorco/secure-sockets) library for implementing socket functions.
 * Mbed Framework: Mbed framework is a Mbed OS-based solution. HTTP Server Library uses the [abstraction-rtos](https://github.com/cypresssemiconductorco/abstraction-rtos) library that provides RTOS abstraction API and uses the Mbed socket API for implementing socket functions.
 
 ## Dependencies
-This section provides the list of dependent libraries required for this middleware library to work on AnyCloud and Arm Mbed OS IoT frameworks.
+This section provides the list of dependent libraries required for this middleware library to work on ModusToolbox&trade; and Arm Mbed OS IoT frameworks.
 
-### AnyCloud
+### ModusToolbox&trade;
   * [Wi-Fi Middleware Core](https://github.com/cypresssemiconductorco/wifi-mw-core)
 
 ### Mbed OS
@@ -39,9 +42,9 @@ This section provides the list of dependent libraries required for this middlewa
   * [Connectivity Utilities Library](https://github.com/cypresssemiconductorco/connectivity-utilities/releases/tag/latest-v3.X)
 
 ## Quick Start
-This library is supported on both AnyCloud and Mbed OS frameworks. The section below provides information on how to build the library in those framework.
+This library is supported on both ModusToolbox&trade; and Mbed OS frameworks. The section below provides information on how to build the library in those framework.
 
-### AnyCloud
+### ModusToolbox&trade;
 - A set of pre-defined configuration files have been bundled with the wifi-mw-core library for FreeRTOS, lwIP, and mbed TLS. Review the configuration and make the required adjustments. See the "Quick Start" section in [README.md](https://github.com/cypresssemiconductorco/wifi-mw-core/blob/master/README.md).
 - Define following COMPONENTS in the application's makefile for the HTTP Server Library. For additional information, see the "Quick Start" section in [README.md](https://github.com/cypresssemiconductorco/wifi-mw-core/blob/master/README.md).
   ```
@@ -89,5 +92,5 @@ This library is supported on both AnyCloud and Mbed OS frameworks. The section b
 ## Additional Information
 * [HTTP Server RELEASE.md](./RELEASE.md)
 * [HTTP Server API Reference Guide](https://cypresssemiconductorco.github.io/http-server/api_reference_manual/html/index.html)
-* [HTTP Server Library Version](./version.txt)
+* [HTTP Server Library Version](./version.xml)
 
