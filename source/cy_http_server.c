@@ -1407,6 +1407,13 @@ cy_rslt_t cy_http_server_get_query_parameter_value( const char *url_query, const
 {
     char* iterator = (char*)url_query;
 
+    if( url_query == NULL || parameter_key == NULL ||
+        parameter_value == NULL || value_length == NULL)
+    {
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nInvalid parameter to cy_http_server_get_query_parameter_value" );
+        return CY_RSLT_HTTP_SERVER_ERROR_BADARG;
+    }
+
     while( *iterator != '\0' )
     {
         char*    current_key = iterator;

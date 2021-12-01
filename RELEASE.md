@@ -11,6 +11,9 @@ Refer to the [README.md](./README.md) for a complete description of the HTTP ser
 
 ## Changelog
 
+### v2.1.0
+* Added support for CYW943907AEVAL1F and CYW954907AEVAL1F kits
+
 ### v2.0.1
 * Minor documentation changes to add support for CY8CEVAL-062S2-LAI-4373M2 kit.
 

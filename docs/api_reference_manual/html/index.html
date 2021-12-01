@@ -84,7 +84,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="title">Overview </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This library provides the HTTP Server implementation that can work on the PSoC 6 MCU platforms with Wi-Fi connectivity.It supports RESTful methods such as GET, PUT, and POST for the client to communicate with this HTTP Server library.</p>
+<div class="textblock"><p>This library provides the HTTP Server implementation that can work on Infineon MCUs with Wi-Fi connectivity.It supports RESTful methods such as GET, PUT, and POST for the client to communicate with this HTTP Server library.</p>
 <h1><a class="anchor" id="section_features"></a>
 Features</h1>
 <ul>
@@ -107,6 +107,8 @@ ModusToolbox™</h2>
 <li><a href="https://www.cypress.com/documentation/development-kitsboards/psoc-6-wi-fi-bt-prototyping-kit-cy8cproto-062-4343w">PSoC 6 WiFi-BT Prototyping Kit (CY8CPROTO-062-4343W)</a></li>
 <li><a href="https://www.cypress.com/documentation/development-kitsboards/psoc-62s2-wi-fi-bt-pioneer-kit-cy8ckit-062s2-43012">PSoC 62S2 Wi-Fi BT Pioneer Kit (CY8CKIT-062S2-43012)</a></li>
 <li><a href="https://www.cypress.com/documentation/development-kitsboards/psoc-62s2-evaluation-kit-cy8ceval-062s2">PSoC 62S2 evaluation kit (CY8CEVAL-062S2-LAI-4373M2)</a></li>
+<li><a href="https://www.cypress.com/documentation/development-kitsboards/cyw943907aeval1f-evaluation-kit">CYW943907AEVAL1F Evaluation Kit(CYW943907AEVAL1F)</a></li>
+<li><a href="https://www.cypress.com/documentation/development-kitsboards/cyw954907aeval1f-evaluation-kit">CYW954907AEVAL1F Evaluation Kit(CYW954907AEVAL1F)</a></li>
 </ul>
 <h2><a class="anchor" id="section_plat_mbed"></a>
 Mbed OS</h2>
@@ -118,8 +120,8 @@ Mbed OS</h2>
 <h1><a class="anchor" id="section_frameworks"></a>
 Supported Frameworks</h1>
 <p>This middleware library supports the following frameworks:</p><ul>
-<li>ModusToolbox&trade; environment: In this environment the HTTP Server Library uses the <a href="https://github.com/cypresssemiconductorco/abstraction-rtos">abstraction-rtos</a> library that provides the RTOS abstraction API and uses the <a href="https://github.com/cypresssemiconductorco/secure-sockets">secure-sockets</a> library for implementing socket functions.</li>
-<li>Mbed Framework: Mbed framework is a Mbed OS-based solution. HTTP Server Library uses the <a href="https://github.com/cypresssemiconductorco/abstraction-rtos">abstraction-rtos</a> library that provides RTOS abstraction API and uses the Mbed socket API for implementing socket functions.</li>
+<li>ModusToolbox&trade; environment: In this environment the HTTP Server Library uses the <a href="https://github.com/Infineon/abstraction-rtos">abstraction-rtos</a> library that provides the RTOS abstraction API and uses the <a href="https://github.com/Infineon/secure-sockets">secure-sockets</a> library for implementing socket functions.</li>
+<li>Mbed Framework: Mbed framework is a Mbed OS-based solution. HTTP Server Library uses the <a href="https://github.com/Infineon/abstraction-rtos">abstraction-rtos</a> library that provides RTOS abstraction API and uses the Mbed socket API for implementing socket functions.</li>
 </ul>
 <h1><a class="anchor" id="section_dependencies"></a>
 Dependencies</h1>
@@ -127,13 +129,13 @@ Dependencies</h1>
 <h2><a class="anchor" id="section_dep__anycloud"></a>
 ModusToolbox™</h2>
 <ul>
-<li><a href="https://github.com/cypresssemiconductorco/wifi-mw-core">Wi-Fi Middleware Core</a></li>
+<li><a href="https://github.com/Infineon/wifi-mw-core">Wi-Fi Middleware Core</a></li>
 </ul>
 <h2><a class="anchor" id="section_dep_mbed"></a>
 Mbed OS</h2>
 <ul>
 <li><a href="https://os.mbed.com/mbed-os/releases">Arm Mbed OS 6.2.0</a></li>
-<li><a href="https://github.com/cypresssemiconductorco/connectivity-utilities/releases/tag/latest-v3.X">Connectivity Utilities Library</a></li>
+<li><a href="https://github.com/Infineon/connectivity-utilities/releases/tag/latest-v3.X">Connectivity Utilities Library</a></li>
 </ul>
 <h1><a class="anchor" id="section_quick_start"></a>
 Quick Start</h1>
@@ -141,11 +143,11 @@ Quick Start</h1>
 <h2><a class="anchor" id="framework_1"></a>
 ModusToolbox™</h2>
 <ul>
-<li>A set of pre-defined configuration files have been bundled with the wifi-mw-core library for FreeRTOS, lwIP, and mbed TLS. Review the configuration and make the required adjustments. See the "Quick Start" section in <a href="https://github.com/cypresssemiconductorco/wifi-mw-core/blob/master/README.md">README.md</a>.</li>
-<li>Define following COMPONENTS in the application's makefile for the HTTP Server Library. For additional information, see the "Quick Start" section in <a href="https://github.com/cypresssemiconductorco/wifi-mw-core/blob/master/README.md">README.md</a>. <div class="fragment"><div class="line">COMPONENTS=FREERTOS MBEDTLS LWIP SECURE_SOCKETS</div></div><!-- fragment --></li>
+<li>A set of pre-defined configuration files have been bundled with the wifi-mw-core library for FreeRTOS, lwIP, and mbed TLS. Review the configuration and make the required adjustments. See the "Quick Start" section in <a href="https://github.com/Infineon/wifi-mw-core/blob/master/README.md">README.md</a>.</li>
+<li>Define following COMPONENTS in the application's makefile for the HTTP Server Library. For additional information, see the "Quick Start" section in <a href="https://github.com/Infineon/wifi-mw-core/blob/master/README.md">README.md</a>. <div class="fragment"><div class="line">COMPONENTS=FREERTOS MBEDTLS LWIP SECURE_SOCKETS</div></div><!-- fragment --></li>
 <li>HTTP Server Library disables all the debug log messages by default. To enable log messages, the application must perform the following:<ul>
 <li>Add <code>ENABLE_HTTP_SERVER_LOGS</code> macro to the <em>DEFINES</em> in the code example's Makefile. The Makefile entry would look like as follows: <div class="fragment"><div class="line">DEFINES+=ENABLE_HTTP_SERVER_LOGS</div></div><!-- fragment --></li>
-<li>Call the <code>cy_log_init()</code> function provided by the <em>cy-log</em> module. cy-log is part of the <em>connectivity-utilities</em> library. See <a href="https://cypresssemiconductorco.github.io/connectivity-utilities/api_reference_manual/html/group__logging__utils.html">connectivity-utilities library API documentation</a> for cy-log details.</li>
+<li>Call the <code>cy_log_init()</code> function provided by the <em>cy-log</em> module. cy-log is part of the <em>connectivity-utilities</em> library. See <a href="https://Infineon.github.io/connectivity-utilities/api_reference_manual/html/group__logging__utils.html">connectivity-utilities library API documentation</a> for cy-log details.</li>
 </ul>
 </li>
 <li>Define the following macro in application's makefile to configure the maximum number of HTTP server resources to 'N': <div class="fragment"><div class="line">DEFINES+=<a class="code" href="group__http__server__defines.html#ga6e47b484776a72216039a2af358bcedc">MAX_NUMBER_OF_HTTP_SERVER_RESOURCES</a>=&lt;N&gt;</div></div><!-- fragment --></li>
@@ -156,15 +158,15 @@ Mbed OS</h2>
 <li>Add the .lib file(s) for dependent libraries.<ul>
 <li>Create a folder named <code>deps</code>.</li>
 <li>Create a file with name mbed-os.lib and add the following line to this file: <div class="fragment"><div class="line">https:<span class="comment">//github.com/ARMmbed/mbed-os/#a2ada74770f043aff3e61e29d164a8e78274fcd4</span></div></div><!-- fragment --></li>
-<li>Create a file with name connectivity-utilities.lib and add the following line to this file: <div class="fragment"><div class="line">https:<span class="comment">//github.com/cypresssemiconductorco/connectivity-utilities/#&lt;commit-SHA-for-latest-release-v3.X&gt;</span></div></div><!-- fragment --><ul>
-<li>Replace <code>&lt;commit-SHA-for-latest-release-v3.X&gt;</code> in the above line with commit SHA of the latest-v3.X tag available in the <a href="https://github.com/cypresssemiconductorco/connectivity-utilities/releases/tag/latest-v3.X">GitHub repository</a>. Example: For tag <code>release-v3.0.1</code> <div class="fragment"><div class="line">https:<span class="comment">//github.com/cypresssemiconductorco/connectivity-utilities/#68bd1bc9883a0ab424eb6daf1e726f0aba2c54a6</span></div></div><!-- fragment --></li>
+<li>Create a file with name connectivity-utilities.lib and add the following line to this file: <div class="fragment"><div class="line">https:<span class="comment">//github.com/Infineon/connectivity-utilities/#&lt;commit-SHA-for-latest-release-v3.X&gt;</span></div></div><!-- fragment --><ul>
+<li>Replace <code>&lt;commit-SHA-for-latest-release-v3.X&gt;</code> in the above line with commit SHA of the latest-v3.X tag available in the <a href="https://github.com/Infineon/connectivity-utilities/releases/tag/latest-v3.X">GitHub repository</a>. Example: For tag <code>release-v3.0.1</code> <div class="fragment"><div class="line">https:<span class="comment">//github.com/Infineon/connectivity-utilities/#68bd1bc9883a0ab424eb6daf1e726f0aba2c54a6</span></div></div><!-- fragment --></li>
 </ul>
 </li>
 </ul>
 </li>
 <li>HTTP Server Library disables all the debug log messages by default. To enable log messages, the application must perform the following:<ul>
 <li>Add <code>ENABLE_HTTP_SERVER_LOGS</code> macro to the <em>DEFINES</em> in the code example's JSON file. The JSON file entry would look like as follows: <div class="fragment"><div class="line"><span class="stringliteral">&quot;macros&quot;</span>: [<span class="stringliteral">&quot;ENABLE_HTTP_SERVER_LOGS&quot;</span>],</div><div class="line"><span class="stringliteral">&quot;target.components_add&quot;</span>: [<span class="stringliteral">&quot;MBED&quot;</span>],</div></div><!-- fragment --></li>
-<li>Call the <code>cy_log_init()</code> function provided by the <em>cy-log</em> module. cy-log is part of the <em>connectivity-utilities</em> library. See <a href="https://cypresssemiconductorco.github.io/connectivity-utilities/api_reference_manual/html/group__logging__utils.html">connectivity-utilities library API documentation</a> for cy-log details.</li>
+<li>Call the <code>cy_log_init()</code> function provided by the <em>cy-log</em> module. cy-log is part of the <em>connectivity-utilities</em> library. See <a href="https://Infineon.github.io/connectivity-utilities/api_reference_manual/html/group__logging__utils.html">connectivity-utilities library API documentation</a> for cy-log details.</li>
 </ul>
 </li>
 <li>Define the following macro in the application JSON file to configure the maximum number of HTTP server resources to 'N': <div class="fragment"><div class="line"><span class="stringliteral">&quot;macros&quot;</span>: [<span class="stringliteral">&quot;MAX_NUMBER_OF_HTTP_SERVER_RESOURCES=&lt;N&gt;&quot;</span>],</div></div><!-- fragment --></li>
