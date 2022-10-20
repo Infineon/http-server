@@ -8,8 +8,13 @@ Refer to the [README.md](./README.md) for a complete description of the HTTP ser
 | ------- | ---------- |
 | If the HTTP server is stopped while connected to certain clients (such as some browsers), then a duration of approximately 2-3 minutes needs to elapse (TCP wait time) prior to re-starting the HTTP server again (or it could result in socket bind to fail). | None |
 | On memory constrained devices (such as CY8CKIT_062_WIFI_BT), there could be a limit on the max number of simultaneous secure connections. | None |
+| IAR 9.30 toolchain throws build errors on Debug mode, if application explicitly includes iar_dlmalloc.h file | Add '--advance-heap' to LDFLAGS in application Makefile. |
 
 ## Changelog
+
+### v2.2.1
+* Added support for CM0P core
+* Minor Documentation Updates
 
 ### v2.2.0
 * Added support for CY8CEVAL-062S2-MUR-43439M2 kit
@@ -47,11 +52,11 @@ The current version of the library was validated for compatibility with the foll
 
 | Software and Tools                                        | Version |
 | :---                                                      | :----:  |
-| ModusToolbox&trade; Software Environment                  | 2.4     |
-| - ModusToolbox&trade; Device Configurator                 | 3.10    |
-| - ModusToolbox&trade; CapSense Configurator / Tuner tools | 4.0     |
-| PSoC 6 Peripheral Driver Library (PDL)                    | 2.3.0   |
+| ModusToolbox&trade; Software Environment                  | 3.0     |
+| - ModusToolbox&trade; Device Configurator                 | 4.0     |
+| - ModusToolbox&trade; CapSense Configurator / Tuner tools | 5.0     |
+| PSoC 6 Peripheral Driver Library (PDL)                    | 3.0.0   |
 | GCC Compiler                                              | 10.3.1  |
-| IAR Compiler (only for ModusToolbox&trade;)               | 8.32    |
-| Arm Compiler 6                                            | 6.14    |
+| IAR Compiler (only for ModusToolbox&trade;)               | 9.30    |
+| Arm Compiler 6                                            | 6.16    |
 | MBED OS                                                   | 6.2.0   |
