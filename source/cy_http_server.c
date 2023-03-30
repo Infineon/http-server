@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, Cypress Semiconductor Corporation (an Infineon company) or
+ * Copyright 2023, Cypress Semiconductor Corporation (an Infineon company) or
  * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
  *
  * This software, including source code, documentation and related
@@ -38,8 +38,11 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <cmsis_compiler.h>
+#include "cy_utils.h"
 #include "cy_http_server.h"
 #include "cy_log.h"
+
 
 /******************************************************
  *                      Macros
@@ -55,17 +58,19 @@
 /******************************************************
  *                    Constants
  ******************************************************/
+#ifndef HTTP_SERVER_MTU_SIZE
 #define HTTP_SERVER_MTU_SIZE                  (1460)
+#endif
 
 /* Socket receive timeout in milliseconds */
 #define HTTP_SERVER_SOCKET_RECEIVE_TIMEOUT    (1000)
 
 #ifndef HTTP_SERVER_CONNECT_THREAD_STACK_SIZE
-#define HTTP_SERVER_CONNECT_THREAD_STACK_SIZE (6000)
+#define HTTP_SERVER_CONNECT_THREAD_STACK_SIZE (6 * 1024)
 #endif
 
 #ifndef HTTP_SERVER_EVENT_THREAD_STACK_SIZE
-#define HTTP_SERVER_EVENT_THREAD_STACK_SIZE   (6000)
+#define HTTP_SERVER_EVENT_THREAD_STACK_SIZE   (6 * 1024)
 #endif
 
 #define HTTP_SERVER_THREAD_PRIORITY       (CY_RTOS_PRIORITY_NORMAL)
@@ -451,13 +456,8 @@ cy_rslt_t cy_http_server_start( cy_http_server_t server_handle )
             {
                 hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nTLS init root CA certificate failed : %d", (int) result );
                 /* Deinitialize TLS identity */
-                result = cy_tls_deinit_identity( &(server_obj->identity) );
-                if( result != CY_RSLT_SUCCESS )
-                {
-                    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nTLS deinit identity failed : %d", (int) result );
-                    return result;
-                }
-                return result;
+                (void)cy_tls_deinit_identity( &(server_obj->identity) );
+                return CY_RSLT_HTTP_SERVER_ERROR_BADARG;
             }
             server_obj->certificate_info.root_ca = ((server_obj->security_credentials)->root_ca_certificate);
             server_obj->certificate_info.root_ca_length = (server_obj->security_credentials)->root_ca_certificate_length;
@@ -478,12 +478,8 @@ cy_rslt_t cy_http_server_start( cy_http_server_t server_handle )
             cy_tls_deinit_root_ca_certificates();
 
             /* Deinitialize TLS identity */
-            result = cy_tls_deinit_identity( &(server_obj->identity) );
-            if( result != CY_RSLT_SUCCESS )
-            {
-                hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nTLS deinit identity failed : %d ", (int) result );
-                return result;
-            }
+            (void)cy_tls_deinit_identity( &(server_obj->identity) );
+
             /* Reset Identity information. */
             server_obj->certificate_info.tls_identity = NULL;
             server_obj->http_server.tcp_server.identity = NULL;
@@ -716,21 +712,21 @@ static cy_rslt_t http_internal_server_start( cy_http_server_info_t *server,
     }
 
     /* Create thread to process connect events */
-    result = cy_rtos_create_thread( &server->connect_thread, http_server_connect_thread_main, "connect_thread", HTTP_server_thread_stack,
+    result = cy_rtos_thread_create( &server->connect_thread, http_server_connect_thread_main, "connect_thread", HTTP_server_thread_stack,
                                     HTTP_SERVER_CONNECT_THREAD_STACK_SIZE, (cy_thread_priority_t) HTTP_SERVER_THREAD_PRIORITY, (cy_thread_arg_t)server );
     if( result != CY_RSLT_SUCCESS )
     {
-        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "Unable to create connect thread \n" );
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "Unable to create connect thread error : [0x%X] \n", (unsigned int)result );
         result = CY_RSLT_HTTP_SERVER_ERROR_THREAD_INIT;
         goto ERROR_THREAD_INIT;
     }
 
     /* Create HTTP server connect thread */
-    result = cy_rtos_create_thread( &server->event_thread, http_server_event_thread_main, "event_thread", HTTP_server_event_thread_stack,
+    result = cy_rtos_thread_create( &server->event_thread, http_server_event_thread_main, "event_thread", HTTP_server_event_thread_stack,
                                     HTTP_SERVER_EVENT_THREAD_STACK_SIZE, (cy_thread_priority_t) HTTP_SERVER_THREAD_PRIORITY, (cy_thread_arg_t)server );
     if( result != CY_RSLT_SUCCESS )
     {
-        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "Unable to create event thread \n" );
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "Unable to create event thread error : [0x%X] \n", (unsigned int)result );
         result = CY_RSLT_HTTP_SERVER_ERROR_THREAD_INIT;
         goto ERROR_THREAD_INIT;
     }
@@ -768,17 +764,8 @@ ERROR_MUTEX_INIT:
     cy_rtos_deinit_mutex( &server->mutex );
 
 ERROR_QUEUE_INIT:
-    if( connect_event_queue != NULL )
-    {
-        cy_rtos_deinit_queue( &connect_event_queue );
-        connect_event_queue = NULL;
-    }
-
-    if( event_queue != NULL )
-    {
-        cy_rtos_deinit_queue( &event_queue );
-        event_queue = NULL;
-    }
+    cy_rtos_deinit_queue( &connect_event_queue );
+    cy_rtos_deinit_queue( &event_queue );
 
     stream_node = (cy_stream_node_t*)server->streams;
     for ( a = 0; a < max_sockets; a++ )
@@ -2135,7 +2122,7 @@ void http_server_connect_thread_main( cy_thread_arg_t arg )
 
         if( current_event.event_type == CY_SERVER_STOP_EVENT )
         {
-            cy_rtos_exit_thread();
+            break;
         }
 
         hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "L%d : %s() : ----- Current event = [%d]\r\n", __LINE__, __FUNCTION__, current_event.event_type );
@@ -2179,6 +2166,7 @@ void http_server_connect_thread_main( cy_thread_arg_t arg )
             http_server_receive_callback( client_socket );
         }
     }
+    cy_rtos_exit_thread();
 }
 
 void http_server_event_thread_main( cy_thread_arg_t arg )

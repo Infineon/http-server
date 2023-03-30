@@ -6,11 +6,16 @@ Refer to the [README.md](./README.md) for a complete description of the HTTP ser
 ## Known Issues
 | Problem | Workaround |
 | ------- | ---------- |
+| Sometimes, during PUT and POST requests from clients, lwip may return Netconn Receive events with data length more than the HTTP_SERVER_MTU_SIZE (1460 bytes). In such cases, server might not receive the complete data sent by the client. | Increase the 'HTTP_SERVER_MTU_SIZE' by adding it as a Makefile DEFINE. Makefile entry example: DEFINES+=HTTP_SERVER_MTU_SIZE='2812'  |
 | If the HTTP server is stopped while connected to certain clients (such as some browsers), then a duration of approximately 2-3 minutes needs to elapse (TCP wait time) prior to re-starting the HTTP server again (or it could result in socket bind to fail). | None |
 | On memory constrained devices (such as CY8CKIT_062_WIFI_BT), there could be a limit on the max number of simultaneous secure connections. | None |
 | IAR 9.30 toolchain throws build errors on Debug mode, if application explicitly includes iar_dlmalloc.h file | Add '--advance-heap' to LDFLAGS in application Makefile. |
 
 ## Changelog
+
+### v2.2.2
+* Updated FreeRTOS specific code to make it generic.
+* Documentation updates.
 
 ### v2.2.1
 * Added support for CM0P core
