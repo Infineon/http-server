@@ -13,6 +13,10 @@ Refer to the [README.md](./README.md) for a complete description of the HTTP ser
 
 ## Changelog
 
+### v2.3.0
+* Added support for KIT_XMC72_EVK kit
+* Minor bug fixes
+
 ### v2.2.2
 * Updated FreeRTOS specific code to make it generic.
 * Documentation updates.
@@ -57,11 +61,9 @@ The current version of the library was validated for compatibility with the foll
 
 | Software and Tools                                        | Version |
 | :---                                                      | :----:  |
-| ModusToolbox&trade; Software Environment                  | 3.0     |
-| - ModusToolbox&trade; Device Configurator                 | 4.0     |
-| - ModusToolbox&trade; CapSense Configurator / Tuner tools | 5.0     |
-| PSoC 6 Peripheral Driver Library (PDL)                    | 3.0.0   |
-| GCC Compiler                                              | 10.3.1  |
+| ModusToolbox&trade; Software Environment                  | 3.1     |
+| ModusToolbox&trade; Device Configurator                   | 4.10    |
+| GCC Compiler                                              | 11.3.1  |
 | IAR Compiler (only for ModusToolbox&trade;)               | 9.30    |
 | Arm Compiler 6                                            | 6.16    |
 | MBED OS                                                   | 6.2.0   |

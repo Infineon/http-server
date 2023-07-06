@@ -1888,14 +1888,7 @@ cy_rslt_t http_server_process_url_request( cy_http_stream_t *stream, const cy_ht
 
             case CY_RAW_STATIC_URL_CONTENT: /* This is just a Location header */
                 hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "%s() : ----- ### DBG : CY_RAW_STATIC_URL_CONTENT\n", __FUNCTION__ );
-                CY_VERIFY( cy_http_server_response_stream_write_payload( &stream->response, HTTP_HEADER_301, strlen( HTTP_HEADER_301 ) ) );
-                CY_VERIFY( cy_http_server_response_stream_write_payload( &stream->response, CRLF, strlen( CRLF ) ) );
-                CY_VERIFY( cy_http_server_response_stream_write_payload( &stream->response, HTTP_HEADER_LOCATION, strlen( HTTP_HEADER_LOCATION ) ) );
                 CY_VERIFY( cy_http_server_response_stream_write_payload( &stream->response, page_found->url_content.static_data.ptr, page_found->url_content.static_data.length ) );
-                CY_VERIFY( cy_http_server_response_stream_write_payload( &stream->response, CRLF, strlen( CRLF ) ) );
-                CY_VERIFY( cy_http_server_response_stream_write_payload( &stream->response, HTTP_HEADER_CONTENT_LENGTH, strlen( HTTP_HEADER_CONTENT_LENGTH ) ) );
-                CY_VERIFY( cy_http_server_response_stream_write_payload( &stream->response, "0", 1 ) );
-                CY_VERIFY( cy_http_server_response_stream_write_payload( &stream->response, CRLF_CRLF, strlen( CRLF_CRLF ) ) );
                 CY_VERIFY( cy_http_server_response_stream_flush( &stream->response ) );
                 break;
 
