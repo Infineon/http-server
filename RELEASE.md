@@ -13,6 +13,10 @@ Refer to the [README.md](./README.md) for a complete description of the HTTP ser
 
 ## Changelog
 
+### v2.4.0
+* General bug fixes
+* Added support for KIT_XMC72_EVK_MUR_43439M2 kit
+
 ### v2.3.0
 * Added support for KIT_XMC72_EVK kit
 * Minor bug fixes

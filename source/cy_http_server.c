@@ -38,7 +38,9 @@
 
 #include <string.h>
 #include <stdlib.h>
+#ifndef COMPONENT_CAT5
 #include <cmsis_compiler.h>
+#endif
 #include "cy_utils.h"
 #include "cy_http_server.h"
 #include "cy_log.h"
@@ -55,6 +57,12 @@
 #define hs_cy_log_msg(a,b,c,...)
 #endif
 
+#ifdef COMPONENT_CAT5
+#define CY_ALIGN(align)     __ALIGNED(align)
+#ifndef   __ALIGNED
+  #define __ALIGNED(x)      __attribute__((aligned(x)))
+#endif
+#endif
 /******************************************************
  *                    Constants
  ******************************************************/
@@ -731,9 +739,12 @@ static cy_rslt_t http_internal_server_start( cy_http_server_info_t *server,
         goto ERROR_THREAD_INIT;
     }
 
-    server->tcp_server.identity = security_info->tls_identity;
-    server->tcp_server.root_ca_certificate = security_info->root_ca;
-    server->tcp_server.root_ca_certificate_length = security_info->root_ca_length;
+    if( security_info != NULL )
+    {
+        server->tcp_server.identity = security_info->tls_identity;
+        server->tcp_server.root_ca_certificate = security_info->root_ca;
+        server->tcp_server.root_ca_certificate_length = security_info->root_ca_length;
+    }
 
     result = cy_tcp_server_start( &server->tcp_server,
                                   (cy_network_interface_t*) network_interface,
