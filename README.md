@@ -21,36 +21,28 @@ It supports RESTful methods such as GET, PUT, and POST for the client to communi
 * [PSoC&trade; 6 Wi-Fi Bluetooth&reg; prototyping kit (CY8CPROTO-062-4343W)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8cproto-062-4343w/)
 * [PSoC&trade; 62S2 Wi-Fi Bluetooth&reg; pioneer kit (CY8CKIT-062S2-43012)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062s2-43012/)
 * [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-LAI-4373M2)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/)
+* [PSoC&trade; 6 WiFi-BT Pioneer Kit (CY8CKIT-062-WiFi-BT)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062-wifi-bt/)
 * [CYW954907AEVAL1F evaluation kit (CYW954907AEVAL1F)](https://www.infineon.com/cms/en/product/evaluation-boards/cyw954907aeval1f/)
 * [CYW943907AEVAL1F Evaluation Kit (CYW943907AEVAL1F)](https://www.infineon.com/cms/en/product/evaluation-boards/cyw943907aeval1f/)
 * [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-MUR-43439M2)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/)
 * [XMC7200D-E272K8384 kit (KIT-XMC72-EVK)](https://www.infineon.com/cms/en/product/evaluation-boards/kit_xmc72_evk/)
 * [XMC7200D-E272K8384 kit (KIT_XMC72_EVK_MUR_43439M2)](https://www.infineon.com/cms/en/product/evaluation-boards/kit_xmc72_evk/)
-### Mbed OS
-* [PSoC 6 WiFi-BT Prototyping Kit (CY8CPROTO-062-4343W)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8cproto-062-4343w/)
-* [PSoC 6 WiFi-BT Pioneer Kit (CY8CKIT-062-WiFi-BT)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062-wifi-bt/)
-* [PSoC 62S2 Wi-Fi BT Pioneer Kit (CY8CKIT-062S2-43012)](https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062s2-43012/)
 
 ## Supported Frameworks
-This middleware library supports the following frameworks:
+This middleware library supports ModusToolbox&trade; framework:
 * ModusToolbox&trade; environment: In this environment the HTTP Server Library uses the [abstraction-rtos](https://github.com/Infineon/abstraction-rtos) library that provides the RTOS abstraction API and uses the [secure-sockets](https://github.com/Infineon/secure-sockets) library for implementing socket functions.
-* Mbed Framework: Mbed framework is a Mbed OS-based solution. HTTP Server Library uses the [abstraction-rtos](https://github.com/Infineon/abstraction-rtos) library that provides RTOS abstraction API and uses the Mbed socket API for implementing socket functions.
-
-## Dependencies
-This section provides the list of dependent libraries required for this middleware library to work on ModusToolbox&trade; and Arm Mbed OS IoT frameworks.
-
-### Mbed OS
-  * [Arm Mbed OS 6.2.0](https://os.mbed.com/mbed-os/releases)
-  * [Connectivity Utilities Library](https://github.com/Infineon/connectivity-utilities/releases/tag/latest-v3.X)
 
 ## Quick Start
-This library is supported on both ModusToolbox&trade; and Mbed OS frameworks. The section below provides information on how to build the library in those framework.
+This library is supported on ModusToolbox&trade; framework. The section below provides information on how to build the library in those framework.
 
 ### ModusToolbox&trade;
 - To use http-server library with Wi-Fi kits on FreeRTOS, lwIP, and Mbed TLS combination, the application should pull [http-server](https://github.com/Infineon/http-server) library and [wifi-core-freertos-lwip-mbedtls](https://github.com/Infineon/wifi-core-freertos-lwip-mbedtls) library which will internally pull secure-sockets, wifi-connection-manager, FreeRTOS, lwIP, Mbed TLS and other dependent modules.
 To pull wifi-core-freertos-lwip-mbedtls and http-server libraries create the following *.mtb* files in deps folder.
    - *wifi-core-freertos-lwip-mbedtls.mtb:*
       `https://github.com/Infineon/wifi-core-freertos-lwip-mbedtls#latest-v1.X#$$ASSET_REPO$$/wifi-core-freertos-lwip-mbedtls/latest-v1.X`
+	  
+	  **Note:** To use TLS version 1.3, please upgrade wifi-core-freertos-lwip-mbedtls to latest-v2.X (It is supported on all the platforms except [PSoC&trade; 64S0S2 Wi-Fi Bluetooth&reg; pioneer kit (CY8CKIT-064S0S2-4343W)](https://www.cypress.com/documentation/development-kitsboards/psoc-64-standard-secure-aws-wi-fi-bt-pioneer-kit-cy8ckit))
+	  
    - *http-server.mtb:*
       `https://github.com/Infineon/http-server#latest-v2.X#$$ASSET_REPO$$/http-server/latest-v2.X`
 
@@ -58,10 +50,13 @@ To pull wifi-core-freertos-lwip-mbedtls and http-server libraries create the fol
 To pull ethernet-core-freertos-lwip-mbedtls and http-server libraries create the following *.mtb* files in deps folder.
    - *ethernet-core-freertos-lwip-mbedtls.mtb:*
       `https://github.com/Infineon/ethernet-core-freertos-lwip-mbedtls#latest-v1.X#$$ASSET_REPO$$/ethernet-core-freertos-lwip-mbedtls/latest-v1.X`
+	  
+	  **Note:** To use TLS version 1.3, please upgrade ethernet-core-freertos-lwip-mbedtls to latest-v2.X
+	  
    - *http-server.mtb:*
       `https://github.com/Infineon/http-server#latest-v2.X#$$ASSET_REPO$$/http-server/latest-v2.X`
 
-- A set of pre-defined configuration files have been bundled with the wifi-mw-core library for FreeRTOS, lwIP, and mbed TLS. Review the configuration and make the required adjustments. See the "Quick Start" section in [README.md](https://github.com/Infineon/wifi-mw-core/blob/master/README.md).
+- A set of pre-defined configuration files have been bundled with the wifi-core-freertos-lwip-mbedtls library for FreeRTOS, lwIP, and mbed TLS. Review the configuration and make the required adjustments. See the "Quick Start" section in [README.md](https://github.com/Infineon/wifi-core-freertos-lwip-mbedtls/blob/master/README.md).
 -  If the application is using bundle library then the configuration files are in the bundle library. For example if the application is using Wi-Fi core freertos lwip mbedtls bundle library, the configuration files are in wifi-core-freertos-lwip-mbedtls/configs folder. Similarly if the application is using Ethernet Core FreeRTOS lwIP mbedtls library, the configuration files are in ethernet-core-freertos-lwip-mbedtls/configs folder.
 - Define following COMPONENTS in the application's makefile for the HTTP Server Library.
   ```
@@ -76,34 +71,6 @@ To pull ethernet-core-freertos-lwip-mbedtls and http-server libraries create the
 - Define the following macro in application's makefile to configure the maximum number of HTTP server resources to 'N':
   ```
     DEFINES+=MAX_NUMBER_OF_HTTP_SERVER_RESOURCES=<N>
-  ```
-
-### Mbed OS
-- Add the .lib file(s) for dependent libraries.
-  - Create a folder named `deps`.
-  - Create a file with name mbed-os.lib and add the following line to this file:
-    ```
-    https://github.com/ARMmbed/mbed-os/#a2ada74770f043aff3e61e29d164a8e78274fcd4
-    ```
-  - Create a file with name connectivity-utilities.lib and add the following line to this file:
-    ```
-    https://github.com/Infineon/connectivity-utilities/#<commit-SHA-for-latest-release-v3.X>
-    ```
-    - Replace `<commit-SHA-for-latest-release-v3.X>` in the above line with commit SHA of the latest-v3.X tag available in the [GitHub repository](https://github.com/Infineon/connectivity-utilities/releases/tag/latest-v3.X).
-      -  Example: For tag `release-v3.0.1`
-         ```
-         https://github.com/Infineon/connectivity-utilities/#68bd1bc9883a0ab424eb6daf1e726f0aba2c54a6
-         ```
-- HTTP Server Library disables all the debug log messages by default. To enable log messages, the application must perform the following:
-  - Add `ENABLE_HTTP_SERVER_LOGS` macro to the *DEFINES* in the code example's JSON file. The JSON file entry would look like as follows:
-     ```
-       "macros": ["ENABLE_HTTP_SERVER_LOGS"],
-       "target.components_add": ["MBED"],
-     ```
-  - Call the `cy_log_init()` function provided by the *cy-log* module. cy-log is part of the *connectivity-utilities* library. See [connectivity-utilities library API documentation](https://Infineon.github.io/connectivity-utilities/api_reference_manual/html/group__logging__utils.html) for cy-log details.
-- Define the following macro in the application JSON file to configure the maximum number of HTTP server resources to 'N':
-  ```
-    "macros": ["MAX_NUMBER_OF_HTTP_SERVER_RESOURCES=<N>"],
   ```
 
 ## Additional Information

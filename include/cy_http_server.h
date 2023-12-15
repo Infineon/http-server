@@ -99,7 +99,8 @@ extern "C" {
    See the macro section of this document for library-specific error codes.
    \endverbatim
  *
- * The cy_rslt_t data structure is a part of cy_result.h in Mbed OS PSoC 6 MCU target platform, located in <mbed-os/targets/TARGET_Cypress/TARGET_PSOC6/psoc6csp/core_lib/include>
+ * The cy_rslt_t data structure is a part of cy_result.h.
+ * In ModusToolbox&trade; the PSoC 6 MCU target platform is located in <core_lib/include>
  *
  * Module base: This base is derived from CY_RSLT_MODULE_MIDDLEWARE_BASE (defined in cy_result.h) and is an offset of the CY_RSLT_MODULE_MIDDLEWARE_BASE.
  *              The details of the offset and the middleware base are defined in cy_result_mw.h, which is part of [Github connectivity-utilities] (https://github.com/Infineon/connectivity-utilities)

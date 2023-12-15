@@ -13,6 +13,12 @@ Refer to the [README.md](./README.md) for a complete description of the HTTP ser
 
 ## Changelog
 
+### v3.0.0
+* Supports TLS version 1.3
+* Supports MBEDTLS upgrade 3.4.0
+* Removed support for mbed OS
+* Added support for CY8CEVAL-062S2-CYW43022CUB kit
+
 ### v2.4.0
 * General bug fixes
 * Added support for KIT_XMC72_EVK_MUR_43439M2 kit
@@ -70,4 +76,3 @@ The current version of the library was validated for compatibility with the foll
 | GCC Compiler                                              | 11.3.1  |
 | IAR Compiler (only for ModusToolbox&trade;)               | 9.30    |
 | Arm Compiler 6                                            | 6.16    |
-| MBED OS                                                   | 6.2.0   |

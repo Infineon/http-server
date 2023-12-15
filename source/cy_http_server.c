@@ -254,8 +254,8 @@ typedef struct
  */
 typedef struct
 {
-    cy_network_interface_t                 network_interface;     /**< MBED network interface */
-    cy_tcp_server_t                        tcp_server;            /**< MBED TCP server socket handle */
+    cy_network_interface_t                 network_interface;     /**< network interface */
+    cy_tcp_server_t                        tcp_server;            /**< TCP server socket handle */
     cy_thread_t                            event_thread;          /**< HTTP server data event thread */
     cy_thread_t                            connect_thread;        /**< HTTP server connection request thread */
     cy_mutex_t                             mutex;                 /**< Mutex for critical section */
