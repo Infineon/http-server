@@ -9,9 +9,12 @@ Refer to the [README.md](./README.md) for a complete description of the HTTP ser
 | Sometimes, during PUT and POST requests from clients, lwip may return Netconn Receive events with data length more than the HTTP_SERVER_MTU_SIZE (1460 bytes). In such cases, server might not receive the complete data sent by the client. | Increase the 'HTTP_SERVER_MTU_SIZE' by adding it as a Makefile DEFINE. Makefile entry example: DEFINES+=HTTP_SERVER_MTU_SIZE='2812'  |
 | If the HTTP server is stopped while connected to certain clients (such as some browsers), then a duration of approximately 2-3 minutes needs to elapse (TCP wait time) prior to re-starting the HTTP server again (or it could result in socket bind to fail). | None |
 | On memory constrained devices (such as CY8CKIT_062_WIFI_BT), there could be a limit on the max number of simultaneous secure connections. | None |
-| IAR 9.30 toolchain throws build errors on Debug mode, if application explicitly includes iar_dlmalloc.h file | Add '--advance-heap' to LDFLAGS in application Makefile. |
+| IAR 9.40.2 toolchain throws build errors on Debug mode, if application explicitly includes iar_dlmalloc.h file | Add '--advanced_heap' to LDFLAGS in application Makefile. |
 
 ## Changelog
+
+### v3.0.1
+* General bug fixes
 
 ### v3.0.0
 * Supports TLS version 1.3
@@ -71,8 +74,8 @@ The current version of the library was validated for compatibility with the foll
 
 | Software and Tools                                        | Version |
 | :---                                                      | :----:  |
-| ModusToolbox&trade; Software Environment                  | 3.1     |
-| ModusToolbox&trade; Device Configurator                   | 4.10    |
+| ModusToolbox&trade; Software Environment                  | 3.2     |
+| ModusToolbox&trade; Device Configurator                   | 4.20    |
 | GCC Compiler                                              | 11.3.1  |
-| IAR Compiler (only for ModusToolbox&trade;)               | 9.30    |
+| IAR Compiler (only for ModusToolbox&trade;)               | 9.40.2  |
 | Arm Compiler 6                                            | 6.16    |

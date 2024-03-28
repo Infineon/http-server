@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, Cypress Semiconductor Corporation (an Infineon company) or
+ * Copyright 2024, Cypress Semiconductor Corporation (an Infineon company) or
  * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
  *
  * This software, including source code, documentation and related
@@ -71,7 +71,9 @@
 #endif
 
 /* Socket receive timeout in milliseconds */
-#define HTTP_SERVER_SOCKET_RECEIVE_TIMEOUT    (1000)
+#ifndef HTTP_SERVER_SOCKET_RECEIVE_TIMEOUT
+#define HTTP_SERVER_SOCKET_RECEIVE_TIMEOUT    (10)
+#endif
 
 #ifndef HTTP_SERVER_CONNECT_THREAD_STACK_SIZE
 #define HTTP_SERVER_CONNECT_THREAD_STACK_SIZE (6 * 1024)
