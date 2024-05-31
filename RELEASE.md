@@ -13,6 +13,9 @@ Refer to the [README.md](./README.md) for a complete description of the HTTP ser
 
 ## Changelog
 
+### v3.1.0
+* Added support for CYW955913EVK-01 kit
+
 ### v3.0.1
 * General bug fixes
 
