@@ -28,6 +28,7 @@ It supports RESTful methods such as GET, PUT, and POST for the client to communi
 * [XMC7200D-E272K8384 kit (KIT-XMC72-EVK)](https://www.infineon.com/cms/en/product/evaluation-boards/kit_xmc72_evk/)
 * [XMC7200D-E272K8384 kit (KIT_XMC72_EVK_MUR_43439M2)](https://www.infineon.com/cms/en/product/evaluation-boards/kit_xmc72_evk/)
 * [CYW955913EVK-01 Wi-Fi Bluetooth&reg; Prototyping Kit (CYW955913EVK-01)](https://www.infineon.com/CYW955913EVK-01)
+* [PSoC&trade; 62S2 evaluation kit (CY8CEVAL-062S2-CYW955513SDM2WLIPA)]( https://www.infineon.com/cms/en/product/evaluation-boards/cy8ceval-062s2/ )
 
 ## Supported Frameworks
 This middleware library supports ModusToolbox&trade; framework:
@@ -59,7 +60,7 @@ To pull ethernet-core-freertos-lwip-mbedtls and http-server libraries create the
 
 - A set of pre-defined configuration files have been bundled with the wifi-core-freertos-lwip-mbedtls library for FreeRTOS, lwIP, and mbed TLS. Review the configuration and make the required adjustments. See the "Quick Start" section in [README.md](https://github.com/Infineon/wifi-core-freertos-lwip-mbedtls/blob/master/README.md).
 -  If the application is using bundle library then the configuration files are in the bundle library. For example if the application is using Wi-Fi core freertos lwip mbedtls bundle library, the configuration files are in wifi-core-freertos-lwip-mbedtls/configs folder. Similarly if the application is using Ethernet Core FreeRTOS lwIP mbedtls library, the configuration files are in ethernet-core-freertos-lwip-mbedtls/configs folder.
-- Define following COMPONENTS in the application's makefile for the HTTP Server Library.
+- Define following COMPONENTS in the application's Makefile for the HTTP Server Library.
   ```
     COMPONENTS=FREERTOS MBEDTLS LWIP SECURE_SOCKETS
   ```
@@ -69,9 +70,13 @@ To pull ethernet-core-freertos-lwip-mbedtls and http-server libraries create the
        DEFINES+=ENABLE_HTTP_SERVER_LOGS
      ```
   - Call the `cy_log_init()` function provided by the *cy-log* module. cy-log is part of the *connectivity-utilities* library. See [connectivity-utilities library API documentation](https://Infineon.github.io/connectivity-utilities/api_reference_manual/html/group__logging__utils.html) for cy-log details.
-- Define the following macro in application's makefile to configure the maximum number of HTTP server resources to 'N':
+- Define the following macro in application's Makefile to configure the maximum number of HTTP server resources to 'N':
   ```
     DEFINES+=MAX_NUMBER_OF_HTTP_SERVER_RESOURCES=<N>
+  ```
+- Define the following macro in application's Makefile to configure the socket receive timeout in 'N' milliseconds. Default value is set to 10ms.
+  ```
+    DEFINES+=HTTP_SERVER_SOCKET_RECEIVE_TIMEOUT=<N>
   ```
 
 ## Additional Information

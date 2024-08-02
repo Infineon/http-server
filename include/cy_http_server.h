@@ -154,6 +154,12 @@ extern "C" {
 #endif
 
 /**
+ * Socket receive timeout in milliseconds 
+ */
+#ifndef HTTP_SERVER_SOCKET_RECEIVE_TIMEOUT
+#define HTTP_SERVER_SOCKET_RECEIVE_TIMEOUT             (10)
+#endif
+/**
  * @}
  */
 

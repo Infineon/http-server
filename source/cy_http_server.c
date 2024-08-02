@@ -70,11 +70,6 @@
 #define HTTP_SERVER_MTU_SIZE                  (1460)
 #endif
 
-/* Socket receive timeout in milliseconds */
-#ifndef HTTP_SERVER_SOCKET_RECEIVE_TIMEOUT
-#define HTTP_SERVER_SOCKET_RECEIVE_TIMEOUT    (10)
-#endif
-
 #ifndef HTTP_SERVER_CONNECT_THREAD_STACK_SIZE
 #define HTTP_SERVER_CONNECT_THREAD_STACK_SIZE (6 * 1024)
 #endif
