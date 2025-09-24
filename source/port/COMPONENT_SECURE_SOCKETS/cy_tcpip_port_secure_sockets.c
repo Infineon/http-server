@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, Cypress Semiconductor Corporation (an Infineon company) or
+ * Copyright 2025, Cypress Semiconductor Corporation (an Infineon company) or
  * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
  *
  * This software, including source code, documentation and related
@@ -209,6 +209,8 @@ cy_rslt_t cy_tcp_server_start( cy_tcp_server_t* server,
         return result;
     }
 
+    server->max_tcp_connections = max_sockets;
+
     /* Intialize tcp server socket list */
     cy_linked_list_init( &server->socket_list );
 
@@ -334,40 +336,51 @@ cy_rslt_t cy_tcp_server_accept( cy_tcp_server_t* server,
 
     memset( &peer_addr, 0x00, sizeof( cy_socket_sockaddr_t ) );
 
-    /* Allocate memory to accept client socket */
-    *accepted_socket = ( cy_tcp_socket_t* ) malloc( sizeof(cy_tcp_socket_t) );
-    if( *accepted_socket == NULL )
+    if(server->active_tcp_connections >= server->max_tcp_connections)
     {
-        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nFailed to allocate memory for new client in cy_tcp_server_accept" );
-        return CY_RSLT_TCPIP_ERROR_NO_MEMORY;
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\n Reached maximum connection limit \r\n");
+        /* No more new connection can be accepted as number of connections are same as maximum connections configured */
+        result =  CY_RSLT_TCPIP_ERROR_NO_MORE_SOCKET;
     }
+    else
+    {
 
-    client_socket = *accepted_socket;
+        /* Allocate memory to accept client socket */
+        *accepted_socket = ( cy_tcp_socket_t* ) malloc( sizeof(cy_tcp_socket_t) );
+        if( *accepted_socket == NULL )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_ERR, "\nFailed to allocate memory for new client in cy_tcp_server_accept" );
+            return CY_RSLT_TCPIP_ERROR_NO_MEMORY;
+        }
 
-    memset( client_socket, 0x00, sizeof( cy_tcp_socket_t ) );
+        client_socket = *accepted_socket;
 
-    result = cy_socket_accept( server->server_socket.socket, &peer_addr,
+        memset( client_socket, 0x00, sizeof( cy_tcp_socket_t ) );
+
+        result = cy_socket_accept( server->server_socket.socket, &peer_addr,
                                &peer_addr_len, &(client_socket->socket) );
-    if( result != CY_RSLT_SUCCESS )
-    {
-        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nFailed to accept incoming client connection. Error: [0x%X]\n", ( unsigned int )result );
-        free( *accepted_socket );
-        *accepted_socket = NULL;
-        return result;
+        if( result != CY_RSLT_SUCCESS )
+        {
+            hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\nFailed to accept incoming client connection. Error: [0x%X]\n", ( unsigned int )result );
+            free( *accepted_socket );
+            *accepted_socket = NULL;
+            return result;
+        }
+
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_INFO, "\nNew client connection accepted : %p\n", client_socket->socket );
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\n %d : %s() : --- Lock the mutex\r\n", __LINE__, __FUNCTION__ );
+        cy_rtos_get_mutex( &server->mutex, CY_RTOS_NEVER_TIMEOUT );
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\n %d : %s() : --- Locked the mutex\r\n", __LINE__, __FUNCTION__ );
+        cy_linked_list_set_node_data( &client_socket->socket_node, client_socket );
+        cy_linked_list_insert_node_at_rear( &server->socket_list, &client_socket->socket_node );
+        server->active_tcp_connections = server->active_tcp_connections + 1;
+        hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_INFO, "\nNumber of active client connections : %ld", server->active_tcp_connections );
     }
 
-    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_INFO, "\nNew client connection accepted : %p\n", client_socket->socket );
-    /* Set the client connection flag as true. */
-    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\n %d : %s() : --- Lock the mutex\r\n", __LINE__, __FUNCTION__ );
-    cy_rtos_get_mutex( &server->mutex, CY_RTOS_NEVER_TIMEOUT );
-    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\n %d : %s() : --- Locked the mutex\r\n", __LINE__, __FUNCTION__ );
-    cy_linked_list_set_node_data( &client_socket->socket_node, client_socket );
-    cy_linked_list_insert_node_at_rear( &server->socket_list, &client_socket->socket_node );
-    server->active_tcp_connections = server->active_tcp_connections + 1;
-    hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_INFO, "\nNumber of active client connections : %ld", server->active_tcp_connections );
     hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\n %d : %s() : --- Unlock the mutex\r\n", __LINE__, __FUNCTION__ );
     cy_rtos_set_mutex( &server->mutex );
     hs_cy_log_msg( CYLF_MIDDLEWARE, CY_LOG_DEBUG, "\n %d : %s() : --- Unlocked the mutex\r\n", __LINE__, __FUNCTION__ );
+
     return result;
 }
 

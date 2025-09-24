@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, Cypress Semiconductor Corporation (an Infineon company) or
+ * Copyright 2025, Cypress Semiconductor Corporation (an Infineon company) or
  * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
  *
  * This software, including source code, documentation and related
@@ -38,7 +38,7 @@
 
 #include <string.h>
 #include <stdlib.h>
-#ifndef COMPONENT_CAT5
+#ifndef COMPONENT_55900
 #include <cmsis_compiler.h>
 #endif
 #include "cy_utils.h"
@@ -57,7 +57,7 @@
 #define hs_cy_log_msg(a,b,c,...)
 #endif
 
-#ifdef COMPONENT_CAT5
+#ifdef COMPONENT_55900
 #define CY_ALIGN(align)     __ALIGNED(align)
 #ifndef   __ALIGNED
   #define __ALIGNED(x)      __attribute__((aligned(x)))
@@ -70,12 +70,25 @@
 #define HTTP_SERVER_MTU_SIZE                  (1460)
 #endif
 
+/* Socket receive timeout in milliseconds */
+#ifndef HTTP_SERVER_SOCKET_RECEIVE_TIMEOUT
+#define HTTP_SERVER_SOCKET_RECEIVE_TIMEOUT    (10)
+#endif
+
 #ifndef HTTP_SERVER_CONNECT_THREAD_STACK_SIZE
-#define HTTP_SERVER_CONNECT_THREAD_STACK_SIZE (6 * 1024)
+#if defined(__llvm__)
+#define HTTP_SERVER_CONNECT_THREAD_STACK_SIZE (8 * 1024)
+#else
+#define HTTP_SERVER_CONNECT_THREAD_STACK_SIZE (7 * 1024)
+#endif
 #endif
 
 #ifndef HTTP_SERVER_EVENT_THREAD_STACK_SIZE
-#define HTTP_SERVER_EVENT_THREAD_STACK_SIZE   (6 * 1024)
+#if defined(__llvm__)
+#define HTTP_SERVER_EVENT_THREAD_STACK_SIZE   (10 * 1024)
+#else
+#define HTTP_SERVER_EVENT_THREAD_STACK_SIZE   (8 * 1024)
+#endif
 #endif
 
 #define HTTP_SERVER_THREAD_PRIORITY       (CY_RTOS_PRIORITY_NORMAL)
